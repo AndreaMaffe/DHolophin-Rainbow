@@ -17,7 +17,6 @@ public class CirclesPanel : MonoBehaviour {
         colorCombination = GameManager.ColorCombination;
 
         CreateCircles(numberOfCircles);
-        SwitchColorsOff();
 	}
 
     public void CreateCircles(int numberOfCircles)
@@ -37,7 +36,10 @@ public class CirclesPanel : MonoBehaviour {
             GameObject circle = Instantiate(Resources.Load<GameObject>("Prefabs/Circle"), newCirclePosition, Quaternion.identity);
             circle.transform.parent = this.transform;
             circles[i] = circle.GetComponent<Circle>();
-        }                       
+        }
+
+        //set all the circles to the default grey color;
+        SwitchColorsOff();
     }
 
     public void SwitchColorsOn()
@@ -54,8 +56,11 @@ public class CirclesPanel : MonoBehaviour {
 
     public void Play()
     {
-        Invoke("SwitchColorOn", 2f);
-        Invoke("SwitchColorsOff", GameManager.TimeOn);
+        colorCombination = GameManager.ColorCombination;
+
+        SwitchColorsOff();
+        Invoke("SwitchColorsOn", 1f);
+        Invoke("SwitchColorsOff", 1 + GameManager.TimeOn);
     }
 
 

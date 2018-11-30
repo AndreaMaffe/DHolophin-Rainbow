@@ -19,29 +19,25 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        //set all the possible colors for the game
         allColors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow, Color.white, Color.cyan };
+
         foreach (GameObject gameObj in dontDestroyOnLoadObjects)
             DontDestroyOnLoad(gameObj);
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
 	}
 
     public static void StartNewGame()
     {
         NumberOfCircles = GameObject.Find("CircleNumberButton").GetComponent<PanelNumberButton>().Number;
         NumberOfColors = GameObject.Find("ColorNumberButton").GetComponent<PanelNumberButton>().Number;
-        TimeOn = 3; //temporary
+        TimeOn = 5; //temporary
 
         SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Single);
 
         GenerateNewColorsCombination();
     }
 
-    static void GenerateNewColorsCombination()
+    public static void GenerateNewColorsCombination()
     {
         ColorCombination = new Color[NumberOfCircles];
 
