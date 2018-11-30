@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
     public List<GameObject> dontDestroyOnLoadObjects;
 
     public static int NumberOfCircles { get; private set; }
     public static int NumberOfColors { get; private set; }
 
+    private static Color[] allColors; 
     public static Color[] ColorCombination { get; private set; }
 
     // Use this for initialization
     void Start ()
     {
+        allColors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow, Color.white, Color.cyan };
         foreach (GameObject gameObj in dontDestroyOnLoadObjects)
             DontDestroyOnLoad(gameObj);
 	}
@@ -39,16 +41,8 @@ public class GameManager : MonoBehaviour {
     {
         ColorCombination = new Color[NumberOfCircles];
 
-        for (int i=0; i<NumberOfCircles; i++)
-        {
-            float r = Random.Range(0, 255);
-            float g = Random.Range(0, 255);
-            float b = Random.Range(0, 255);
-
-            Color color = new Color(r, g, b);
-
-            ColorCombination[i] = color;
-        }
+        for (int i = 0; i < NumberOfCircles; i++)
+            ColorCombination[i] = allColors[Random.Range(0, NumberOfColors)];        
     }
 
 

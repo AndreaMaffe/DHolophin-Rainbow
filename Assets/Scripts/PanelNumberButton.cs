@@ -8,9 +8,10 @@ using UnityEngine.UI;
 
 public class PanelNumberButton : MonoBehaviour, HoloToolkit.Unity.InputModule.IInputClickHandler
 {
-    public int Number { get; set; }
-    public int maxNumber;
+    public int Number { get; private set; }
     public int minNumber;
+    public int maxNumber;
+
 
     private Text text;
 
