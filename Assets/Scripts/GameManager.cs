@@ -9,8 +9,11 @@ public class GameManager : MonoBehaviour
 
     public static int NumberOfCircles { get; private set; }
     public static int NumberOfColors { get; private set; }
+    public static float TimeOn { get; private set; }
 
-    private static Color[] allColors; 
+    //all possible colors
+    private static Color[] allColors;
+    //actual combination
     public static Color[] ColorCombination { get; private set; }
 
     // Use this for initialization
@@ -31,6 +34,7 @@ public class GameManager : MonoBehaviour
     {
         NumberOfCircles = GameObject.Find("CircleNumberButton").GetComponent<PanelNumberButton>().Number;
         NumberOfColors = GameObject.Find("ColorNumberButton").GetComponent<PanelNumberButton>().Number;
+        TimeOn = 3; //temporary
 
         SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Single);
 
@@ -41,6 +45,7 @@ public class GameManager : MonoBehaviour
     {
         ColorCombination = new Color[NumberOfCircles];
 
+        //gives each circle a random color taken from the possible ones
         for (int i = 0; i < NumberOfCircles; i++)
             ColorCombination[i] = allColors[Random.Range(0, NumberOfColors)];        
     }

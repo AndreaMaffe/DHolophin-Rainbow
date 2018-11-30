@@ -12,12 +12,12 @@ public class CirclesPanel : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        rectTransform = GetComponent<RectTransform>();
+        rectTransform = transform.Find("Panel").GetComponent<RectTransform>();
         numberOfCircles = GameManager.NumberOfCircles;
         colorCombination = GameManager.ColorCombination;
 
         CreateCircles(numberOfCircles);
-        SetCirclesColor(colorCombination);
+        SwitchColorsOff();
 	}
 
     public void CreateCircles(int numberOfCircles)
@@ -31,7 +31,7 @@ public class CirclesPanel : MonoBehaviour {
         for (int i=0; i<numberOfCircles; i++)
         {
             //calculate circle position based on panel scale and number of circles
-            Vector3 newCirclePosition = new Vector3(rectTransform.position.x - (numberOfCircles-1) * unit / 2 + i*unit, rectTransform.position.y, rectTransform.position.z);
+            Vector3 newCirclePosition = new Vector3(rectTransform.position.x - (numberOfCircles-1) * unit / 2 + i*unit, rectTransform.position.y + 0.025f, rectTransform.position.z);
 
             //generate circle and add it to the list
             GameObject circle = Instantiate(Resources.Load<GameObject>("Prefabs/Circle"), newCirclePosition, Quaternion.identity);
@@ -40,18 +40,24 @@ public class CirclesPanel : MonoBehaviour {
         }                       
     }
 
-    public void SetCirclesColor(Color[] colorCombination)
+    public void SwitchColorsOn()
     {
-        for (int i = 0; i < numberOfCircles; i++)
-        {
-            Debug.Log("Cerchio " + i + ": " + "(" + colorCombination[i].r + ", " + colorCombination[i].g + ", " + colorCombination[i].b + ")");
+        for (int i = 0; i < numberOfCircles; i++) 
             circles[i].SetColor(colorCombination[i]);
-        }
-            
     }
 
-    public void SwitchColorsOn() { }
+    public void SwitchColorsOff()
+    {
+        for (int i = 0; i < numberOfCircles; i++)
+            circles[i].SetColor(Color.grey);
+    }
 
-    public void SwitchColorsOff() { }
+    public void Play()
+    {
+        Invoke("SwitchColorOn", 2f);
+        Invoke("SwitchColorsOff", GameManager.TimeOn);
+    }
+
+
 
 }
