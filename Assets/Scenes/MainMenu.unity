@@ -1099,7 +1099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 231054676}
   minNumber: 2
-  maxNumber: 7
+  maxNumber: 8
 --- !u!223 &773263737
 Canvas:
   m_ObjectHideFlags: 0

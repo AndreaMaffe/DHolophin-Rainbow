@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 {
     public List<GameObject> dontDestroyOnLoadObjects;
 
+    public static GameMode Mode { get; private set; }
+
     public static int NumberOfCircles { get; private set; }
     public static int NumberOfColors { get; private set; }
     public static float TimeOn { get; private set; }
@@ -29,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     public static void StartNewGame()
     {
+        Mode = GameMode.MANUAL;
         //get game parameters from the panel
         NumberOfCircles = GameObject.Find("CircleNumberButton").GetComponent<PanelNumberButton>().Number;
         NumberOfColors = GameObject.Find("ColorNumberButton").GetComponent<PanelNumberButton>().Number;

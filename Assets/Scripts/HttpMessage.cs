@@ -143,7 +143,7 @@ public class HttpMessage
         var data = HttpMessageFormation("changeHttp", "changeHttp", httpDetails);
         return data;
     }
-    public static IEnumerator sendSingleColorAllLed(Color color, string urlTarget)
+    public static IEnumerator SendSingleColorAllLeds(Color color, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
@@ -152,7 +152,7 @@ public class HttpMessage
     }
 
     //insert part of the dolphin as keys ["parthead", "partleftfin", "partrightfin", "partbelly"]
-    public static IEnumerator sendOneColorForLed(Dictionary<string, Color> colorLedUnity, string urlTarget)
+    public static IEnumerator SendSingleColorSingleLed(Dictionary<string, Color> colorLedUnity, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
@@ -160,7 +160,7 @@ public class HttpMessage
         yield return request;
     }
 
-    public static IEnumerator sendMusicMessage(string track, string vol, string urlTarget)
+    public static IEnumerator SendMusicMessage(string track, string vol, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
@@ -169,7 +169,7 @@ public class HttpMessage
     }
 
     //idMove=1(muove occhi),2(muove bocca)
-    public static IEnumerator sendMoveMessage(string idMove, string speed, string duration, string urlTarget)
+    public static IEnumerator SendMoveMessage(string idMove, string speed, string duration, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
@@ -177,7 +177,7 @@ public class HttpMessage
         yield return request;
     }
 
-    public static IEnumerator sendHttpChange(string url, string port, string urlTarget)
+    public static IEnumerator SendHttpChange(string url, string port, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");

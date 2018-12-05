@@ -18,8 +18,10 @@ public class Circle : MonoBehaviour, IFocusable
     void OnColorSubmitted()
     {
         if (active && focused)
+        {
             SetColor(DolphinManager.CurrentDoplhinColor);
-        circlePanel.OnCircleColored(this, DolphinManager.CurrentDoplhinColor);
+            circlePanel.OnCircleColored(this, DolphinManager.CurrentDoplhinColor);
+        }
     }
 
     public void SetColor(Color color)

@@ -96,8 +96,6 @@ public class CirclePanel : MonoBehaviour {
                 GameManager.GenerateNewColorsCombination();
             SetCirclesActive(false);
             Play();
-
-
         }
     }
 
