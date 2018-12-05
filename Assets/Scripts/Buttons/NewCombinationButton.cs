@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-public class NewCombinationButton : FocusableButton, HoloToolkit.Unity.InputModule.IInputClickHandler
+public class NewCombinationButton : MonoBehaviour, HoloToolkit.Unity.InputModule.IInputClickHandler
 {
     public void OnInputClicked(InputClickedEventData eventData)
     {

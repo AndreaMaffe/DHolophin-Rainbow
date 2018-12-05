@@ -5,57 +5,26 @@ using UnityEngine;
 
 public class Circle : MonoBehaviour, IFocusable
 {
-    private bool focused;
+    private CirclePanel circlePanel;
+    private bool focused; //true if the player is currently looking at the circle
     private bool active; //true if game is started and it's possible to change color
 
-    void Update()
+    void Start()
     {
-        //All these functions are temporary: they will be substituted by dolphin inputs
-        if (Input.GetKeyDown("r") && focused && active)
-        {
-            SetColor(Color.red);
-            transform.parent.GetComponent<CirclePanel>().OnCircleColored(this, Color.red);
+        DolphinManager.OnColorSubmitted += OnColorSubmitted;
+        circlePanel = transform.parent.GetComponent<CirclePanel>();
+    }
 
-        }
-        if (Input.GetKeyDown("g") && focused && active)
-        {
-            SetColor(Color.green);
-            transform.parent.GetComponent<CirclePanel>().OnCircleColored(this, Color.green);
-
-        }
-        if (Input.GetKeyDown("b") && focused && active)
-        {
-            SetColor(Color.blue);
-            transform.parent.GetComponent<CirclePanel>().OnCircleColored(this, Color.blue);
-
-        }
-        if (Input.GetKeyDown("w") && focused && active)
-        {
-            SetColor(Color.white);
-            transform.parent.GetComponent<CirclePanel>().OnCircleColored(this, Color.white);
-
-        }
-        if (Input.GetKeyDown("c") && focused && active)
-        {
-            SetColor(Color.cyan);
-            transform.parent.GetComponent<CirclePanel>().OnCircleColored(this, Color.cyan);
-        }
-            
-        if (Input.GetKeyDown("y") && focused && active)
-        {
-            SetColor(Color.yellow);
-            transform.parent.GetComponent<CirclePanel>().OnCircleColored(this, Color.yellow);
-        }
+    void OnColorSubmitted()
+    {
+        if (active && focused)
+            SetColor(DolphinManager.CurrentDoplhinColor);
+        circlePanel.OnCircleColored(this, DolphinManager.CurrentDoplhinColor);
     }
 
     public void SetColor(Color color)
     {
         transform.Find("CircleObject").GetComponent<MeshRenderer>().material.color = color;
-    }
-
-    public void ResetColor()
-    {
-        transform.Find("CircleObject").GetComponent<MeshRenderer>().material.color = Color.grey;
     }
 
     public void OnFocusEnter()

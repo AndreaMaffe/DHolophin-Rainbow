@@ -5,11 +5,9 @@ using UnityEngine;
 // I messaggi "send" devono essere chiamati all'interno di una StartCoroutine.
 //     Example: StartCoroutine(HttpMessage.sendSingleColorAllLed(Color.red,"http://192.168.1.2:60000"));
 //
-//***     Author : AleGap    ***
 
 public class HttpMessage
 {
-
     private static string[] dolphinLed = { "parthead", "partleftfin", "partrightfin", "partbelly" };
     //public string[] musicDetail = { "type", "track", "volume" };
     // public string[] moveDetail = { "type", "id", "direction", "speed" , "duration" };

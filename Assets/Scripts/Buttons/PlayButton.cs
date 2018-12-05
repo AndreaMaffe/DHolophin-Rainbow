@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-public class PlayButton : FocusableButton, IInputClickHandler 
+public class PlayButton : MonoBehaviour, IInputClickHandler 
 {
 
     public void OnInputClicked(InputClickedEventData eventData)

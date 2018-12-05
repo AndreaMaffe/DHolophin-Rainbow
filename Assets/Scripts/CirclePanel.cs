@@ -72,8 +72,7 @@ public class CirclePanel : MonoBehaviour {
 
         Invoke("SwitchColorsOn", 2f);
         Invoke("SwitchColorsOff", 2 + GameManager.TimeOn);
-        SetCirclesActive(true);
-        
+        SetCirclesActive(true);        
     }
 
     public void OnCircleColored(Circle circle, Color circleColor)

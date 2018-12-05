@@ -1097,6 +1097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b8cd45edd0d2749a685e028c59fb95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 231054676}
   minNumber: 2
   maxNumber: 7
 --- !u!223 &773263737
@@ -1723,6 +1724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b8cd45edd0d2749a685e028c59fb95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 142199471}
   minNumber: 2
   maxNumber: 6
 --- !u!223 &1403079738
