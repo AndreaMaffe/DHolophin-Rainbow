@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class PanelNumberButton : MonoBehaviour, HoloToolkit.Unity.InputModule.IInputClickHandler
+public class PanelNumberButton : FocusableButton, HoloToolkit.Unity.InputModule.IInputClickHandler
 {
     public int Number { get; private set; }
     public int minNumber;

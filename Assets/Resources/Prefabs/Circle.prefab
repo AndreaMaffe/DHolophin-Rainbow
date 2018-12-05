@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 33924443820968484}
   - component: {fileID: 136271613858337450}
   - component: {fileID: 23896642005685630}
+  - component: {fileID: 114373752625838524}
   m_Layer: 0
   m_Name: CircleObject
   m_TagString: Untagged
@@ -65,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1100635905803512}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.97261834, y: -5.218127, z: 8.82231}
+  m_LocalPosition: {x: 0, y: 0, z: 0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4185733705805878}
@@ -124,6 +125,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83fed8a14ad0ad34e9eaf6ebf234ae1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114373752625838524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1232111296442298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HostTransform: {fileID: 4185733705805878}
+  CursorOffset: {x: 0, y: 0, z: 0}
+  CursorNormal: {x: 0, y: 1, z: 0}
+  CursorScaleOffset: {x: 3, y: 3, z: 1}
+  SnapCursor: 1
+  UseGazeBasedNormal: 0
+  HideCursorOnFocus: 0
+  CursorParameters: []
 --- !u!136 &136271613858337450
 CapsuleCollider:
   m_ObjectHideFlags: 1

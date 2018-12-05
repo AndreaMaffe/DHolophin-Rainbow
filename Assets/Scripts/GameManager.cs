@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     void Start ()
     {
         //set all the possible colors for the game
-        allColors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow, Color.white, Color.cyan };
+        allColors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow, Color.cyan, Color.white  };
 
         foreach (GameObject gameObj in dontDestroyOnLoadObjects)
             DontDestroyOnLoad(gameObj);
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     {
         NumberOfCircles = GameObject.Find("CircleNumberButton").GetComponent<PanelNumberButton>().Number;
         NumberOfColors = GameObject.Find("ColorNumberButton").GetComponent<PanelNumberButton>().Number;
-        TimeOn = 5; //temporary
+        TimeOn = 3; //temporary
 
         SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Single);
 
@@ -44,6 +44,27 @@ public class GameManager : MonoBehaviour
         //gives each circle a random color taken from the possible ones
         for (int i = 0; i < NumberOfCircles; i++)
             ColorCombination[i] = allColors[Random.Range(0, NumberOfColors)];        
+    }
+
+    public static bool CheckPlayerGuess(Color[] playerGuess)
+    {
+        bool guessIsCorrect = true;
+
+        for (int i = 0; i < NumberOfCircles; i++)
+            if (playerGuess[i] != ColorCombination[i])
+                guessIsCorrect = false;
+
+        if (guessIsCorrect)
+        {
+            Debug.Log("*** BRAVO! Hai indovinato! ***");
+            return true;
+        }
+
+        else
+        {
+            Debug.Log("*** ERRORE! Combinazione sbagliata! ***");
+            return false;
+        }
     }
 
 

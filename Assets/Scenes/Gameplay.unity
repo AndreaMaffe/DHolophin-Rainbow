@@ -1084,7 +1084,7 @@ GameObject:
   - component: {fileID: 1647953697}
   - component: {fileID: 1647953698}
   m_Layer: 0
-  m_Name: CirclesPanel
+  m_Name: CirclePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

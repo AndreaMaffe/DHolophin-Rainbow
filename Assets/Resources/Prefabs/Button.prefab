@@ -127,7 +127,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.007661055}
+  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.008581109}
   m_Center: {x: -0.0000000027939677, y: 0.0000000027939677, z: 3.4924597e-10}
 --- !u!114 &114273024566740912
 MonoBehaviour:
@@ -143,10 +143,10 @@ MonoBehaviour:
   HostTransform: {fileID: 0}
   CursorOffset: {x: 0, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: -1}
-  CursorScaleOffset: {x: 1, y: 1, z: 1}
+  CursorScaleOffset: {x: 2, y: 2, z: 1}
   SnapCursor: 0
   UseGazeBasedNormal: 0
-  HideCursorOnFocus: 0
+  HideCursorOnFocus: 1
   CursorParameters: []
 --- !u!114 &114510616377229988
 MonoBehaviour:
@@ -232,7 +232,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1888181684254682}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -0.02}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4918189522458170}
@@ -242,6 +242,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.05}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

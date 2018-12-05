@@ -145,7 +145,7 @@ Transform:
   - {fileID: 481840523}
   - {fileID: 1211621800}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &115626667
 MonoBehaviour:
@@ -240,7 +240,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.007661055}
+  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.008581109}
   m_Center: {x: -0.0000000027939677, y: 0.0000000027939677, z: 3.4924597e-10}
 --- !u!23 &142199468
 MeshRenderer:
@@ -296,11 +296,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
-  CursorOffset: {x: 0, y: 0, z: 0}
+  HostTransform: {fileID: 142199466}
+  CursorOffset: {x: 0, y: 0, z: 0.03}
   CursorNormal: {x: 0, y: 0, z: -1}
-  CursorScaleOffset: {x: 1, y: 1, z: 1}
-  SnapCursor: 0
+  CursorScaleOffset: {x: 2, y: 2, z: 1}
+  SnapCursor: 1
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
   CursorParameters: []
@@ -313,7 +313,7 @@ Animator:
   m_GameObject: {fileID: 142199465}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 3646f455dac0abb46a48d65e80206090, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0bcd7c8862447194ebb60291aa2b91ab, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -368,11 +368,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79c91d1ffb021347a4135df5ddd1efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 0}
-  CursorOffset: {x: 0, y: 0, z: 0}
+  HostTransform: {fileID: 231054673}
+  CursorOffset: {x: 0, y: 0, z: 0.03}
   CursorNormal: {x: 0, y: 0, z: -1}
-  CursorScaleOffset: {x: 1, y: 1, z: 1}
-  SnapCursor: 0
+  CursorScaleOffset: {x: 2, y: 2, z: 1}
+  SnapCursor: 1
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
   CursorParameters: []
@@ -387,8 +387,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.007661055}
-  m_Center: {x: -0.0000000027939677, y: 0.0000000027939677, z: 3.4924597e-10}
+  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.008581109}
+  m_Center: {x: -0.0000000021038398, y: 0.0000000021038398, z: 0.0004600164}
 --- !u!95 &231054676
 Animator:
   serializedVersion: 3
@@ -564,7 +564,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011656901714, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3eddd1c29199313478dd3f912bfab2ab, type: 2}
@@ -609,7 +609,7 @@ Transform:
   m_Children:
   - {fileID: 1124712522}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &478269689
 GameObject:
@@ -845,7 +845,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4541142303025740, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
@@ -1043,7 +1043,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
@@ -1279,6 +1279,7 @@ GameObject:
   - component: {fileID: 892802012}
   - component: {fileID: 892802010}
   - component: {fileID: 892802009}
+  - component: {fileID: 892802011}
   m_Layer: 0
   m_Name: Button_Visual
   m_TagString: Untagged
@@ -1314,7 +1315,7 @@ MonoBehaviour:
   HostTransform: {fileID: 0}
   CursorOffset: {x: 0, y: 0, z: 0}
   CursorNormal: {x: 0, y: 0, z: -1}
-  CursorScaleOffset: {x: 1, y: 1, z: 1}
+  CursorScaleOffset: {x: 2, y: 2, z: 1}
   SnapCursor: 0
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
@@ -1330,8 +1331,25 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.007661055}
+  m_Size: {x: 0.043969937, y: 0.043969944, z: 0.008581109}
   m_Center: {x: -0.0000000027939677, y: 0.0000000027939677, z: 3.4924597e-10}
+--- !u!95 &892802011
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 892802007}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0bcd7c8862447194ebb60291aa2b91ab, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!23 &892802012
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1754,7 +1772,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1870736695
 MonoBehaviour:

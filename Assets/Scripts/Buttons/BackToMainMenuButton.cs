@@ -4,7 +4,7 @@ using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BackToMainMenuButton : MonoBehaviour, HoloToolkit.Unity.InputModule.IInputClickHandler
+public class BackToMainMenuButton : FocusableButton, HoloToolkit.Unity.InputModule.IInputClickHandler
 {
     public void OnInputClicked(InputClickedEventData eventData)
     {
