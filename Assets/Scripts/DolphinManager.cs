@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using System.Net.Sockets;
 
 public class DolphinManager : MonoBehaviour
 {
     private static string ipAddr = ""; //Dolphin IP address
     private static int port = 0; //Dolphin port
+
 
     public delegate void ColorSubmittedEvent();
     public static event ColorSubmittedEvent OnColorSubmitted;
@@ -16,6 +19,7 @@ public class DolphinManager : MonoBehaviour
     void Start()
     {
         CurrentDoplhinColor = GameManager.PossibleColors[0];
+        
     }
 
     private void Update()
@@ -82,6 +86,6 @@ public class DolphinManager : MonoBehaviour
     //da chiamare quando il giocatore preme la pinna centrale
     // OnColorSubmitted();
 
-    
 
+    
 }
