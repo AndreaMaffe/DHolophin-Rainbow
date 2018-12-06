@@ -61,7 +61,7 @@ public class DolphinManager : MonoBehaviour
         Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
 
         //check if the method works
-        HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
+        //HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
     }
 
     //da chiamare quando il giocatore preme la pinna di sinistra
@@ -75,7 +75,7 @@ public class DolphinManager : MonoBehaviour
         Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
 
         //check if the method works
-        HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
+        //HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
     }
 
 
