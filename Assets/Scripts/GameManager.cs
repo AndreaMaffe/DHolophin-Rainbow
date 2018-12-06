@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        foreach (GameObject gameObj in dontDestroyOnLoadObjects)
-            DontDestroyOnLoad(gameObj);
+        /*foreach (GameObject gameObj in dontDestroyOnLoadObjects)
+            DontDestroyOnLoad(gameObj);*/
 	}
 
     public static void StartNewGame()
@@ -38,7 +38,10 @@ public class GameManager : MonoBehaviour
         TimeOn = 3; //temporary
 
         //load the scene
-        SceneManager.LoadSceneAsync("Gameplay", LoadSceneMode.Single);
+        //SceneManager.LoadScene(1);
+
+        Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), new Vector3(0,0,1f), Quaternion.identity);
+        Destroy(GameObject.Find("MainPanel"));
 
         //initialize game data
         PossibleColors = new Color[NumberOfColors];

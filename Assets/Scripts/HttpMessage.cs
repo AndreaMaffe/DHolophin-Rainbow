@@ -9,9 +9,9 @@ using UnityEngine;
 public class HttpMessage
 {
     public enum DolphinLed { parthead, partleftfin, partrightfin, partbelly };
-    public enum DolphinMoves { moveEyes, moveMouth};
+    public enum DolphinMoves { moveEyes, moveMouth };
     private static string[] dolphinLed = { "parthead", "partleftfin", "partrightfin", "partbelly" };
-  //  private static string[] dolphinMoves = {"moveEyes", "moveMouth"};
+    //  private static string[] dolphinMoves = {"moveEyes", "moveMouth"};
     //public string[] musicDetail = { "type", "track", "volume" };
     // public string[] moveDetail = { "type", "id", "direction", "speed" , "duration" };
     // public string[] changeDetail = { "ipTarget", "portTarget"};
@@ -28,12 +28,12 @@ public class HttpMessage
 
             case "soundControllerSetter":
                 detail += SetterComponent(details);
-                stringJson += "{\"requestType\":\"" + requestType + "\",\"" + modeRequest + "\":[" + detail + "]}";
+                stringJson += "{\"requestType\":\"" + requestType + "\",\"" + modeRequest + "\":[{" + detail + "}]}";
                 break;
 
             case "motorControllerSetter":
                 detail += SetterComponent(details);
-                stringJson += "{\"requestType\":\"" + requestType + "\",\"" + modeRequest + "\":[" + detail + "]}";
+                stringJson += "{\"requestType\":\"" + requestType + "\",\"" + modeRequest + "\":[{" + detail + "}]}";
                 break;
 
             case "changeHttp":
@@ -69,7 +69,7 @@ public class HttpMessage
     }
     private static string AddComponent(string field, string value)
     {
-        string stringa = "\"" + field + "\":" + value + "";
+        string stringa = "\"" + field + "\":" + value;
         return stringa;
     }
     private static string SetterComponent(Dictionary<string, string> details)
@@ -179,12 +179,14 @@ public class HttpMessage
     //idMove=1(muove occhi),2(muove bocca)
     public static IEnumerator SendMoveMessage(DolphinMoves moves, string speed, string duration, string urlTarget)
     {
-        string idMove="";
+        string idMove = "";
         switch (moves)
         {
-            case DolphinMoves.moveEyes: idMove = "1";
+            case DolphinMoves.moveEyes:
+                idMove = "1";
                 break;
-            case DolphinMoves.moveMouth:   idMove = "2";
+            case DolphinMoves.moveMouth:
+                idMove = "2";
                 break;
 
         }
@@ -201,6 +203,4 @@ public class HttpMessage
         WWW request = new WWW(urlTarget, CreateHttpChange(url, port.ToString()), headerD);
         yield return request;
     }
-
 }
-
