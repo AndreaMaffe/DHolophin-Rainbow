@@ -8,6 +8,6 @@ public class BackToMainMenuButton : MonoBehaviour, HoloToolkit.Unity.InputModule
 {
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
+        StartCoroutine(HttpMessage.SendMusicMessage("2", "30", "http://192.168.0.125"));
     }
 }
