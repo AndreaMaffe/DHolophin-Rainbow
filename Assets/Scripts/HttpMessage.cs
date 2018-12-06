@@ -85,7 +85,7 @@ public class HttpMessage
         }
         return stringa;
     }
-    private static byte[] createSingleColorAllLed(Color color)
+    private static byte[] CreateSingleColorAllLed(Color color)
     {
         string exaColor = ColorUtility.ToHtmlStringRGB(color);
         int i;
@@ -99,7 +99,7 @@ public class HttpMessage
         return data;
     }
 
-    private static byte[] createOneColorForLed(Dictionary<string, Color> colorLedUnity)
+    private static byte[] CreateOneColorForLed(Dictionary<string, Color> colorLedUnity)
     {
 
         Dictionary<string, string> colorLed = new Dictionary<string, string>();
@@ -113,7 +113,7 @@ public class HttpMessage
         return data;
     }
 
-    private static byte[] createMusicMessage(string track, string vol)
+    private static byte[] CreateMusicMessage(string track, string vol)
     {
         Dictionary<string, string> musicDetails = new Dictionary<string, string>();
         musicDetails.Add("type", "\"music\"");
@@ -123,7 +123,7 @@ public class HttpMessage
         return data;
     }
 
-    private static byte[] createMoveMessage(string idMove, string speed, string duration)
+    private static byte[] CreateMoveMessage(string idMove, string speed, string duration)
     {
         Dictionary<string, string> moveDetails = new Dictionary<string, string>();
         moveDetails.Add("type", "\"dc\"");
@@ -135,11 +135,11 @@ public class HttpMessage
         return data;
     }
 
-    private static byte[] createHttpChange(string url, string port)
+    private static byte[] CreateHttpChange(string url, string port)
     {
-        Dictionary<string, string> httpDetails = new Dictionary<string, string>();
-        httpDetails.Add("ipTarget", "\"" + url + "\"");
-        httpDetails.Add("portTarget", port);
+        Dictionary<string, string> HttpDetails = new Dictionary<string, string>();
+        HttpDetails.Add("ipTarget", "\"" + url + "\"");
+        HttpDetails.Add("portTarget", port);
         var data = HttpMessageFormation("changeHttp", "changeHttp", httpDetails);
         return data;
     }
@@ -147,7 +147,7 @@ public class HttpMessage
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createSingleColorAllLed(color), headerD);
+        WWW request = new WWW(urlTarget, CreateSingleColorAllLed(color), headerD);
         yield return request;
     }
 
@@ -156,7 +156,7 @@ public class HttpMessage
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createOneColorForLed(colorLedUnity), headerD);
+        WWW request = new WWW(urlTarget, CreateOneColorForLed(colorLedUnity), headerD);
         yield return request;
     }
 
@@ -164,7 +164,7 @@ public class HttpMessage
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createMusicMessage(track, vol), headerD);
+        WWW request = new WWW(urlTarget, CreateMusicMessage(track, vol), headerD);
         yield return request;
     }
 
@@ -173,7 +173,7 @@ public class HttpMessage
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createMoveMessage(idMove, speed, duration), headerD);
+        WWW request = new WWW(urlTarget, CreateMoveMessage(idMove, speed, duration), headerD);
         yield return request;
     }
 
@@ -181,7 +181,7 @@ public class HttpMessage
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createHttpChange(url, port), headerD);
+        WWW request = new WWW(urlTarget, CreateHttpChange(url, port), headerD);
         yield return request;
     }
 
