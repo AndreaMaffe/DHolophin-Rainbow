@@ -9,8 +9,8 @@ public class EventJson
     public class Event
     {
         public string type { get; set; }
-        public string id { get; set; }
         public string val { get; set; }
+        public string act { get; set; }
         public string dur { get; set; }
         public string SemVal { get; set; }
     }
