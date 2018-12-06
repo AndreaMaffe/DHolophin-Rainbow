@@ -10,9 +10,6 @@ public class DolphinManager : MonoBehaviour
     private static string ipAddr = ""; //Dolphin IP address
     private static int port = 0; //Dolphin port
 
-    private static int myServerPort = 60000;
-    private Byte[] myBuffer;
-    private Socket serverSocket;
 
     public delegate void ColorSubmittedEvent();
     public static event ColorSubmittedEvent OnColorSubmitted;
@@ -22,7 +19,6 @@ public class DolphinManager : MonoBehaviour
     void Start()
     {
         CurrentDoplhinColor = GameManager.PossibleColors[0];
-        StartCoroutine(HttpMessage.SendHttpChange(Network.player.ipAddress,myServerPort.ToString(),ipAddr));
         
     }
 
