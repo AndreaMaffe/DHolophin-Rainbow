@@ -8,7 +8,10 @@ using UnityEngine;
 
 public class HttpMessage
 {
+    public enum DolphinLed { parthead, partleftfin, partrightfin, partbelly };
+    public enum DolphinMoves { moveEyes, moveMouth };
     private static string[] dolphinLed = { "parthead", "partleftfin", "partrightfin", "partbelly" };
+    //  private static string[] dolphinMoves = {"moveEyes", "moveMouth"};
     //public string[] musicDetail = { "type", "track", "volume" };
     // public string[] moveDetail = { "type", "id", "direction", "speed" , "duration" };
     // public string[] changeDetail = { "ipTarget", "portTarget"};
@@ -25,12 +28,12 @@ public class HttpMessage
 
             case "soundControllerSetter":
                 detail += SetterComponent(details);
-                stringJson += "{\"requestType\":\"" + requestType + "\",\"" + modeRequest + "\":[" + detail + "]}";
+                stringJson += "{\"requestType\":\"" + requestType + "\",\"" + modeRequest + "\":[{" + detail + "}]}";
                 break;
 
             case "motorControllerSetter":
                 detail += SetterComponent(details);
-                stringJson += "{\"requestType\":\"" + requestType + "\",\"" + modeRequest + "\":[" + detail + "]}";
+                stringJson += "{\"requestType\":\"" + requestType + "\",\"" + modeRequest + "\":[{" + detail + "}]}";
                 break;
 
             case "changeHttp":
@@ -66,7 +69,7 @@ public class HttpMessage
     }
     private static string AddComponent(string field, string value)
     {
-        string stringa = "\"" + field + "\":" + value + "";
+        string stringa = "\"" + field + "\":" + value;
         return stringa;
     }
     private static string SetterComponent(Dictionary<string, string> details)
@@ -85,7 +88,7 @@ public class HttpMessage
         }
         return stringa;
     }
-    private static byte[] createSingleColorAllLed(Color color)
+    private static byte[] CreateSingleColorAllLed(Color color)
     {
         string exaColor = ColorUtility.ToHtmlStringRGB(color);
         int i;
@@ -99,7 +102,7 @@ public class HttpMessage
         return data;
     }
 
-    private static byte[] createOneColorForLed(Dictionary<string, Color> colorLedUnity)
+    private static byte[] CreateOneColorForLed(Dictionary<string, Color> colorLedUnity)
     {
 
         Dictionary<string, string> colorLed = new Dictionary<string, string>();
@@ -113,7 +116,7 @@ public class HttpMessage
         return data;
     }
 
-    private static byte[] createMusicMessage(string track, string vol)
+    private static byte[] CreateMusicMessage(string track, string vol)
     {
         Dictionary<string, string> musicDetails = new Dictionary<string, string>();
         musicDetails.Add("type", "\"music\"");
@@ -123,7 +126,7 @@ public class HttpMessage
         return data;
     }
 
-    private static byte[] createMoveMessage(string idMove, string speed, string duration)
+    private static byte[] CreateMoveMessage(string idMove, string speed, string duration)
     {
         Dictionary<string, string> moveDetails = new Dictionary<string, string>();
         moveDetails.Add("type", "\"dc\"");
@@ -135,28 +138,33 @@ public class HttpMessage
         return data;
     }
 
-    private static byte[] createHttpChange(string url, string port)
+    private static byte[] CreateHttpChange(string url, string port)
     {
-        Dictionary<string, string> httpDetails = new Dictionary<string, string>();
-        httpDetails.Add("ipTarget", "\"" + url + "\"");
-        httpDetails.Add("portTarget", port);
-        var data = HttpMessageFormation("changeHttp", "changeHttp", httpDetails);
+        Dictionary<string, string> HttpDetails = new Dictionary<string, string>();
+        HttpDetails.Add("ipTarget", "\"" + url + "\"");
+        HttpDetails.Add("portTarget", port);
+        var data = HttpMessageFormation("changeHttp", "changeHttp", HttpDetails);
         return data;
     }
     public static IEnumerator SendSingleColorAllLeds(Color color, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createSingleColorAllLed(color), headerD);
+        WWW request = new WWW(urlTarget, CreateSingleColorAllLed(color), headerD);
         yield return request;
     }
 
     //insert part of the dolphin as keys ["parthead", "partleftfin", "partrightfin", "partbelly"]
-    public static IEnumerator SendSingleColorSingleLed(Dictionary<string, Color> colorLedUnity, string urlTarget)
+    public static IEnumerator SendSingleColorSingleLed(Dictionary<DolphinLed, Color> colorLedUnityInput, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
+        Dictionary<string, Color> colorLedUnity = new Dictionary<string, Color>();
+        foreach (DolphinLed key in colorLedUnityInput.Keys)
+        {
+            colorLedUnity.Add(key.ToString(), colorLedUnityInput[key]);
+        }
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createOneColorForLed(colorLedUnity), headerD);
+        WWW request = new WWW(urlTarget, CreateOneColorForLed(colorLedUnity), headerD);
         yield return request;
     }
 
@@ -164,26 +172,35 @@ public class HttpMessage
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createMusicMessage(track, vol), headerD);
+        WWW request = new WWW(urlTarget, CreateMusicMessage(track, vol), headerD);
         yield return request;
     }
 
     //idMove=1(muove occhi),2(muove bocca)
-    public static IEnumerator SendMoveMessage(string idMove, string speed, string duration, string urlTarget)
+    public static IEnumerator SendMoveMessage(DolphinMoves moves, string speed, string duration, string urlTarget)
     {
+        string idMove = "";
+        switch (moves)
+        {
+            case DolphinMoves.moveEyes:
+                idMove = "1";
+                break;
+            case DolphinMoves.moveMouth:
+                idMove = "2";
+                break;
+
+        }
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createMoveMessage(idMove, speed, duration), headerD);
+        WWW request = new WWW(urlTarget, CreateMoveMessage(idMove, speed, duration), headerD);
         yield return request;
     }
 
-    public static IEnumerator SendHttpChange(string url, string port, string urlTarget)
+    public static IEnumerator SendHttpChange(string url, int port, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, createHttpChange(url, port), headerD);
+        WWW request = new WWW(urlTarget, CreateHttpChange(url, port.ToString()), headerD);
         yield return request;
     }
-
 }
-
