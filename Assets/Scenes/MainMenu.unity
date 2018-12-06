@@ -122,6 +122,8 @@ GameObject:
   m_Component:
   - component: {fileID: 115626666}
   - component: {fileID: 115626667}
+  - component: {fileID: 115626671}
+  - component: {fileID: 115626670}
   m_Layer: 0
   m_Name: MainPanel
   m_TagString: Untagged
@@ -136,14 +138,10 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 115626665}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: 0.7, z: 0.85}
+  m_LocalPosition: {x: 0, y: 0, z: 0.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 134179068}
-  - {fileID: 923071793}
   - {fileID: 478269690}
-  - {fileID: 481840523}
-  - {fileID: 1211621800}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -162,6 +160,38 @@ MonoBehaviour:
   alignmentType: 0
   stationarySpaceTypePosition: {x: 0, y: 0, z: 0}
   roomScaleSpaceTypePosition: {x: 0, y: 0, z: 0}
+--- !u!114 &115626670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 115626665}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnscaledTime: 1
+  PositionPerSecond: 30
+  RotationDegreesPerSecond: 720
+  RotationSpeedScaler: 0
+  ScalePerSecond: 5
+  SmoothLerpToTarget: 0
+  SmoothPositionLerpRatio: 0.5
+  SmoothRotationLerpRatio: 0.5
+  SmoothScaleLerpRatio: 0.5
+--- !u!65 &115626671
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 115626665}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &134179067
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,14 +213,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 134179067}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.135, y: -0.623, z: 1.1571001}
-  m_LocalScale: {x: 0.70828426, y: 0.70828426, z: 0.70828426}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.250951, y: 0.25295404, z: 0.1597364}
+  m_LocalScale: {x: 1.154477, y: 1.3370405, z: 53.576607}
   m_Children:
   - {fileID: 773263735}
   - {fileID: 1403079736}
   - {fileID: 857561891}
-  m_Father: {fileID: 115626666}
+  m_Father: {fileID: 478269690}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &142199465
@@ -625,7 +655,7 @@ GameObject:
   - component: {fileID: 478269692}
   - component: {fileID: 478269691}
   m_Layer: 0
-  m_Name: Backpanel
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -639,11 +669,15 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 478269689}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.03699997, y: -0.75699997, z: 1.1604177}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.013220031, y: 0.5297403, z: 0.613511}
-  m_Children: []
+  m_Children:
+  - {fileID: 134179068}
+  - {fileID: 923071793}
+  - {fileID: 481840523}
+  - {fileID: 1211621800}
   m_Father: {fileID: 115626666}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!54 &478269691
 Rigidbody:
@@ -743,12 +777,12 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 481840522}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.035583496, y: -0.62176514, z: 1.1409178}
-  m_LocalScale: {x: 0.5497447, y: 0.0030726464, z: 1}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 1.4750267, y: 0.25528514, z: -0.0023087973}
+  m_LocalScale: {x: 0.8960635, y: 0.0058002886, z: 75.6428}
   m_Children: []
-  m_Father: {fileID: 115626666}
-  m_RootOrder: 3
+  m_Father: {fileID: 478269690}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &481840524
 MeshRenderer:
@@ -1403,6 +1437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 923071793}
   - component: {fileID: 923071792}
+  - component: {fileID: 923071796}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1452,13 +1487,25 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 923071791}
-  m_LocalRotation: {x: 0.4131562, y: -0.043737188, z: 0.02092344, w: 0.9093686}
-  m_LocalPosition: {x: 0.05, y: 0.1, z: -0.85}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.27735046, y: -0.6739476, z: 0.30694064, w: 0.6120938}
+  m_LocalPosition: {x: 152.07361, y: 1.6177739, z: 0.021189919}
+  m_LocalScale: {x: 2.3239958, y: 43.328423, z: 33.50804}
   m_Children: []
-  m_Father: {fileID: 115626666}
+  m_Father: {fileID: 478269690}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 48.868004, y: -5.2780004, z: 0.162}
+--- !u!65 &923071796
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 923071791}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1124712520
 Prefab:
   m_ObjectHideFlags: 0
@@ -1623,12 +1670,12 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1211621799}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.040649414, y: -0.56347656, z: 1.1454179}
-  m_LocalScale: {x: 0.013813125, y: 0.01381305, z: 0.008287894}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 1.1346228, y: 0.36531752, z: 0.005948459}
+  m_LocalScale: {x: 0.02251488, y: 0.026075138, z: 0.62691945}
   m_Children: []
-  m_Father: {fileID: 115626666}
-  m_RootOrder: 4
+  m_Father: {fileID: 478269690}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!212 &1211621801
 SpriteRenderer:
@@ -1787,6 +1834,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 088006769879cf24ebead8c2594bb5e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoadObjects:
-  - {fileID: 1870736693}
-  - {fileID: 412973902}
+  dontDestroyOnLoadObjects: []
