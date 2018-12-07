@@ -97,10 +97,9 @@ public class CirclePanel : MonoBehaviour {
         //if so, check if the combination is correct
         if (allCirclesAreColored)
         {
-            Invoke("SwitchColorsOff", 0.5f);
+            StopGame();
             if (GameManager.CheckPlayerGuess(playerGuess))
                 GameManager.GenerateNewColorsCombination();
-            SetCirclesActive(false);
             PlayGame();
         }
     }

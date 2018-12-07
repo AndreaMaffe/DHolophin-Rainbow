@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     {
         /*foreach (GameObject gameObj in dontDestroyOnLoadObjects)
             DontDestroyOnLoad(gameObj);*/
+
+        AudioManager.PlayBackgroundMusic();
 	}
 
     public static void StartNewGame()
@@ -74,12 +76,14 @@ public class GameManager : MonoBehaviour
 
         if (guessIsCorrect)
         {
+            AudioManager.PlayCorrectAnswerSound();
             Debug.Log("*** BRAVO! Hai indovinato! ***");
             return true;
         }
 
         else
         {
+            AudioManager.PlayWrongAnswerSound();
             Debug.Log("*** ERRORE! Combinazione sbagliata! ***");
             return false;
         }
