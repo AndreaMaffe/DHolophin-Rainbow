@@ -61,7 +61,7 @@ public class CirclePanel : MonoBehaviour {
             circles[i].SetActive(value);
     }
 
-    public void Play()
+    public void PlayGame()
     {
         //get actual combination from GameManager
         colorCombination = GameManager.ColorCombination;
@@ -73,6 +73,12 @@ public class CirclePanel : MonoBehaviour {
         Invoke("SwitchColorsOn", 2f);
         Invoke("SwitchColorsOff", 2 + GameManager.TimeOn);
         SetCirclesActive(true);        
+    }
+
+    public void StopGame()
+    {
+        Invoke("SwitchColorsOff", 1f);
+        SetCirclesActive(false);
     }
 
     public void OnCircleColored(Circle circle, Color circleColor)
@@ -95,7 +101,7 @@ public class CirclePanel : MonoBehaviour {
             if (GameManager.CheckPlayerGuess(playerGuess))
                 GameManager.GenerateNewColorsCombination();
             SetCirclesActive(false);
-            Play();
+            PlayGame();
         }
     }
 
