@@ -39,9 +39,11 @@ public class CirclePanel : MonoBehaviour {
             circles[i] = circle.GetComponent<Circle>();
         }
 
+        //create the dolphin, scale it and add it as child
         Vector3 dolphinPosition = new Vector3(rectTransform.position.x + unit*numberOfCircles/2, rectTransform.position.y + rectTransform.localScale.y/2, rectTransform.position.z-0.02f);
         GameObject dolphin = Instantiate(Resources.Load<GameObject>("Prefabs/Dolphin"), dolphinPosition, Quaternion.identity);
         dolphin.transform.localScale *= 0.6f;
+        dolphin.transform.parent = this.transform;
 
         SwitchCirclesOff();
     }
