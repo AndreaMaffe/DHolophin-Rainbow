@@ -21,7 +21,7 @@ public class DolphinManager : MonoBehaviour
         
     }
 
-    private void Update()
+    void Update()
     {
         //temporary, they will substituted by dolphin inputs
         if (Input.GetKeyDown("r"))
@@ -85,6 +85,23 @@ public class DolphinManager : MonoBehaviour
     //da chiamare quando il giocatore preme la pinna centrale
     // OnColorSubmitted();
 
+    //da usare quando ci si connette al delfino
+    public static bool EstablishCommunication()
+    {
+        return true;
+    }
 
-    
+    public static void SwitchDolphinOn()
+    {
+        //HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
+    }
+
+
+    public static void SwitchDolphinOff()
+    {
+        //spegni i led
+    }
+
+
+
 }

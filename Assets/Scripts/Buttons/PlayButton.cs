@@ -23,12 +23,14 @@ public class PlayButton : FocusableButton, IInputClickHandler
         if (text.text == "PLAY!")
         {
             circlePanel.PlayGame();
+            DolphinManager.SwitchDolphinOn();
             text.text = "STOP";
         }
 
         else
         {
             circlePanel.SwitchCirclesOff();
+            DolphinManager.SwitchDolphinOff();
             text.text = "PLAY!";
         }    
     }

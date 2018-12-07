@@ -21,11 +21,14 @@ public class AudioManager : MonoBehaviour {
         wrongAnswerSound = Resources.Load<AudioClip>("Sounds/WrongAnswer");
         pop1 = Resources.Load<AudioClip>("Sounds/Pop1");
         pop2 = Resources.Load<AudioClip>("Sounds/Pop2");
+
+        audioSource.clip = backgroundMusic;
+        audioSource.loop = true;
     }
 
     public static void PlayBackgroundMusic()
     {
-        audioSource.PlayOneShot(backgroundMusic, 0.3f);
+        audioSource.Play();
     }
 
     public static void PlayCorrectAnswerSound()
