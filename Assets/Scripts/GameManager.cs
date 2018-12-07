@@ -7,6 +7,7 @@ public enum GameMode { MANUAL, AUTOMATIC }
 
 public class GameManager : MonoBehaviour
 {
+    private static GameObject dolphinManager;
     public List<GameObject> dontDestroyOnLoadObjects;
 
     public static GameMode Mode { get; private set; }
@@ -49,6 +50,9 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < NumberOfColors; i++)
             PossibleColors[i] = allColors[i];
         GenerateNewColorsCombination();
+
+        if (dolphinManager == null)
+            dolphinManager = (Resources.Load<GameObject>("Prefabs/DolphinManager"));
     }
 
     public static void GenerateNewColorsCombination()

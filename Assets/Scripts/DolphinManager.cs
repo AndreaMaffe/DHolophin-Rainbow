@@ -10,7 +10,6 @@ public class DolphinManager : MonoBehaviour
     private static string ipAddr = ""; //Dolphin IP address
     private static int port = 0; //Dolphin port
 
-
     public delegate void ColorSubmittedEvent();
     public static event ColorSubmittedEvent OnColorSubmitted;
 
