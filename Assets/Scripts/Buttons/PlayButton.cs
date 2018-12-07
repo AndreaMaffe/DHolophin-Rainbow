@@ -18,6 +18,8 @@ public class PlayButton : FocusableButton, IInputClickHandler
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
+        AudioManager.PlayPop2();
+
         if (text.text == "PLAY!")
         {
             circlePanel.PlayGame();
@@ -26,7 +28,7 @@ public class PlayButton : FocusableButton, IInputClickHandler
 
         else
         {
-            circlePanel.StopGame();
+            circlePanel.SwitchCirclesOff();
             text.text = "PLAY!";
         }    
     }

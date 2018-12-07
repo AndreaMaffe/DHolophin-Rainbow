@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour {
     private static AudioClip backgroundMusic;
     private static AudioClip correctAnswerSound;
     private static AudioClip wrongAnswerSound;
+    private static AudioClip pop1;
+    private static AudioClip pop2;
 
     private static AudioSource audioSource;
 
@@ -17,6 +19,8 @@ public class AudioManager : MonoBehaviour {
         backgroundMusic = Resources.Load<AudioClip>("Sounds/HappySoundtrack");
         correctAnswerSound = Resources.Load<AudioClip>("Sounds/CorrectAnswer");
         wrongAnswerSound = Resources.Load<AudioClip>("Sounds/WrongAnswer");
+        pop1 = Resources.Load<AudioClip>("Sounds/Pop1");
+        pop2 = Resources.Load<AudioClip>("Sounds/Pop2");
     }
 
     public static void PlayBackgroundMusic()
@@ -33,6 +37,17 @@ public class AudioManager : MonoBehaviour {
     {
         audioSource.PlayOneShot(wrongAnswerSound, 1f);
     }
+
+    public static void PlayPop1()
+    {
+        audioSource.PlayOneShot(pop1, 1f);
+    }
+
+    public static void PlayPop2()
+    {
+        audioSource.PlayOneShot(pop2, 1f);
+    }
+
 
 
 
