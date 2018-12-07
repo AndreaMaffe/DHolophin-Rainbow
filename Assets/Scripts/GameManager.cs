@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
         GenerateNewColorsCombination();
 
         if (dolphinManager == null)
-            dolphinManager = (Resources.Load<GameObject>("Prefabs/DolphinManager"));
+            dolphinManager = Instantiate(Resources.Load<GameObject>("Prefabs/DolphinManager"));
     }
 
     public static void GenerateNewColorsCombination()

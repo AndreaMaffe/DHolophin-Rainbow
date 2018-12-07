@@ -27,6 +27,7 @@ public class Circle : MonoBehaviour, IFocusable
     public void SetColor(Color color)
     {
         transform.Find("CircleObject").GetComponent<MeshRenderer>().material.color = color;
+        transform.Find("Dolphin_logo").GetComponent<SpriteRenderer>().color = color;
     }
 
     public void OnFocusEnter()
