@@ -7,10 +7,6 @@ public class FocusableButton : MonoBehaviour, IFocusable
 {
     public Animator animator;
 
-    void Start()
-    {
-    }
-
     public void OnFocusEnter()
     {
         animator.SetBool("Focused", true);
