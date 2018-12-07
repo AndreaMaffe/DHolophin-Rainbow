@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: b3a9232bbc95c8243872fd67494a00d3
+timeCreated: 1544185153
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: THE JHONNY TAN
+  fontNames:
+  - THE JHONNY TAN
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

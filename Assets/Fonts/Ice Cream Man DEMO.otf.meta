@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 0bd955d8fe5363348ad65e3f17e16cab
+timeCreated: 1544185152
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Ice Cream Man DEMO
+  fontNames:
+  - Ice Cream Man DEMO
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
