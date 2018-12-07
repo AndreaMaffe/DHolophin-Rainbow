@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         //load the scene
         //SceneManager.LoadScene(1);
 
-        Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), new Vector3(0,0,1f), Quaternion.identity);
+        Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), new Vector3(0, 0, 2f), Quaternion.identity);
         Destroy(GameObject.Find("MainPanel"));
 
         //initialize game data

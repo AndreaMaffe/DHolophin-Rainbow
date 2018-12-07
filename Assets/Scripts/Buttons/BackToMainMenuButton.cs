@@ -8,6 +8,7 @@ public class BackToMainMenuButton : MonoBehaviour, HoloToolkit.Unity.InputModule
 {
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        StartCoroutine(HttpMessage.SendMusicMessage("2", "30", "http://192.168.0.125"));
+        Instantiate(Resources.Load<GameObject>("Prefabs/MainPanel"), new Vector3(0, 0, 2f), Quaternion.identity);
+        Destroy(GameObject.Find("CirclePanel(Clone)"));
     }
 }
