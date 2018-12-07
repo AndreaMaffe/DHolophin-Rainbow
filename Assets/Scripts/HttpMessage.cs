@@ -203,4 +203,25 @@ public class HttpMessage
         WWW request = new WWW(urlTarget, CreateHttpChange(url, port.ToString()), headerD);
         yield return request;
     }
+
+    public static IEnumerator sendEventForTestLeave(string urlTarget)
+    {
+        Dictionary<string, string> headerD = new Dictionary<string, string>();
+        headerD.Add("Content-Type", "application/json");
+        string stringJson = "{\"events\":[{\"typ\":\"touch\",\"val\":\"6\",\"act\":0,\"dur\":2018}]}";
+        var data = System.Text.Encoding.UTF8.GetBytes(stringJson);
+        WWW request = new WWW(urlTarget, data, headerD);
+        yield return request;
+    }
+
+    public static IEnumerator sendEventForTestTouch(string urlTarget)
+    {
+        Dictionary<string, string> headerD = new Dictionary<string, string>();
+        headerD.Add("Content-Type", "application/json");
+        string stringJson = "{\"events\":[{\"typ\":\"touch\",\"val\":\"6\",\"act\":1}]}";
+        var data = System.Text.Encoding.UTF8.GetBytes(stringJson);
+        WWW request = new WWW(urlTarget, data, headerD);
+        yield return request;
+    }
+
 }
