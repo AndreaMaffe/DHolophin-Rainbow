@@ -17,8 +17,7 @@ public class DolphinManager : MonoBehaviour
 
     void Start()
     {
-        CurrentDoplhinColor = GameManager.PossibleColors[0];
-        
+        CurrentDoplhinColor = GameManager.PossibleColors[0];        
     }
 
     void Update()
@@ -63,8 +62,8 @@ public class DolphinManager : MonoBehaviour
 
         Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
 
-        //check if the method works
-        //HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
+        SwitchDolphinOn();
+
     }
 
     //da chiamare quando il giocatore preme la pinna di sinistra
@@ -77,8 +76,7 @@ public class DolphinManager : MonoBehaviour
 
         Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
 
-        //check if the method works
-        //HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
+        SwitchDolphinOn();
     }
 
 
