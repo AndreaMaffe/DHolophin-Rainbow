@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
             //load the scene
             //SceneManager.LoadScene(1);
 
-            Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), new Vector3(0, 0, 1.5f), Quaternion.identity);
+            Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), GameObject.Find("MainPanel").transform.position - new Vector3(0,0,1), Quaternion.identity);
             Destroy(GameObject.Find("MainPanel"));
             Destroy(GameObject.Find("MainPanel(Clone)"));
 
