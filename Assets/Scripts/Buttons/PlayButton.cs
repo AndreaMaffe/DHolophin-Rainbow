@@ -18,15 +18,19 @@ public class PlayButton : FocusableButton, IInputClickHandler
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
+        AudioManager.PlayPop2();
+
         if (text.text == "PLAY!")
         {
             circlePanel.PlayGame();
+            DolphinManager.SwitchDolphinOn();
             text.text = "STOP";
         }
 
         else
         {
-            circlePanel.StopGame();
+            circlePanel.SwitchCirclesOff();
+            DolphinManager.SwitchDolphinOff();
             text.text = "PLAY!";
         }    
     }

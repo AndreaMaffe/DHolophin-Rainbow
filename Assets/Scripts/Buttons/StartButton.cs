@@ -7,7 +7,7 @@ public class StartButton : FocusableButton, HoloToolkit.Unity.InputModule.IInput
 {
     public void OnInputClicked(InputClickedEventData eventData)
     {
+        AudioManager.PlayPop2();
         GameManager.StartNewGame();
-
     }
 }

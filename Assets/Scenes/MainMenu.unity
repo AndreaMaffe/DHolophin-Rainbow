@@ -464,7 +464,7 @@ Transform:
   m_PrefabParentObject: {fileID: 4000012647099256, guid: 31ed45da60c98354380578a9bde4814d,
     type: 2}
   m_PrefabInternal: {fileID: 1124712520}
---- !u!1001 &1412883753
+--- !u!1001 &1152531181
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -560,44 +560,6 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4979835172376474, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 224617247684227382, guid: bea9e7302680b4346b0c4fa165a5ad1c,
-        type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361807829851562, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4528199931823638, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4655324088072778, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1891812277599406, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
-      propertyPath: m_Name
-      value: BackgroundPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361807829851562, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.112
-      objectReference: {fileID: 0}
-    - target: {fileID: 4979835172376474, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.092
-      objectReference: {fileID: 0}
-    - target: {fileID: 224617247684227382, guid: bea9e7302680b4346b0c4fa165a5ad1c,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.169
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}

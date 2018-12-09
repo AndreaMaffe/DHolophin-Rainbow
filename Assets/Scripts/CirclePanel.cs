@@ -20,7 +20,7 @@ public class CirclePanel : MonoBehaviour {
         CreateCircles(numberOfCircles);
 	}
 
-    public void CreateCircles(int numberOfCircles)
+    private void CreateCircles(int numberOfCircles)
     {
         circles = new Circle[numberOfCircles];
 
@@ -39,23 +39,28 @@ public class CirclePanel : MonoBehaviour {
             circles[i] = circle.GetComponent<Circle>();
         }
 
-        //set all the circles to the default grey color;
-        SwitchColorsOff();
+        //create the dolphin, scale it and add it as child
+        Vector3 dolphinPosition = new Vector3(rectTransform.position.x + unit*numberOfCircles/2, rectTransform.position.y + rectTransform.localScale.y/2, rectTransform.position.z-0.02f);
+        GameObject dolphin = Instantiate(Resources.Load<GameObject>("Prefabs/Dolphin"), dolphinPosition, Quaternion.identity);
+        dolphin.transform.localScale *= 0.6f;
+        dolphin.transform.parent = this.transform;
+
+        SwitchCirclesOff();
     }
 
-    void SwitchColorsOn()
+    public void ShowCombination()
     {
         for (int i = 0; i < numberOfCircles; i++) 
             circles[i].SetColor(colorCombination[i]);
     }
 
-    void SwitchColorsOff()
+    public void SwitchCirclesOff()
     {
         for (int i = 0; i < numberOfCircles; i++)
             circles[i].SetColor(Color.grey);
     }
 
-    void SetCirclesActive(bool value)
+    public void SetCirclesActive(bool value)
     {
         for (int i = 0; i < numberOfCircles; i++)
             circles[i].SetActive(value);
@@ -70,15 +75,9 @@ public class CirclePanel : MonoBehaviour {
         for (int i = 0; i < numberOfCircles; i++)
             playerGuess[i] = Color.gray;
 
-        Invoke("SwitchColorsOn", 2f);
-        Invoke("SwitchColorsOff", 2 + GameManager.TimeOn);
+        Invoke("ShowCombination", 2f);
+        Invoke("SwitchCirclesOff", 2 + GameManager.TimeOn);
         SetCirclesActive(true);        
-    }
-
-    public void StopGame()
-    {
-        Invoke("SwitchColorsOff", 1f);
-        SetCirclesActive(false);
     }
 
     public void OnCircleColored(Circle circle, Color circleColor)
@@ -97,7 +96,8 @@ public class CirclePanel : MonoBehaviour {
         //if so, check if the combination is correct
         if (allCirclesAreColored)
         {
-            StopGame();
+            SetCirclesActive(false);
+            Invoke("SwitchCirclesOff", 1f);
             if (GameManager.CheckPlayerGuess(playerGuess))
                 GameManager.GenerateNewColorsCombination();
             PlayGame();

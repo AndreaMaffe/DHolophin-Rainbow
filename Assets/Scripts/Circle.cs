@@ -19,6 +19,7 @@ public class Circle : MonoBehaviour, IFocusable
     {
         if (active && focused)
         {
+            AudioManager.PlayPop1();
             SetColor(DolphinManager.CurrentDoplhinColor);
             circlePanel.OnCircleColored(this, DolphinManager.CurrentDoplhinColor);
         }

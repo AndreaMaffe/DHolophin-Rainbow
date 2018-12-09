@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 114586671381881436}
   - component: {fileID: 114214384350119142}
   m_Layer: 0
-  m_Name: NewCombinationButton
+  m_Name: ShowCombinationButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -261,7 +261,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1713602162596926}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.17276, y: -3.8088477, z: 9.548914}
+  m_LocalPosition: {x: -5.210298, y: -2.409815, z: 9.843268}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224018379250903628}
@@ -841,7 +841,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New combination
+  m_Text: Show combination
 --- !u!114 &114810250530572396
 MonoBehaviour:
   m_ObjectHideFlags: 1
