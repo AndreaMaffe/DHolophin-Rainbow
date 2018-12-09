@@ -31,7 +31,6 @@ public class DolphinManager : MonoBehaviour
 
     void Start()
     {
-<<<<<<< HEAD
         CurrentDoplhinColor = GameManager.PossibleColors[0];
 
         //Server initialization
@@ -52,10 +51,6 @@ public class DolphinManager : MonoBehaviour
         ThreadStart ts = new ThreadStart(ServerThread);
         thread = new Thread(ts);
         thread.Start();
-
-=======
-        CurrentDoplhinColor = GameManager.PossibleColors[0];        
->>>>>>> 18f21d3258effcda8659b959ae13bdd29c3690c9
     }
 
     void Update()
@@ -137,10 +132,6 @@ public class DolphinManager : MonoBehaviour
     {
         //spegni i led
     }
-
-
-
-<<<<<<< HEAD
 
 
 
@@ -243,6 +234,4 @@ public class DolphinManager : MonoBehaviour
         }
         return null;
     }
-=======
->>>>>>> 18f21d3258effcda8659b959ae13bdd29c3690c9
 }
