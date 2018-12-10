@@ -22,11 +22,11 @@ public class DolphinManager : MonoBehaviour
     public static IPAddress serverIP; //server IP address
     public static int serverPort = 60002; //server port
 
-    
+    /*
     private TcpListener server;
     private TcpClient client;
     private Thread thread;
-    
+    */
 
 
     void Start()
@@ -34,7 +34,7 @@ public class DolphinManager : MonoBehaviour
         CurrentDoplhinColor = GameManager.PossibleColors[0];
 
         //Server initialization
-        
+        /*
         serverIP = IPAddress.Parse(Network.player.ipAddress);
         server = new TcpListener(serverIP, serverPort);
         client = default(TcpClient);
@@ -52,7 +52,7 @@ public class DolphinManager : MonoBehaviour
         ThreadStart ts = new ThreadStart(ServerThread);
         thread = new Thread(ts);
         thread.Start();
-        
+        */
     }
 
     void Update()
@@ -137,7 +137,7 @@ public class DolphinManager : MonoBehaviour
 
 
     void ServerThread()
-    {
+    {/*
         while (true)
         {
             client = server.AcceptTcpClient();
@@ -149,12 +149,8 @@ public class DolphinManager : MonoBehaviour
             string message = Encoding.ASCII.GetString(myBuffer, 0, myBuffer.Length);
 
             JsonEvent jsonEvent = parseEventJson(message);
-        }        
+        }  */      
     }
-
-
-
-
     
     JsonEvent parseEventJson(string JsonString)
     {

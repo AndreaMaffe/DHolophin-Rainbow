@@ -195,8 +195,6 @@ GameObject:
   - component: {fileID: 224632983261818450}
   - component: {fileID: 114342088254575218}
   - component: {fileID: 223469784518610366}
-  - component: {fileID: 114407482691074586}
-  - component: {fileID: 114513750749538680}
   m_Layer: 0
   m_Name: MainPanel
   m_TagString: Untagged
@@ -283,6 +281,7 @@ GameObject:
   - component: {fileID: 23163432693422748}
   - component: {fileID: 54531299170009998}
   - component: {fileID: 114539629744238542}
+  - component: {fileID: 114745867708826988}
   m_Layer: 0
   m_Name: BackgroundPanel
   m_TagString: Untagged
@@ -914,19 +913,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
---- !u!114 &114407482691074586
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1752722964492642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pivotAxis: 1
-  targetTransform: {fileID: 224632983261818450}
 --- !u!114 &114411728289542110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -974,23 +960,6 @@ MonoBehaviour:
   animator: {fileID: 95547561303541646}
   minNumber: 2
   maxNumber: 8
---- !u!114 &114513750749538680
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1752722964492642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 456eda422e1dc4c4cb4fd6c25cbc2fbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SphereRadius: 0.05
-  MoveSpeed: 0.5
-  useUnscaledTime: 1
-  hideOnStart: 0
-  debugDisplaySphere: 0
-  debugDisplayTargetPosition: 0
 --- !u!114 &114539629744238542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1108,6 +1077,26 @@ MonoBehaviour:
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
   CursorParameters: []
+--- !u!114 &114745867708826988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1891812277599406}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb69de839bd015f4099b5bd2c45e53e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnscaledTime: 1
+  PositionPerSecond: 30
+  RotationDegreesPerSecond: 720
+  RotationSpeedScaler: 0
+  ScalePerSecond: 5
+  SmoothLerpToTarget: 0
+  SmoothPositionLerpRatio: 0.5
+  SmoothRotationLerpRatio: 0.5
+  SmoothScaleLerpRatio: 0.5
 --- !u!114 &114747671302652722
 MonoBehaviour:
   m_ObjectHideFlags: 1
