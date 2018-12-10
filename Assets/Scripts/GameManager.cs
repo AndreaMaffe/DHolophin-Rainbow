@@ -43,9 +43,14 @@ public class GameManager : MonoBehaviour
         //load the scene
         //SceneManager.LoadScene(1);
 
-        Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), GameObject.Find("MainPanel").transform.position - new Vector3(0, 0, 1), Quaternion.identity);
-        Destroy(GameObject.Find("MainPanel"));
-        Destroy(GameObject.Find("MainPanel(Clone)"));
+        GameObject MainPanel = GameObject.Find("MainPanel");
+
+        if (MainPanel == null)
+            MainPanel = GameObject.Find("MainPanel(Clone)");
+
+        Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), MainPanel.transform.position - new Vector3(0, 0, 1), Quaternion.identity);
+        Destroy(MainPanel);
+
 
         //initialize game data
         PossibleColors = new Color[NumberOfColors];
