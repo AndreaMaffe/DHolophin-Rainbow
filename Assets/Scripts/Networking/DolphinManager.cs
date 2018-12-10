@@ -20,7 +20,7 @@ public class DolphinManager : MonoBehaviour
     public static Color CurrentDoplhinColor { get; private set; }
 
     public static IPAddress serverIP; //server IP address
-    public static int serverPort = 60000; //server port
+    public static int serverPort = 60001; //server port
     
     private TcpListener server;
     private TcpClient client;
@@ -99,6 +99,7 @@ public class DolphinManager : MonoBehaviour
 
     void InitializeServer()
     {
+        StartCoroutine(HttpMessage.SendHttpChange("192.168.0.141", 60001, "192.168.0.125"));
         serverIP = IPAddress.Parse(Network.player.ipAddress);
         server = new TcpListener(serverIP, serverPort);
         client = default(TcpClient);
@@ -133,14 +134,14 @@ public class DolphinManager : MonoBehaviour
         while (true)
         {
             client = server.AcceptTcpClient();
-            byte[] myBuffer = new byte[10000];
+            byte[] myBuffer = new byte[100000];
             NetworkStream stream = client.GetStream();
 
             stream.Read(myBuffer, 0, myBuffer.Length);
 
             string message = Encoding.ASCII.GetString(myBuffer, 0, myBuffer.Length);
 
-            Debug.Log(message);
+            Debug.Log(""+message);
 
             JsonEvent jsonEvent = JsonEvent.ParseEventJson(message);
             eventStack.Push(jsonEvent);            
@@ -158,7 +159,7 @@ public class DolphinManager : MonoBehaviour
                     break;
                 case "2": OnPreviousColor();
                     break;
-                case "3": OnColorSubmitted();
+                case "5": OnColorSubmitted();
                     break;
             }
         }
