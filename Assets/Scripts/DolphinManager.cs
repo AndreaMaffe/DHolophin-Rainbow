@@ -20,13 +20,13 @@ public class DolphinManager : MonoBehaviour
     public static Color CurrentDoplhinColor { get; private set; }
 
     public static IPAddress serverIP; //server IP address
-    public static int serverPort = 60002; //server port
+    public static int serverPort = 60001; //server port
 
-    /*
+    
     private TcpListener server;
     private TcpClient client;
     private Thread thread;
-    */
+    
 
 
     void Start()
@@ -34,7 +34,7 @@ public class DolphinManager : MonoBehaviour
         CurrentDoplhinColor = GameManager.PossibleColors[0];
 
         //Server initialization
-        /*
+        
         serverIP = IPAddress.Parse(Network.player.ipAddress);
         server = new TcpListener(serverIP, serverPort);
         client = default(TcpClient);
@@ -52,7 +52,7 @@ public class DolphinManager : MonoBehaviour
         ThreadStart ts = new ThreadStart(ServerThread);
         thread = new Thread(ts);
         thread.Start();
-        */
+        
     }
 
     void Update()
@@ -115,8 +115,7 @@ public class DolphinManager : MonoBehaviour
     }
 
 
-    //da chiamare quando il giocatore preme la pinna centrale
-    // OnColorSubmitted();
+
 
     //da usare quando ci si connette al delfino
     public static bool EstablishCommunication()
@@ -137,7 +136,7 @@ public class DolphinManager : MonoBehaviour
 
 
     void ServerThread()
-    {/*
+    {
         while (true)
         {
             client = server.AcceptTcpClient();
@@ -149,9 +148,28 @@ public class DolphinManager : MonoBehaviour
             string message = Encoding.ASCII.GetString(myBuffer, 0, myBuffer.Length);
 
             JsonEvent jsonEvent = parseEventJson(message);
-        }  */      
+
+            HandleDolphinEvent(jsonEvent);
+        }        
     }
-    
+
+    private void HandleDolphinEvent(JsonEvent jsonEvent)
+    {
+        //da chiamare quando il giocatore preme la pinna centrale
+        if (jsonEvent.typ == "touch")
+        {
+            switch (jsonEvent.val)
+            {
+                case "1": OnNextColor();
+                    break;
+                case "2": OnPreviousColor();
+                    break;
+                case "3": OnColorSubmitted();
+                    break;
+            }
+        }
+    }
+
     JsonEvent parseEventJson(string JsonString)
     {
         JsonEvent jsonEvent;
