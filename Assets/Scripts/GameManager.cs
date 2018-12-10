@@ -34,33 +34,27 @@ public class GameManager : MonoBehaviour
 
     public static void StartNewGame()
     {
-        if (DolphinManager.EstablishCommunication())
-        {
-            Mode = GameMode.MANUAL;
-            //get game parameters from the panel
-            NumberOfCircles = GameObject.Find("CircleNumberButton").GetComponent<PanelNumberButton>().Number;
-            NumberOfColors = GameObject.Find("ColorNumberButton").GetComponent<PanelNumberButton>().Number;
-            TimeOn = 3; //temporary
+        Mode = GameMode.MANUAL;
+        //get game parameters from the panel
+        NumberOfCircles = GameObject.Find("CircleNumberButton").GetComponent<PanelNumberButton>().Number;
+        NumberOfColors = GameObject.Find("ColorNumberButton").GetComponent<PanelNumberButton>().Number;
+        TimeOn = 3; //temporary
 
-            //load the scene
-            //SceneManager.LoadScene(1);
+        //load the scene
+        //SceneManager.LoadScene(1);
 
-            Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), GameObject.Find("MainPanel").transform.position - new Vector3(0,0,1), Quaternion.identity);
-            Destroy(GameObject.Find("MainPanel"));
-            Destroy(GameObject.Find("MainPanel(Clone)"));
+        Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), GameObject.Find("MainPanel").transform.position - new Vector3(0, 0, 1), Quaternion.identity);
+        Destroy(GameObject.Find("MainPanel"));
+        Destroy(GameObject.Find("MainPanel(Clone)"));
 
-            //initialize game data
-            PossibleColors = new Color[NumberOfColors];
-            for (int i = 0; i < NumberOfColors; i++)
-                PossibleColors[i] = allColors[i];
-            GenerateNewColorsCombination();
+        //initialize game data
+        PossibleColors = new Color[NumberOfColors];
+        for (int i = 0; i < NumberOfColors; i++)
+            PossibleColors[i] = allColors[i];
+        GenerateNewColorsCombination();
 
-            if (dolphinManager == null)
-                dolphinManager = Instantiate(Resources.Load<GameObject>("Prefabs/DolphinManager"));
-        }
-
-        else Debug.Log("IMPOSSIBILE CONNETTERSI AL DELFINO!");
-
+        if (dolphinManager == null)
+            dolphinManager = Instantiate(Resources.Load<GameObject>("Prefabs/DolphinManager"));
     }
 
     public static void GenerateNewColorsCombination()

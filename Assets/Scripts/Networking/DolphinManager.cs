@@ -12,7 +12,7 @@ using System.Text;
 public class DolphinManager : MonoBehaviour
 {
     private static string ipAddr = ""; //Dolphin IP address
-    private static int port = 0; //Dolphin port
+    private static int dolphinPort = 0; //Dolphin port
 
     public delegate void ColorSubmittedEvent();
     public static event ColorSubmittedEvent OnColorSubmitted;
@@ -21,38 +21,20 @@ public class DolphinManager : MonoBehaviour
 
     public static IPAddress serverIP; //server IP address
     public static int serverPort = 60000; //server port
-
     
     private TcpListener server;
     private TcpClient client;
     private Thread thread;
-    
+
+    private Stack<JsonEvent> eventStack;    
 
 
     void Start()
     {
         CurrentDoplhinColor = GameManager.PossibleColors[0];
+        eventStack = new Stack<JsonEvent>();
 
-        //Server initialization
-        
-        serverIP = IPAddress.Parse(Network.player.ipAddress);
-        server = new TcpListener(serverIP, serverPort);
-        client = default(TcpClient);
-        
-        try
-        {
-            server.Start();
-            Debug.Log("Server started");
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.ToString());
-        }
-
-        ThreadStart ts = new ThreadStart(ServerThread);
-        thread = new Thread(ts);
-        thread.Start();
-        
+        InitializeServer();        
     }
 
     void Update()
@@ -76,7 +58,6 @@ public class DolphinManager : MonoBehaviour
         if (Input.GetKeyDown("y"))
             CurrentDoplhinColor = Color.yellow;
 
-
         if (Input.GetKeyDown("l") && GameManager.Mode == GameMode.MANUAL)
             OnNextColor();
 
@@ -85,6 +66,9 @@ public class DolphinManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
             OnColorSubmitted();
+
+        if (eventStack.Count != 0)
+            HandleDolphinEvent(eventStack.Pop());
     }
 
     //da chiamare quando il giocatore preme la pinna di destra
@@ -98,7 +82,6 @@ public class DolphinManager : MonoBehaviour
         Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
 
         SwitchDolphinOn();
-
     }
 
     //da chiamare quando il giocatore preme la pinna di sinistra
@@ -114,49 +97,60 @@ public class DolphinManager : MonoBehaviour
         SwitchDolphinOn();
     }
 
-
-
-
-    //da usare quando ci si connette al delfino
-    public static bool EstablishCommunication()
+    void InitializeServer()
     {
-        return true;
+        serverIP = IPAddress.Parse(Network.player.ipAddress);
+        server = new TcpListener(serverIP, serverPort);
+        client = default(TcpClient);
+
+        try
+        {
+            server.Start();
+            Debug.Log("Server running on port " + serverPort);
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.ToString());
+        }
+
+        ThreadStart ts = new ThreadStart(ServerThread);
+        thread = new Thread(ts);
+        thread.Start();
     }
 
     public static void SwitchDolphinOn()
     {
-        //HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
+        HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
     }
-
 
     public static void SwitchDolphinOff()
     {
         //spegni i led
     }
 
-
     void ServerThread()
     {
         while (true)
         {
             client = server.AcceptTcpClient();
-            byte[] myBuffer = new byte[1024];
+            byte[] myBuffer = new byte[10000];
             NetworkStream stream = client.GetStream();
 
             stream.Read(myBuffer, 0, myBuffer.Length);
 
             string message = Encoding.ASCII.GetString(myBuffer, 0, myBuffer.Length);
 
-            JsonEvent jsonEvent = parseEventJson(message);
+            Debug.Log(message);
 
-            HandleDolphinEvent(jsonEvent);
+            JsonEvent jsonEvent = JsonEvent.ParseEventJson(message);
+            eventStack.Push(jsonEvent);            
         }        
     }
 
     private void HandleDolphinEvent(JsonEvent jsonEvent)
     {
         //da chiamare quando il giocatore preme la pinna centrale
-        if (jsonEvent.typ == "touch")
+        if (jsonEvent.typ == "touch" && jsonEvent.act == 1)
         {
             switch (jsonEvent.val)
             {
@@ -170,41 +164,4 @@ public class DolphinManager : MonoBehaviour
         }
     }
 
-    JsonEvent parseEventJson(string JsonString)
-    {
-        JsonEvent jsonEvent;
-
-        int beginIndex = JsonString.IndexOf("\"typ\"") + 7;
-        int endIndex = JsonString.IndexOf("\"val\"") - 2;
-        string eventTyp = JsonString.Substring(beginIndex, endIndex - beginIndex);
-
-        beginIndex = JsonString.IndexOf("\"val\"") + 7;
-        endIndex = JsonString.IndexOf("\"act\"") - 2;
-        string eventVal = JsonString.Substring(beginIndex, endIndex - beginIndex);
-
-        if (JsonString.Contains("dur"))
-        {
-            beginIndex = JsonString.IndexOf("\"act\"") + 6;
-            endIndex = JsonString.IndexOf("\"dur\"") - 1;
-            string eventAct = JsonString.Substring(beginIndex, endIndex - beginIndex);
-
-            beginIndex = JsonString.IndexOf("\"dur\"") + 6;
-            endIndex = JsonString.IndexOf("}]}");
-            string eventDur = JsonString.Substring(beginIndex, endIndex - beginIndex);
-
-            jsonEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct), int.Parse(eventDur));
-
-        }
-        else
-        {
-            beginIndex = JsonString.IndexOf("\"act\"") + 6;
-            endIndex = JsonString.IndexOf("}]}");
-            string eventAct = JsonString.Substring(beginIndex, endIndex - beginIndex);
-            jsonEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct));
-
-        }
-
-        return jsonEvent;
-        
-    }
 }
