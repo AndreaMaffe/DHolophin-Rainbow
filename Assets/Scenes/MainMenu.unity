@@ -427,46 +427,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!1 &1028248051 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1752722964492642, guid: bea9e7302680b4346b0c4fa165a5ad1c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1152531181}
---- !u!224 &1028248054 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224632983261818450, guid: bea9e7302680b4346b0c4fa165a5ad1c,
-    type: 2}
-  m_PrefabInternal: {fileID: 1152531181}
---- !u!114 &1028248055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1028248051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac8d5b128a1d8204fb76c86f47b75912, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pivotAxis: 1
-  targetTransform: {fileID: 1028248054}
---- !u!114 &1028248056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1028248051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 456eda422e1dc4c4cb4fd6c25cbc2fbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SphereRadius: 0.05
-  MoveSpeed: 0.5
-  useUnscaledTime: 1
-  hideOnStart: 0
-  debugDisplaySphere: 0
-  debugDisplayTargetPosition: 0
 --- !u!1001 &1124712520
 Prefab:
   m_ObjectHideFlags: 0
@@ -626,7 +586,9 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114513750749538680, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
+    - {fileID: 114407482691074586, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1870736693
