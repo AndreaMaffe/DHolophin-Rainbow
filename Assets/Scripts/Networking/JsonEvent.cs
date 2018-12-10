@@ -45,11 +45,10 @@ public class JsonEvent
             string eventAct = JsonString.Substring(beginIndex, endIndex - beginIndex);
             jsonEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct));
 
-
             if (JsonString.Contains("dur"))
             {
-                beginIndex = JsonString.IndexOf("\"dur\"") + 6;
-                endIndex = JsonString.IndexOf("\"typ\"") - 1;
+                beginIndex = JsonString.IndexOf("\"dur\"") + 7;
+                endIndex = JsonString.IndexOf("\"typ\"") - 2;
                 string eventDur = JsonString.Substring(beginIndex, endIndex - beginIndex);
 
                 jsonEvent = new JsonEvent(int.Parse(eventDur), eventTyp, eventVal, int.Parse(eventAct));

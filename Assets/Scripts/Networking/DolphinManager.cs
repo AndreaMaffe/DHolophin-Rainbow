@@ -99,7 +99,7 @@ public class DolphinManager : MonoBehaviour
 
     void InitializeServer()
     {
-        StartCoroutine(HttpMessage.SendHttpChange("192.168.0.141", 60001, "192.168.0.125"));
+        StartCoroutine(HttpMessage.SendHttpChange(Network.player.ipAddress, 60001, "192.168.0.125"));
         serverIP = IPAddress.Parse(Network.player.ipAddress);
         server = new TcpListener(serverIP, serverPort);
         client = default(TcpClient);
