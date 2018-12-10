@@ -30,7 +30,7 @@ public class JsonEvent
     {
         try
         {
-            JsonEvent jsonEvent;
+            /*JsonEvent jsonEvent;
 
             int beginIndex = JsonString.IndexOf("\"typ\"") + 7;
             int endIndex = JsonString.IndexOf("\"val\"") - 2;
@@ -54,9 +54,14 @@ public class JsonEvent
 
                 jsonEvent = new JsonEvent(int.Parse(eventDur), eventTyp, eventVal, int.Parse(eventAct));
 
+            }*/
+            Debug.Log("stampato");
+            if (JsonString.Contains("touch"))
+            {
+                Debug.Log("stampato1");
             }
 
-            return jsonEvent;
+            return null;
         }
         catch (Exception e) { Debug.Log(e.ToString()); }
 
