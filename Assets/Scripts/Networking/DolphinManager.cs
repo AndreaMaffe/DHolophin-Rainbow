@@ -20,7 +20,7 @@ public class DolphinManager : MonoBehaviour
     public static Color CurrentDoplhinColor { get; private set; }
 
     public static IPAddress serverIP; //server IP address
-    public static int serverPort = 60001; //server port
+    public static int serverPort = 60000; //server port
 
     
     private TcpListener server;
