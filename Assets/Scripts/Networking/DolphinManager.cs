@@ -141,7 +141,7 @@ public class DolphinManager : MonoBehaviour
 
             string message = Encoding.ASCII.GetString(myBuffer, 0, myBuffer.Length);
 
-            Debug.Log(""+message);
+            Debug.Log(message);
 
             JsonEvent jsonEvent = JsonEvent.ParseEventJson(message);
             eventStack.Push(jsonEvent);            
