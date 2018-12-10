@@ -2,22 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventJson
+public class JsonEvent
 {
+    public string typ { get; set; }
+    public string val { get; set; }
+    public int act { get; set; }
+    public int dur { get; set; }
 
-
-    public class Event
+    public JsonEvent(string typ, string val, int act, int dur)
     {
-        public string type { get; set; }
-        public string val { get; set; }
-        public string act { get; set; }
-        public string dur { get; set; }
-        public string SemVal { get; set; }
+        this.typ = typ;
+        this.val = val;
+        this.act = act;
+        this.dur = dur;
     }
 
-    public class RootObject
+    public JsonEvent(string typ, string val, int act)
     {
-        public Event Event { get; set; }
+        this.typ = typ;
+        this.val = val;
+        this.act = act;
+        this.dur = 0;
     }
+
+
 }
 
