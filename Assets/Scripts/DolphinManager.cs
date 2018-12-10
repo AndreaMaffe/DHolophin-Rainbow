@@ -148,70 +148,49 @@ public class DolphinManager : MonoBehaviour
 
             string message = Encoding.ASCII.GetString(myBuffer, 0, myBuffer.Length);
 
-            if (message.Contains("dur"))
-            {
-                JsonEvent secondEvent = parseSecondEventJson("message");
-            }
-            else
-            {
-                JsonEvent firstEvent = parseFirstEventJson("message");
-            }
+            JsonEvent jsonEvent = parseEventJson(message);
         }        
     }
 
 
 
 
-    JsonEvent parseFirstEventJson(string firstEventJsonString)
+    
+    JsonEvent parseEventJson(string JsonString)
     {
-        JsonEvent firstEvent;
-        
-        int beginIndex = firstEventJsonString.IndexOf("\"typ\"") + 7;
-        int endIndex = firstEventJsonString.IndexOf("\"val\"") - 2;
-        string eventTyp = firstEventJsonString.Substring(beginIndex, endIndex - beginIndex);
+        JsonEvent jsonEvent;
 
+        int beginIndex = JsonString.IndexOf("\"typ\"") + 7;
+        int endIndex = JsonString.IndexOf("\"val\"") - 2;
+        string eventTyp = JsonString.Substring(beginIndex, endIndex - beginIndex);
 
-        beginIndex = firstEventJsonString.IndexOf("\"val\"") + 7;
-        endIndex = firstEventJsonString.IndexOf("\"act\"") - 2;
-        string eventVal = firstEventJsonString.Substring(beginIndex, endIndex - beginIndex);
+        beginIndex = JsonString.IndexOf("\"val\"") + 7;
+        endIndex = JsonString.IndexOf("\"act\"") - 2;
+        string eventVal = JsonString.Substring(beginIndex, endIndex - beginIndex);
 
-        beginIndex = firstEventJsonString.IndexOf("\"act\"") + 6;
-        endIndex = firstEventJsonString.IndexOf("}]}");
-        string eventAct = firstEventJsonString.Substring(beginIndex, endIndex - beginIndex);
+        if (JsonString.Contains("dur"))
+        {
+            beginIndex = JsonString.IndexOf("\"act\"") + 6;
+            endIndex = JsonString.IndexOf("\"dur\"") - 1;
+            string eventAct = JsonString.Substring(beginIndex, endIndex - beginIndex);
 
-        firstEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct));
+            beginIndex = JsonString.IndexOf("\"dur\"") + 6;
+            endIndex = JsonString.IndexOf("}]}");
+            string eventDur = JsonString.Substring(beginIndex, endIndex - beginIndex);
 
-        return firstEvent;
-    }
+            jsonEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct), int.Parse(eventDur));
 
-    JsonEvent parseSecondEventJson(string secondEventJsonString)
-    {
-        JsonEvent secondEvent;
+        }
+        else
+        {
+            beginIndex = JsonString.IndexOf("\"act\"") + 6;
+            endIndex = JsonString.IndexOf("}]}");
+            string eventAct = JsonString.Substring(beginIndex, endIndex - beginIndex);
+            jsonEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct));
 
-        int beginIndex = secondEventJsonString.IndexOf("\"typ\"") + 7;
-        int endIndex = secondEventJsonString.IndexOf("\"val\"") - 2;
-        string eventTyp = secondEventJsonString.Substring(beginIndex, endIndex - beginIndex);
+        }
 
-        beginIndex = secondEventJsonString.IndexOf("\"val\"") + 7;
-        endIndex = secondEventJsonString.IndexOf("\"act\"") - 2;
-        string eventVal = secondEventJsonString.Substring(beginIndex, endIndex - beginIndex);
-
-        beginIndex = secondEventJsonString.IndexOf("\"act\"") + 6;
-        endIndex = secondEventJsonString.IndexOf("\"dur\"") - 1;
-        string eventAct = secondEventJsonString.Substring(beginIndex, endIndex - beginIndex);
-
-        beginIndex = secondEventJsonString.IndexOf("\"dur\"") + 6;
-        endIndex = secondEventJsonString.IndexOf("}]}");
-        string eventDur = secondEventJsonString.Substring(beginIndex, endIndex - beginIndex);
-
-        secondEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct), int.Parse(eventDur));
-        
-        //Debug.Log(secondEvent.typ);
-        //Debug.Log(secondEvent.val);
-        //Debug.Log(secondEvent.act);
-        //Debug.Log(secondEvent.dur);
-
-        return secondEvent;
+        return jsonEvent;
         
     }
 }
