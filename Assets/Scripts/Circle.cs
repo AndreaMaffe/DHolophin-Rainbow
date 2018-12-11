@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Circle : MonoBehaviour, IFocusable
+public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
 {
     private CirclePanel circlePanel;
     private bool focused; //true if the player is currently looking at the circle
@@ -46,5 +46,13 @@ public class Circle : MonoBehaviour, IFocusable
         active = value;
     }
 
-
+    public void OnInputClicked(InputClickedEventData eventData)
+    {
+        if (active && focused)
+        {
+            AudioManager.PlayPop1();
+            SetColor(DolphinManager.CurrentDoplhinColor);
+            circlePanel.OnCircleColored(this, DolphinManager.CurrentDoplhinColor);
+        }
+    }
 }
