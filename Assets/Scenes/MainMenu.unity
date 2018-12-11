@@ -259,52 +259,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4541142303025740, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d29bc40b7f3df26479d6a0aac211c355, type: 2}
-  m_IsPrefabParent: 0
---- !u!1001 &556930342
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4512817182067866, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -3.1922727
-      objectReference: {fileID: 0}
-    - target: {fileID: 4512817182067866, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -4.637534
-      objectReference: {fileID: 0}
-    - target: {fileID: 4512817182067866, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -6.8523316
-      objectReference: {fileID: 0}
-    - target: {fileID: 4512817182067866, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4512817182067866, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4512817182067866, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4512817182067866, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4512817182067866, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &759629490
 Prefab:
@@ -576,7 +534,7 @@ Prefab:
     - target: {fileID: 224632983261818450, guid: bea9e7302680b4346b0c4fa165a5ad1c,
         type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 224632983261818450, guid: bea9e7302680b4346b0c4fa165a5ad1c,
         type: 2}
@@ -627,6 +585,40 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114411728289542110, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: m_Text
+      value: Dholphin rainbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 4126418383508650, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.2103
+      objectReference: {fileID: 0}
+    - target: {fileID: 224617247684227382, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.012
+      objectReference: {fileID: 0}
+    - target: {fileID: 114411728289542110, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 85
+      objectReference: {fileID: 0}
+    - target: {fileID: 114411728289542110, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114411728289542110, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114411728289542110, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114513750749538680, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
