@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class JsonEvent
 {
+    public int dur { get; set; }
     public string typ { get; set; }
     public string val { get; set; }
     public int act { get; set; }
-    public int dur { get; set; }
 
-    public JsonEvent(string typ, string val, int act, int dur)
+    public JsonEvent(int dur, string typ, string val, int act)
     {
+        this.dur = dur;
         this.typ = typ;
         this.val = val;
         this.act = act;
-        this.dur = dur;
     }
 
     public JsonEvent(string typ, string val, int act)
@@ -30,7 +30,7 @@ public class JsonEvent
     {
         try
         {
-            JsonEvent jsonEvent;
+            /*JsonEvent jsonEvent;
 
             int beginIndex = JsonString.IndexOf("\"typ\"") + 7;
             int endIndex = JsonString.IndexOf("\"val\"") - 2;
@@ -40,29 +40,27 @@ public class JsonEvent
             endIndex = JsonString.IndexOf("\"act\"") - 2;
             string eventVal = JsonString.Substring(beginIndex, endIndex - beginIndex);
 
+            beginIndex = JsonString.IndexOf("\"act\"") + 6;
+            endIndex = JsonString.IndexOf("}]}");
+            string eventAct = JsonString.Substring(beginIndex, endIndex - beginIndex);
+            jsonEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct));
+
             if (JsonString.Contains("dur"))
             {
-                beginIndex = JsonString.IndexOf("\"act\"") + 6;
-                endIndex = JsonString.IndexOf("\"dur\"") - 1;
-                string eventAct = JsonString.Substring(beginIndex, endIndex - beginIndex);
-
-                beginIndex = JsonString.IndexOf("\"dur\"") + 6;
-                endIndex = JsonString.IndexOf("}]}");
+                beginIndex = JsonString.IndexOf("\"dur\"") + 7;
+                endIndex = JsonString.IndexOf("\"typ\"") - 2;
                 string eventDur = JsonString.Substring(beginIndex, endIndex - beginIndex);
 
-                jsonEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct), int.Parse(eventDur));
+                jsonEvent = new JsonEvent(int.Parse(eventDur), eventTyp, eventVal, int.Parse(eventAct));
 
-            }
-            else
+            }*/
+            Debug.Log("stampato");
+            if (JsonString.Contains("touch"))
             {
-                beginIndex = JsonString.IndexOf("\"act\"") + 6;
-                endIndex = JsonString.IndexOf("}]}");
-                string eventAct = JsonString.Substring(beginIndex, endIndex - beginIndex);
-                jsonEvent = new JsonEvent(eventTyp, eventVal, int.Parse(eventAct));
-
+                Debug.Log("stampato1");
             }
 
-            return jsonEvent;
+            return null;
         }
         catch (Exception e) { Debug.Log(e.ToString()); }
 
