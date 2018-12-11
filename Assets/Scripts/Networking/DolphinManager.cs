@@ -28,7 +28,12 @@ public class DolphinManager : MonoBehaviour
 
     byte[] myBuffer;
 
+    private Stack<SamEvents> eventStack;
+
+
     private StreamReader reader;
+
+    private HttpListener _listener;
 
 #if UNITY_EDITOR
     private TcpListener server;
@@ -41,13 +46,11 @@ public class DolphinManager : MonoBehaviour
     private Task exchangeTask;
 #endif
 
-    private Stack<JsonEvent> eventStack;    
-
 
     void Start()
     {
         CurrentDoplhinColor = GameManager.PossibleColors[0];
-        eventStack = new Stack<JsonEvent>();
+        eventStack = new Stack<SamEvents>();
         myBuffer = new byte[1024];
 #if UNITY_EDITOR
         InitializeUnityServer();
@@ -122,23 +125,31 @@ public class DolphinManager : MonoBehaviour
         StartCoroutine(HttpMessage.SendHttpChange("127.0.0.1", 60001, "192.168.0.125"));
         serverIP = IPAddress.Parse("127.0.0.1");
 
-        server = new TcpListener(serverIP, serverPort);
-        client = default(TcpClient);
+        _listener = new HttpListener();
+        _listener.Prefixes.Add("http://+:60000/");
 
-        try
-        {
-            server.Start();
-            Debug.Log("Server running on port " + serverPort);
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.ToString());
-        }
+        _listener.Start();
 
-        ThreadStart ts = new ThreadStart(UnityServerThread);
-        thread = new Thread(ts);
-        thread.Start();
+        _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
 
+    }
+
+    private void ListenerCallback(IAsyncResult result)
+    {
+        Debug.Log("Messaggio http ricevuto");
+        HttpListener listener = (HttpListener)result.AsyncState;
+        // Call EndGetContext to complete the asynchronous operation.
+        HttpListenerContext context = listener.EndGetContext(result);
+        HttpListenerRequest request = context.Request;
+        // Obtain a response object.
+        HttpListenerResponse response = context.Response;
+        string contRead = new StreamReader(request.InputStream).ReadToEnd();
+        _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
+        Debug.Log(contRead);
+        SamEvents samEvents = new SamEvents();
+        samEvents = JsonUtility.FromJson<SamEvents>(contRead);
+        eventStack.Push(samEvents);
+        Debug.Log("" + samEvents.events[0].act);
     }
 #endif
 
@@ -164,26 +175,6 @@ public class DolphinManager : MonoBehaviour
         //spegni i led
     }
 
-#if UNITY_EDITOR
-    void UnityServerThread()
-    {
-        while (true)
-        {
-            client = server.AcceptTcpClient();
-            NetworkStream stream = client.GetStream();
-
-            stream.Read(myBuffer, 0, myBuffer.Length);
-
-            string message = Encoding.ASCII.GetString(myBuffer, 0, myBuffer.Length);
-
-            Debug.Log(message);
-
-            JsonEvent jsonEvent = JsonEvent.ParseEventJson(message);
-            eventStack.Push(jsonEvent);            
-        }        
-    }
-#endif
-
 #if !UNITY_EDITOR
     public void UWPServerTask (){
         while(true){
@@ -195,12 +186,12 @@ public class DolphinManager : MonoBehaviour
     }
 #endif
 
-    private void HandleDolphinEvent(JsonEvent jsonEvent)
+    private void HandleDolphinEvent(SamEvents samEvent)
     {
         //da chiamare quando il giocatore preme la pinna centrale
-        if (jsonEvent.typ == "touch" && jsonEvent.act == 1)
+        if (samEvent.events[0].typ == "touch" && samEvent.events[0].act == true)
         {
-            switch (jsonEvent.val)
+            switch (samEvent.events[0].val)
             {
                 case "1": OnNextColor();
                     break;
@@ -212,4 +203,22 @@ public class DolphinManager : MonoBehaviour
         }
     }
 
+}
+
+
+
+[Serializable]
+public class SamEvents
+{
+    public Evt[] events;
+
+}
+
+[Serializable]
+public class Evt
+{
+    public string typ;
+    public string val;
+    public bool act;
+    public int dur;
 }
