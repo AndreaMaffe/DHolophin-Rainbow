@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour {
         pop2 = Resources.Load<AudioClip>("Sounds/Pop2");
 
         audioSource.clip = backgroundMusic;
+        audioSource.volume = 0.4f;
         audioSource.loop = true;
     }
 
