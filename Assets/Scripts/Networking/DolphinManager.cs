@@ -2,12 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 using UnityEngine.Networking;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using System.Text;
 
+#if !UNITY_EDITOR
+using System.Threading.Tasks;
+#endif
 
 public class DolphinManager : MonoBehaviour
 {
@@ -21,10 +25,21 @@ public class DolphinManager : MonoBehaviour
 
     public static IPAddress serverIP; //server IP address
     public static int serverPort = 60001; //server port
-    
+
+    byte[] myBuffer;
+
+    private StreamReader reader;
+
+#if UNITY_EDITOR
     private TcpListener server;
     private TcpClient client;
     private Thread thread;
+#endif
+
+#if !UNITY_EDITOR
+    private Windows.Networking.Sockets.StreamSocket socket;
+    private Task exchangeTask;
+#endif
 
     private Stack<JsonEvent> eventStack;    
 
@@ -33,8 +48,12 @@ public class DolphinManager : MonoBehaviour
     {
         CurrentDoplhinColor = GameManager.PossibleColors[0];
         eventStack = new Stack<JsonEvent>();
-
-        InitializeServer();        
+        myBuffer = new byte[1024];
+#if UNITY_EDITOR
+        InitializeUnityServer();
+#else
+        InitializeUWPServer();
+#endif
     }
 
     void Update()
@@ -97,10 +116,12 @@ public class DolphinManager : MonoBehaviour
         SwitchDolphinOn();
     }
 
-    void InitializeServer()
+#if UNITY_EDITOR
+    void InitializeUnityServer()
     {
-        StartCoroutine(HttpMessage.SendHttpChange(Network.player.ipAddress, 60001, "192.168.0.125"));
-        serverIP = IPAddress.Parse(Network.player.ipAddress);
+        StartCoroutine(HttpMessage.SendHttpChange("127.0.0.1", 60001, "192.168.0.125"));
+        serverIP = IPAddress.Parse("127.0.0.1");
+
         server = new TcpListener(serverIP, serverPort);
         client = default(TcpClient);
 
@@ -114,10 +135,24 @@ public class DolphinManager : MonoBehaviour
             Debug.Log(e.ToString());
         }
 
-        ThreadStart ts = new ThreadStart(ServerThread);
+        ThreadStart ts = new ThreadStart(UnityServerThread);
         thread = new Thread(ts);
         thread.Start();
+
     }
+#endif
+
+#if !UNITY_EDITOR
+    private async void InitializeUWPServer()
+    {
+        socket = new Windows.Networking.Sockets.StreamSocket();
+        Windows.Networking.HostName serverHost = new Windows.Networking.HostName("127.0.0.1");
+        await socket.ConnectAsync(serverHost, serverPort.ToString());
+        Stream streamIn = socket.InputStream.AsStreamForRead();
+        reader = new StreamReader(streamIn);
+        exchangeTask = Task.Run(() => UWPServerTask());
+    }
+#endif
 
     public static void SwitchDolphinOn()
     {
@@ -129,12 +164,12 @@ public class DolphinManager : MonoBehaviour
         //spegni i led
     }
 
-    void ServerThread()
+#if UNITY_EDITOR
+    void UnityServerThread()
     {
         while (true)
         {
             client = server.AcceptTcpClient();
-            byte[] myBuffer = new byte[100000];
             NetworkStream stream = client.GetStream();
 
             stream.Read(myBuffer, 0, myBuffer.Length);
@@ -147,6 +182,18 @@ public class DolphinManager : MonoBehaviour
             eventStack.Push(jsonEvent);            
         }        
     }
+#endif
+
+#if !UNITY_EDITOR
+    public void UWPServerTask (){
+        while(true){
+            string received = reader.ReadLine();
+            Debug.Log(received);
+            JsonEvent jsonEvent = JsonEvent.ParseEventJson(received);
+            eventStack.Push(jsonEvent);
+        }
+    }
+#endif
 
     private void HandleDolphinEvent(JsonEvent jsonEvent)
     {
