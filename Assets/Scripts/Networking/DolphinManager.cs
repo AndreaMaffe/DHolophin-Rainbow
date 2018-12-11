@@ -15,30 +15,20 @@ using System.Threading.Tasks;
 
 public class DolphinManager : MonoBehaviour
 {
-    private static string ipAddr = ""; //Dolphin IP address
-    private static int dolphinPort = 0; //Dolphin port
+    private static string dolphinIpAddr = "192.168.0.125";
+    private static string thisIpAddr = "192.168.0.173";
+    private static int thisPort = 60001;
 
     public delegate void ColorSubmittedEvent();
     public static event ColorSubmittedEvent OnColorSubmitted;
 
     public static Color CurrentDoplhinColor { get; private set; }
 
-    public static IPAddress serverIP; //server IP address
-    public static int serverPort = 60001; //server port
-
-    byte[] myBuffer;
-
     private Stack<SamEvents> eventStack;
-
-
     private StreamReader reader;
 
-    private HttpListener _listener;
-
 #if UNITY_EDITOR
-    private TcpListener server;
-    private TcpClient client;
-    private Thread thread;
+    private HttpListener _listener;
 #endif
 
 #if !UNITY_EDITOR
@@ -46,12 +36,10 @@ public class DolphinManager : MonoBehaviour
     private Task exchangeTask;
 #endif
 
-
     void Start()
     {
         CurrentDoplhinColor = GameManager.PossibleColors[0];
         eventStack = new Stack<SamEvents>();
-        myBuffer = new byte[1024];
 #if UNITY_EDITOR
         InitializeUnityServer();
 #else
@@ -119,37 +107,40 @@ public class DolphinManager : MonoBehaviour
         SwitchDolphinOn();
     }
 
+    void SwitchDolphinOn()
+    {
+        StartCoroutine(HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, dolphinIpAddr));
+    }
+
+    void SwitchDolphinOff()
+    {
+        //spegni i led
+    }
+
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
-        StartCoroutine(HttpMessage.SendHttpChange("127.0.0.1", 60001, "192.168.0.125"));
-        serverIP = IPAddress.Parse("127.0.0.1");
+        StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
 
         _listener = new HttpListener();
-        _listener.Prefixes.Add("http://+:60000/");
+        _listener.Prefixes.Add("http://+:" + thisPort.ToString() + "/");
 
         _listener.Start();
-
         _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
-
     }
 
     private void ListenerCallback(IAsyncResult result)
     {
-        Debug.Log("Messaggio http ricevuto");
         HttpListener listener = (HttpListener)result.AsyncState;
-        // Call EndGetContext to complete the asynchronous operation.
         HttpListenerContext context = listener.EndGetContext(result);
         HttpListenerRequest request = context.Request;
         // Obtain a response object.
         HttpListenerResponse response = context.Response;
         string contRead = new StreamReader(request.InputStream).ReadToEnd();
         _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
-        Debug.Log(contRead);
         SamEvents samEvents = new SamEvents();
         samEvents = JsonUtility.FromJson<SamEvents>(contRead);
         eventStack.Push(samEvents);
-        Debug.Log("" + samEvents.events[0].act);
     }
 #endif
 
@@ -164,16 +155,6 @@ public class DolphinManager : MonoBehaviour
         exchangeTask = Task.Run(() => UWPServerTask());
     }
 #endif
-
-    public static void SwitchDolphinOn()
-    {
-        HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, ipAddr);
-    }
-
-    public static void SwitchDolphinOff()
-    {
-        //spegni i led
-    }
 
 #if !UNITY_EDITOR
     public void UWPServerTask (){
@@ -202,23 +183,5 @@ public class DolphinManager : MonoBehaviour
             }
         }
     }
-
 }
 
-
-
-[Serializable]
-public class SamEvents
-{
-    public Evt[] events;
-
-}
-
-[Serializable]
-public class Evt
-{
-    public string typ;
-    public string val;
-    public bool act;
-    public int dur;
-}
