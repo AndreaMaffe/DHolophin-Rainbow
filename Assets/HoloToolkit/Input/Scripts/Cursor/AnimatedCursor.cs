@@ -47,6 +47,7 @@ namespace HoloToolkit.Unity.InputModule
         [Tooltip("Animator for the cursor")]
         protected Animator CursorAnimator;
 
+
         /// <summary>
         /// Change animation state when enabling input
         /// </summary>

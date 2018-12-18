@@ -8,7 +8,6 @@ public enum GameMode { MANUAL, AUTOMATIC }
 public class GameManager : MonoBehaviour
 {
     private static GameObject dolphinManager;
-    public List<GameObject> dontDestroyOnLoadObjects;
 
     public static GameMode Mode { get; private set; }
 
@@ -26,9 +25,7 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        /*foreach (GameObject gameObj in dontDestroyOnLoadObjects)
-            DontDestroyOnLoad(gameObj);*/
-
+        DontDestroyOnLoad(this);
         AudioManager.PlayBackgroundMusic();
 	}
 
@@ -41,16 +38,7 @@ public class GameManager : MonoBehaviour
         TimeOn = 3; //temporary
 
         //load the scene
-        //SceneManager.LoadScene(1);
-
-        GameObject MainPanel = GameObject.Find("MainPanel");
-
-        if (MainPanel == null)
-            MainPanel = GameObject.Find("MainPanel(Clone)");
-
-        Instantiate(Resources.Load<GameObject>("Prefabs/CirclePanel"), MainPanel.transform.position - new Vector3(0, 0, 1), Quaternion.identity);
-        Destroy(MainPanel);
-
+        LoadScene(2);
 
         //initialize game data
         PossibleColors = new Color[NumberOfColors];
@@ -60,6 +48,13 @@ public class GameManager : MonoBehaviour
 
         if (dolphinManager == null)
             dolphinManager = Instantiate(Resources.Load<GameObject>("Prefabs/DolphinManager"));
+    }
+
+    public static void LoadScene (int sceneNumber)
+    {
+        SceneManager.LoadScene(sceneNumber);
+        GameObject.Find("MixedRealityCameraParent").transform.Find("MixedRealityCamera").rotation = Quaternion.identity;
+        GameObject.Find("MixedRealityCameraParent").transform.Find("MixedRealityCamera").position = Vector3.zero;
     }
 
     public static void GenerateNewColorsCombination()
@@ -82,14 +77,12 @@ public class GameManager : MonoBehaviour
         if (guessIsCorrect)
         {
             AudioManager.PlayCorrectAnswerSound();
-            Debug.Log("*** BRAVO! Hai indovinato! ***");
             return true;
         }
 
         else
         {
             AudioManager.PlayWrongAnswerSound();
-            Debug.Log("*** ERRORE! Combinazione sbagliata! ***");
             return false;
         }
     }

@@ -9,7 +9,6 @@ public class BackToMainMenuButton : FocusableButton, HoloToolkit.Unity.InputModu
     public void OnInputClicked(InputClickedEventData eventData)
     {
         AudioManager.PlayPop2();
-        Instantiate(Resources.Load<GameObject>("Prefabs/MainPanel"), GameObject.Find("CirclePanel(Clone)").transform.position + new Vector3(0, 0, 1), Quaternion.identity);
-        Destroy(GameObject.Find("CirclePanel(Clone)"));
+        GameManager.LoadScene(1);
     }
 }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour {
-
+public class AudioManager : MonoBehaviour
+{
     private static AudioClip backgroundMusic;
     private static AudioClip correctAnswerSound;
     private static AudioClip wrongAnswerSound;
@@ -25,6 +25,8 @@ public class AudioManager : MonoBehaviour {
         audioSource.clip = backgroundMusic;
         audioSource.volume = 0.4f;
         audioSource.loop = true;
+
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public static void PlayBackgroundMusic()
