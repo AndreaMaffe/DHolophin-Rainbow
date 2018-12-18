@@ -589,7 +589,7 @@ Prefab:
     - target: {fileID: 114411728289542110, guid: bea9e7302680b4346b0c4fa165a5ad1c,
         type: 2}
       propertyPath: m_Text
-      value: Dholphin rainbow
+      value: 'Dholophin: rainbow'
       objectReference: {fileID: 0}
     - target: {fileID: 4126418383508650, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
       propertyPath: m_LocalPosition.x
@@ -598,7 +598,7 @@ Prefab:
     - target: {fileID: 224617247684227382, guid: bea9e7302680b4346b0c4fa165a5ad1c,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0.012
+      value: -0.005
       objectReference: {fileID: 0}
     - target: {fileID: 114411728289542110, guid: bea9e7302680b4346b0c4fa165a5ad1c,
         type: 2}
@@ -619,6 +619,29 @@ Prefab:
         type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114322910522533274, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: SphereRadius
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114322910522533274, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: MoveSpeed
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4720199676312524, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4720199676312524, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.219
+      objectReference: {fileID: 0}
+    - target: {fileID: 114411728289542110, guid: bea9e7302680b4346b0c4fa165a5ad1c,
+        type: 2}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114513750749538680, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
@@ -673,23 +696,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1752722964492642, guid: bea9e7302680b4346b0c4fa165a5ad1c,
     type: 2}
   m_PrefabInternal: {fileID: 1152531181}
---- !u!114 &1989440353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1989440349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 456eda422e1dc4c4cb4fd6c25cbc2fbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SphereRadius: 0.15
-  MoveSpeed: 0.5
-  useUnscaledTime: 1
-  hideOnStart: 0
-  debugDisplaySphere: 0
-  debugDisplayTargetPosition: 0
 --- !u!114 &1989440354
 MonoBehaviour:
   m_ObjectHideFlags: 0
