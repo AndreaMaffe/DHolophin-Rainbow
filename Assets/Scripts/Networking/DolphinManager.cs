@@ -161,8 +161,9 @@ public class DolphinManager : MonoBehaviour
         while(true){
             string received = reader.ReadLine();
             Debug.Log(received);
-            JsonEvent jsonEvent = JsonEvent.ParseEventJson(received);
-            eventStack.Push(jsonEvent);
+            SamEvents samEvents = new SamEvents();
+            samEvents = JsonUtility.FromJson<SamEvents>(received);
+            eventStack.Push(samEvents);
         }
     }
 #endif
