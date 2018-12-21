@@ -149,7 +149,7 @@ public class DolphinManager : MonoBehaviour
     {
         socket = new Windows.Networking.Sockets.StreamSocket();
         Windows.Networking.HostName serverHost = new Windows.Networking.HostName("127.0.0.1");
-        await socket.ConnectAsync(serverHost, serverPort.ToString());
+        await socket.ConnectAsync(serverHost, thisIpAddr.ToString());
         Stream streamIn = socket.InputStream.AsStreamForRead();
         reader = new StreamReader(streamIn);
         exchangeTask = Task.Run(() => UWPServerTask());
