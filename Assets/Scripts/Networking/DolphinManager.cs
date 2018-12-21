@@ -159,7 +159,7 @@ public class DolphinManager : MonoBehaviour
 #if !UNITY_EDITOR
     public void UWPServerTask (){
         while(true){
-            string received = reader.ReadLine();
+            string received = reader.ReadToEnd();
             Debug.Log(received);
             SamEvents samEvents = new SamEvents();
             samEvents = JsonUtility.FromJson<SamEvents>(received);
