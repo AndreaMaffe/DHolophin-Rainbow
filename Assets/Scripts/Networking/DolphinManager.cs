@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 
 public class DolphinManager : MonoBehaviour
 {
-    private static string dolphinIpAddr = "192.168.31.216";
-    private static string thisIpAddr = "192.168.31.127";
-    private static int thisPort = 60001;
+    private static string dolphinIpAddr = "192.168.0.177";
+    private static string thisIpAddr = "192.168.0.104";
+    private static int thisPort = 7007;
 
     public delegate void ColorSubmittedEvent();
     public static event ColorSubmittedEvent OnColorSubmitted;
@@ -44,8 +44,6 @@ public class DolphinManager : MonoBehaviour
         InitializeUnityServer();
 #else
         InitializeUWPServer();
-
-        SwitchDolphinOn();
 #endif
     }
 
@@ -122,6 +120,7 @@ public class DolphinManager : MonoBehaviour
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
+        Debug.Log("Im starting the server");
         StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
 
         _listener = new HttpListener();
@@ -133,6 +132,7 @@ public class DolphinManager : MonoBehaviour
 
     private void ListenerCallback(IAsyncResult result)
     {
+        Debug.Log("I'm listening");
         HttpListener listener = (HttpListener)result.AsyncState;
         HttpListenerContext context = listener.EndGetContext(result);
         HttpListenerRequest request = context.Request;
@@ -149,9 +149,10 @@ public class DolphinManager : MonoBehaviour
 #if !UNITY_EDITOR
     private async void InitializeUWPServer()
     {
+        Debug.Log("Im starting the server");
         socket = new Windows.Networking.Sockets.StreamSocket();
-        Windows.Networking.HostName serverHost = new Windows.Networking.HostName("127.0.0.1");
-        await socket.ConnectAsync(serverHost, serverPort.ToString());
+        Windows.Networking.HostName serverHost = new Windows.Networking.HostName(thisIpAddr);
+        await socket.ConnectAsync(serverHost, thisPort.ToString());
         Stream streamIn = socket.InputStream.AsStreamForRead();
         reader = new StreamReader(streamIn);
         exchangeTask = Task.Run(() => UWPServerTask());
@@ -161,10 +162,12 @@ public class DolphinManager : MonoBehaviour
 #if !UNITY_EDITOR
     public void UWPServerTask (){
         while(true){
-            string received = reader.ReadLine();
+            Debug.Log("Im receiving messages");
+            string received = reader.ReadToEnd();
             Debug.Log(received);
-            JsonEvent jsonEvent = JsonEvent.ParseEventJson(received);
-            eventStack.Push(jsonEvent);
+            SamEvents samEvents = new SamEvents();
+            samEvents = JsonUtility.FromJson<SamEvents>(received);
+            eventStack.Push(samEvents);
         }
     }
 #endif

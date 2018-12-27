@@ -10,6 +10,7 @@ public class CirclePanel : MonoBehaviour {
     private Color[] colorCombination; //combination to guess
     private Color[] playerGuess;  //player combination
     private Circle[] circles;
+    private GameObject dolphin;
 
 	// Use this for initialization
 	void Start ()
@@ -41,7 +42,7 @@ public class CirclePanel : MonoBehaviour {
 
         //create the dolphin, scale it and add it as child
         Vector3 dolphinPosition = new Vector3(rectTransform.position.x + unit*numberOfCircles/2, rectTransform.position.y + rectTransform.localScale.y/2, rectTransform.position.z-0.02f);
-        GameObject dolphin = Instantiate(Resources.Load<GameObject>("Prefabs/Dolphin"), dolphinPosition, Quaternion.identity);
+        dolphin = Instantiate(Resources.Load<GameObject>("Prefabs/Dolphin"), dolphinPosition, Quaternion.identity);
         dolphin.transform.localScale *= 0.6f;
         dolphin.transform.parent = this.transform;
 
@@ -82,6 +83,8 @@ public class CirclePanel : MonoBehaviour {
 
     public void OnCircleColored(Circle circle, Color circleColor)
     {
+        dolphin.GetComponent<Dolphin>().SetHappySprite();
+
         //insert player choice in the combination
         int index = Array.IndexOf(circles, circle);
         playerGuess[index] = circleColor;
