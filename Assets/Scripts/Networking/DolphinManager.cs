@@ -15,8 +15,8 @@ using System.Threading.Tasks;
 
 public class DolphinManager : MonoBehaviour
 {
-    private static string dolphinIpAddr = "192.168.0.125";
-    private static string thisIpAddr = "192.168.0.173";
+    private static string dolphinIpAddr = "192.168.31.216";
+    private static string thisIpAddr = "192.168.31.127";
     private static int thisPort = 60001;
 
     public delegate void ColorSubmittedEvent();
@@ -44,6 +44,8 @@ public class DolphinManager : MonoBehaviour
         InitializeUnityServer();
 #else
         InitializeUWPServer();
+
+        SwitchDolphinOn();
 #endif
     }
 
