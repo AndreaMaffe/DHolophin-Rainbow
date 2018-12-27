@@ -168,16 +168,16 @@ public class HttpMessage
         yield return request;
     }
 
-    public static IEnumerator SendMusicMessage(string track, string vol, string urlTarget)
+    public static IEnumerator SendMusicMessage(string track, string urlTarget)
     {
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, CreateMusicMessage(track, vol), headerD);
+        WWW request = new WWW(urlTarget, CreateMusicMessage(track,"20"), headerD);
         yield return request;
     }
 
     //idMove=1(muove occhi),2(muove bocca)
-    public static IEnumerator SendMoveMessage(DolphinMoves moves, string speed, string duration, string urlTarget)
+    public static IEnumerator SendMoveMessage(DolphinMoves moves, string urlTarget)
     {
         string idMove = "";
         switch (moves)
@@ -192,7 +192,7 @@ public class HttpMessage
         }
         Dictionary<string, string> headerD = new Dictionary<string, string>();
         headerD.Add("Content-Type", "application/json");
-        WWW request = new WWW(urlTarget, CreateMoveMessage(idMove, speed, duration), headerD);
+        WWW request = new WWW(urlTarget, CreateMoveMessage(idMove, "90", "500"), headerD);
         yield return request;
     }
 
@@ -203,25 +203,4 @@ public class HttpMessage
         WWW request = new WWW(urlTarget, CreateHttpChange(url, port.ToString()), headerD);
         yield return request;
     }
-
-    public static IEnumerator sendEventForTestLeave(string urlTarget)
-    {
-        Dictionary<string, string> headerD = new Dictionary<string, string>();
-        headerD.Add("Content-Type", "application/json");
-        string stringJson = "{\"events\":[{\"typ\":\"touch\",\"val\":\"6\",\"act\":0,\"dur\":2018}]}";
-        var data = System.Text.Encoding.UTF8.GetBytes(stringJson);
-        WWW request = new WWW(urlTarget, data, headerD);
-        yield return request;
-    }
-
-    public static IEnumerator sendEventForTestTouch(string urlTarget)
-    {
-        Dictionary<string, string> headerD = new Dictionary<string, string>();
-        headerD.Add("Content-Type", "application/json");
-        string stringJson = "{\"events\":[{\"typ\":\"touch\",\"val\":\"6\",\"act\":1}]}";
-        var data = System.Text.Encoding.UTF8.GetBytes(stringJson);
-        WWW request = new WWW(urlTarget, data, headerD);
-        yield return request;
-    }
-
 }
