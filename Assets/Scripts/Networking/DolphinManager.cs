@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 
 public class DolphinManager : MonoBehaviour
 {
+
+    public GameObject text1;
+    public GameObject text2;
+
     private static string dolphinIpAddr = "192.168.0.177";
     private static string thisIpAddr = "192.168.0.104";
     private static int thisPort = 7007;
@@ -149,6 +153,7 @@ public class DolphinManager : MonoBehaviour
 #if !UNITY_EDITOR
     private async void InitializeUWPServer()
     {
+        text1.SetActive(true);
         Debug.Log("Im starting the server");
         socket = new Windows.Networking.Sockets.StreamSocket();
         Windows.Networking.HostName serverHost = new Windows.Networking.HostName(thisIpAddr);
@@ -161,6 +166,7 @@ public class DolphinManager : MonoBehaviour
 
 #if !UNITY_EDITOR
     public void UWPServerTask (){
+        text2.SetActive(true);
         while(true){
             Debug.Log("Im receiving messages");
             string received = reader.ReadToEnd();
