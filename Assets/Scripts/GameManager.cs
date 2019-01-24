@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
             ColorCombination[i] = allColors[UnityEngine.Random.Range(0, NumberOfColors)];        
     }
 
+    //return true if the guess corresponds to the combination, false otherwise
     public static bool CheckPlayerGuess(Color[] playerGuess)
     {
         bool guessIsCorrect = true;

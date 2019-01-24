@@ -49,24 +49,28 @@ public class CirclePanel : MonoBehaviour {
         SwitchCirclesOff();
     }
 
+    //color circles with the actual combination
     public void ShowCombination()
     {
         for (int i = 0; i < numberOfCircles; i++) 
             circles[i].SetColor(colorCombination[i]);
     }
 
+    //set circles to default grey color
     public void SwitchCirclesOff()
     {
         for (int i = 0; i < numberOfCircles; i++)
             circles[i].SetColor(Color.grey);
     }
 
+    //mark the circles as active
     public void SetCirclesActive(bool value)
     {
         for (int i = 0; i < numberOfCircles; i++)
             circles[i].SetActive(value);
     }
 
+    //set up the game
     public void PlayGame()
     {
         //get actual combination from GameManager
@@ -81,6 +85,7 @@ public class CirclePanel : MonoBehaviour {
         SetCirclesActive(true);        
     }
 
+    //called when player submits one color to a circle
     public void OnCircleColored(Circle circle, Color circleColor)
     {
         dolphin.GetComponent<Dolphin>().SetHappySprite();
