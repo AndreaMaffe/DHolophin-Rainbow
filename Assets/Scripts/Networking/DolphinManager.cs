@@ -19,7 +19,7 @@ public class DolphinManager : MonoBehaviour
 
     public Text text;
 
-    private static string dolphinIpAddr = "192.168.0.177";
+    private static string dolphinIpAddr = "192.168.0.125";
     private static string thisIpAddr = "192.168.0.147";
     private static int thisPort = 7007;
 
@@ -156,7 +156,8 @@ public class DolphinManager : MonoBehaviour
     {
        
         Debug.Log("Im starting the server");
-        
+        StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
+        OnNextColor();
         socket = new Windows.Networking.Sockets.StreamSocket();
         Windows.Networking.HostName serverHost = new Windows.Networking.HostName("192.168.0.103");
         try{
@@ -177,6 +178,7 @@ public class DolphinManager : MonoBehaviour
         while(true){
             Debug.Log("Im receiving messages");
             string received = reader.ReadToEnd();
+            text.text = received;
             Debug.Log(received);
             SamEvents samEvents = new SamEvents();
             samEvents = JsonUtility.FromJson<SamEvents>(received);
