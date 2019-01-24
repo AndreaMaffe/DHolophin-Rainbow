@@ -7,12 +7,14 @@ public class FocusableButton : MonoBehaviour, IFocusable
 {
     public Animator animator;
 
+    //called when player focuses on the button
     public void OnFocusEnter()
     {
         animator.SetBool("Focused", true);
 
     }
 
+    //called when player exits the focus on the button
     public void OnFocusExit()
     {
         animator.SetBool("Focused", false);
