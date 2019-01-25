@@ -11,17 +11,19 @@ using System.Text;
 using UnityEngine.UI;
 
 #if !UNITY_EDITOR
+using Windows.Networking.Sockets;
 using System.Threading.Tasks;
+using Windows.Storage.Streams;
 #endif
 
 public class DolphinManager : MonoBehaviour
 {
 
     public Text text;
-
+    private static string anyIp = IPAddress.Any.ToString();
     private static string dolphinIpAddr = "192.168.0.125";
     private static string thisIpAddr = "192.168.0.147";
-    private static int thisPort = 7007;
+    private static int thisPort = 22112;
 
     public delegate void ColorSubmittedEvent();
     public static event ColorSubmittedEvent OnColorSubmitted;
@@ -36,7 +38,7 @@ public class DolphinManager : MonoBehaviour
 #endif
 
 #if !UNITY_EDITOR
-    private Windows.Networking.Sockets.StreamSocket socket;
+    private Windows.Networking.Sockets.StreamSocketListener socket;
     private Task exchangeTask;
 #endif
 
@@ -158,18 +160,31 @@ public class DolphinManager : MonoBehaviour
         Debug.Log("Im starting the server");
         StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
         OnNextColor();
-        socket = new Windows.Networking.Sockets.StreamSocket();
-        Windows.Networking.HostName serverHost = new Windows.Networking.HostName("192.168.0.103");
+        socket = new StreamSocketListener();
+        Windows.Networking.HostName serverHost = new Windows.Networking.HostName(anyIp);
+        socket.ConnectionReceived += OnConnection;
         try{
-            await socket.ConnectAsync(serverHost, thisPort.ToString());
+            await socket.BindEndpointAsync(serverHost, thisPort.ToString());
         }catch(Exception e){
             text.text = e.Message;
         }
-        Stream streamIn = socket.InputStream.AsStreamForRead();
-        reader = new StreamReader(streamIn);
-        
-        exchangeTask = Task.Run(() => UWPServerTask());
     }
+#endif
+
+
+#if !UNITY_EDITOR
+    public async void OnConnection(StreamSocketListener sender,
+            StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            DataReader reader = new DataReader(args.Socket.InputStream);
+            while (true)
+            {
+                uint stringLength = reader.ReadUInt32();
+                uint actualStringLength = await reader.LoadAsync(stringLength);
+                text.text = reader.ReadString(actualStringLength);
+
+            }
+        }
 #endif
 
 #if !UNITY_EDITOR
