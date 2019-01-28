@@ -18,18 +18,11 @@ using Windows.Storage.Streams;
 
 public class DolphinManager : MonoBehaviour
 {
-
     public Text text;
     private static string anyIp = IPAddress.Any.ToString();
     private static string dolphinIpAddr = "192.168.0.125";
     private static string thisIpAddr = "192.168.0.147";
     private static int thisPort = 22112;
-
-    public delegate void ColorSubmittedEvent();
-    public static event ColorSubmittedEvent OnColorSubmitted;
-
-    public static Color CurrentDoplhinColor { get; private set; }
-
     private Stack<SamEvents> eventStack;
     private StreamReader reader;
 
@@ -44,11 +37,10 @@ public class DolphinManager : MonoBehaviour
 
     void Start()
     {
-        CurrentDoplhinColor = GameManager.PossibleColors[0];
         eventStack = new Stack<SamEvents>();
         
 #if UNITY_EDITOR
-        InitializeUnityServer();
+        //InitializeUnityServer();
 #else
         InitializeUWPServer();
 #endif
@@ -56,67 +48,18 @@ public class DolphinManager : MonoBehaviour
 
     void Update()
     {
-        //temporary, they will substituted by dolphin inputs
-        if (Input.GetKeyDown("r"))
-            CurrentDoplhinColor = Color.red;
-
-        if (Input.GetKeyDown("g"))
-            CurrentDoplhinColor = Color.green;
-
-        if (Input.GetKeyDown("b"))
-            CurrentDoplhinColor = Color.blue;
-
-        if (Input.GetKeyDown("w"))
-            CurrentDoplhinColor = Color.white;
-
-        if (Input.GetKeyDown("c"))
-            CurrentDoplhinColor = Color.cyan;
-
-        if (Input.GetKeyDown("y"))
-            CurrentDoplhinColor = Color.yellow;
-
-        if (Input.GetKeyDown("l") && GameManager.Mode == GameMode.MANUAL)
-            OnNextColor();
-
-        if (Input.GetKeyDown("k") && GameManager.Mode == GameMode.MANUAL)
-            OnPreviousColor();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            OnColorSubmitted();
-
         if (eventStack.Count != 0)
             HandleDolphinEvent(eventStack.Pop());
     }
 
     //da chiamare quando il giocatore preme la pinna di destra
-    void OnNextColor()
-    {
-        try
-        {
-            CurrentDoplhinColor = GameManager.PossibleColors[Array.IndexOf(GameManager.PossibleColors, CurrentDoplhinColor) + 1];
-        }  catch (IndexOutOfRangeException e) { CurrentDoplhinColor = GameManager.PossibleColors[0]; }
 
-        Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
 
-        SwitchDolphinOn();
-    }
 
-    //da chiamare quando il giocatore preme la pinna di sinistra
-    void OnPreviousColor()
-    {
-        try
-        {
-            CurrentDoplhinColor = GameManager.PossibleColors[Array.IndexOf(GameManager.PossibleColors, CurrentDoplhinColor) - 1];
-        }   catch (IndexOutOfRangeException e) { CurrentDoplhinColor = GameManager.PossibleColors[GameManager.PossibleColors.Length-1]; }
-
-        Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
-
-        SwitchDolphinOn();
-    }
 
     void SwitchDolphinOn()
     {
-        StartCoroutine(HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, dolphinIpAddr));
+        StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
     }
 
     void SwitchDolphinOff()
@@ -209,11 +152,11 @@ public class DolphinManager : MonoBehaviour
         {
             switch (samEvent.events[0].val)
             {
-                case "1": OnNextColor();
+                case "1": InputHandler.OnNextColor();
                     break;
-                case "2": OnPreviousColor();
+                case "2": InputHandler.OnPreviousColor();
                     break;
-                case "5": OnColorSubmitted();
+                case "5": InputHandler.SubmitColor();
                     break;
             }
         }
