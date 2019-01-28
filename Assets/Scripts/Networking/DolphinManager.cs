@@ -24,13 +24,13 @@ public class DolphinManager : MonoBehaviour
     private static string thisIpAddr = "192.168.0.147";
     private static int thisPort = 22112;
     private Stack<SamEvents> eventStack;
-    private StreamReader reader;
 
 #if UNITY_EDITOR
     private HttpListener _listener;
 #endif
 
 #if !UNITY_EDITOR
+    private StreamReader reader;
     private Windows.Networking.Sockets.StreamSocketListener socket;
     private Task exchangeTask;
 #endif
@@ -40,7 +40,7 @@ public class DolphinManager : MonoBehaviour
         eventStack = new Stack<SamEvents>();
         
 #if UNITY_EDITOR
-        //InitializeUnityServer();
+        InitializeUnityServer();
 #else
         InitializeUWPServer();
 #endif
@@ -50,22 +50,8 @@ public class DolphinManager : MonoBehaviour
     {
         if (eventStack.Count != 0)
             HandleDolphinEvent(eventStack.Pop());
-    }
+    }        
 
-    //da chiamare quando il giocatore preme la pinna di destra
-
-
-
-
-    void SwitchDolphinOn()
-    {
-        StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
-    }
-
-    void SwitchDolphinOff()
-    {
-        //spegni i led
-    }
 
 #if UNITY_EDITOR
     void InitializeUnityServer()
@@ -99,10 +85,9 @@ public class DolphinManager : MonoBehaviour
 #if !UNITY_EDITOR
     private async void InitializeUWPServer()
     {
-       
-        Debug.Log("Im starting the server");
         StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
-        OnNextColor();
+        StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
+
         socket = new StreamSocketListener();
         Windows.Networking.HostName serverHost = new Windows.Networking.HostName(anyIp);
         socket.ConnectionReceived += OnConnection;
@@ -131,9 +116,11 @@ public class DolphinManager : MonoBehaviour
 #endif
 
 #if !UNITY_EDITOR
-    public void UWPServerTask (){
+    public void UWPServerTask ()
+    {
         
-        while(true){
+        while(true)
+         {   
             Debug.Log("Im receiving messages");
             string received = reader.ReadToEnd();
             text.text = received;
@@ -147,14 +134,15 @@ public class DolphinManager : MonoBehaviour
 
     private void HandleDolphinEvent(SamEvents samEvent)
     {
-        //da chiamare quando il giocatore preme la pinna centrale
         if (samEvent.events[0].typ == "touch" && samEvent.events[0].act == true)
         {
             switch (samEvent.events[0].val)
             {
                 case "1": InputHandler.OnNextColor();
+                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
                     break;
                 case "2": InputHandler.OnPreviousColor();
+                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
                     break;
                 case "5": InputHandler.SubmitColor();
                     break;

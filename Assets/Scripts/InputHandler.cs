@@ -9,31 +9,34 @@ public class InputHandler : MonoBehaviour {
     public static event ColorSubmittedEvent OnColorSubmitted;
     public static Color CurrentColor { get; private set; }
 
+    private float timer;
+
     // Use this for initialization
     void Start ()
     {
+        DontDestroyOnLoad(this);
         CurrentColor = GameManager.PossibleColors[0];
+        timer = GameManager.TimeOn;
     }
-
 
     private void Update()
     {
-        if (Input.GetKeyDown("r"))
+        if (Input.GetKeyDown("r") && GameManager.Mode == GameMode.MANUAL)
             CurrentColor = Color.red;
 
-        if (Input.GetKeyDown("g"))
+        if (Input.GetKeyDown("g") && GameManager.Mode == GameMode.MANUAL)
             CurrentColor = Color.green;
 
-        if (Input.GetKeyDown("b"))
+        if (Input.GetKeyDown("b") && GameManager.Mode == GameMode.MANUAL)
             CurrentColor = Color.blue;
 
-        if (Input.GetKeyDown("w"))
+        if (Input.GetKeyDown("w") && GameManager.Mode == GameMode.MANUAL)
             CurrentColor = Color.white;
 
-        if (Input.GetKeyDown("c"))
+        if (Input.GetKeyDown("c") && GameManager.Mode == GameMode.MANUAL)
             CurrentColor = Color.cyan;
 
-        if (Input.GetKeyDown("y"))
+        if (Input.GetKeyDown("y") && GameManager.Mode == GameMode.MANUAL)
             CurrentColor = Color.yellow;
 
         if (Input.GetKeyDown("l") && GameManager.Mode == GameMode.MANUAL)
@@ -44,6 +47,16 @@ public class InputHandler : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Space))
             OnColorSubmitted();
+
+        if (GameManager.Mode == GameMode.AUTOMATIC)
+        {
+            timer -= Time.deltaTime;
+            if (timer < 0)
+            {
+                OnNextColor();
+                timer = GameManager.TimeOn;
+            }
+        }
     }
 
     public static void OnNextColor()
@@ -54,8 +67,6 @@ public class InputHandler : MonoBehaviour {
         } catch (IndexOutOfRangeException e) { CurrentColor = GameManager.PossibleColors[0]; }
 
         Debug.Log("New color selected: " + CurrentColor.ToString());
-
-        //SwitchDolphinOn();
     }
 
     public static void OnPreviousColor()
@@ -66,14 +77,14 @@ public class InputHandler : MonoBehaviour {
         } catch (IndexOutOfRangeException e) { CurrentColor = GameManager.PossibleColors[GameManager.PossibleColors.Length - 1]; }
 
         Debug.Log("New color selected: " + CurrentColor.ToString());
-
-        //SwitchDolphinOn();
     }
 
     public static void SubmitColor()
     {
         OnColorSubmitted();
     }
+
+
 
 
 }

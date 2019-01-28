@@ -7,7 +7,6 @@ using UnityEngine;
 public class SamEvents
 {
     public Evt[] events;
-
 }
 
 [Serializable]

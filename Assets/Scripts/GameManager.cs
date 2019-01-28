@@ -8,6 +8,7 @@ public enum GameMode { MANUAL, AUTOMATIC }
 public class GameManager : MonoBehaviour
 {
     private static GameObject dolphinManager;
+    private static GameObject inputHandler;
 
     public static GameMode Mode { get; private set; }
 
@@ -48,6 +49,8 @@ public class GameManager : MonoBehaviour
 
         if (dolphinManager == null)
             dolphinManager = Instantiate(Resources.Load<GameObject>("Prefabs/DolphinManager"));
+        if (inputHandler == null)
+            inputHandler = Instantiate(Resources.Load<GameObject>("Prefabs/InputHandler"));
     }
 
     public static void LoadScene (int sceneNumber)
