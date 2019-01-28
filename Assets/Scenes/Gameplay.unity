@@ -140,7 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52fa7b379619f994e878df0bb434b518, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 1262576195}
 --- !u!4 &810092388
 Transform:
   m_ObjectHideFlags: 0
@@ -448,26 +447,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114288000770076108, guid: 62e6020ed169a6b4a83aaea7e52ddc58,
+    - target: {fileID: 224856980258057606, guid: 62e6020ed169a6b4a83aaea7e52ddc58,
         type: 2}
-      propertyPath: m_Enabled
-      value: 1
+      propertyPath: m_AnchoredPosition.y
+      value: 0.224
       objectReference: {fileID: 0}
-    - target: {fileID: 114356058759979310, guid: 62e6020ed169a6b4a83aaea7e52ddc58,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114356058759979310, guid: 62e6020ed169a6b4a83aaea7e52ddc58,
-        type: 2}
-      propertyPath: SphereRadius
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114356058759979310, guid: 62e6020ed169a6b4a83aaea7e52ddc58,
-        type: 2}
-      propertyPath: MoveSpeed
-      value: 0.3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114080471654968920, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 62e6020ed169a6b4a83aaea7e52ddc58, type: 2}
   m_IsPrefabParent: 0

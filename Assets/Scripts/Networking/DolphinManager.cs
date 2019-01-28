@@ -11,14 +11,14 @@ using System.Text;
 using UnityEngine.UI;
 
 #if !UNITY_EDITOR
-using Windows.Networking.Sockets;
-using System.Threading.Tasks;
-using Windows.Storage.Streams;
+    using Windows.Networking;
+    using Windows.Networking.Sockets;
+    using Windows.Storage.Streams;
 #endif
 
 public class DolphinManager : MonoBehaviour
 {
-    public Text text;
+    private Text text;
     private static string anyIp = IPAddress.Any.ToString();
     private static string dolphinIpAddr = "192.168.0.125";
     private static string thisIpAddr = "192.168.0.147";
@@ -31,16 +31,18 @@ public class DolphinManager : MonoBehaviour
 
 #if !UNITY_EDITOR
     private StreamReader reader;
-    private Windows.Networking.Sockets.StreamSocketListener socket;
+    private StreamSocketListener listener;
     private Task exchangeTask;
 #endif
 
     void Start()
     {
         eventStack = new Stack<SamEvents>();
-        
+        Invoke("SetDebugText", 2f);
+
+
 #if UNITY_EDITOR
-        InitializeUnityServer();
+        Invoke("InitializeUnityServer", 2.5f);
 #else
         InitializeUWPServer();
 #endif
@@ -56,7 +58,7 @@ public class DolphinManager : MonoBehaviour
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
-        Debug.Log("Im starting the server");
+        text.text = "Im starting the server";
         StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
 
         _listener = new HttpListener();
@@ -68,12 +70,12 @@ public class DolphinManager : MonoBehaviour
 
     private void ListenerCallback(IAsyncResult result)
     {
-        Debug.Log("I'm listening");
         HttpListener listener = (HttpListener)result.AsyncState;
         HttpListenerContext context = listener.EndGetContext(result);
+
         HttpListenerRequest request = context.Request;
-        // Obtain a response object.
         HttpListenerResponse response = context.Response;
+
         string contRead = new StreamReader(request.InputStream).ReadToEnd();
         _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
         SamEvents samEvents = new SamEvents();
@@ -88,50 +90,44 @@ public class DolphinManager : MonoBehaviour
         StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
         StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
 
-        socket = new StreamSocketListener();
-        Windows.Networking.HostName serverHost = new Windows.Networking.HostName(anyIp);
-        socket.ConnectionReceived += OnConnection;
-        try{
-            await socket.BindEndpointAsync(serverHost, thisPort.ToString());
-        }catch(Exception e){
-            text.text = e.Message;
-        }
-    }
-#endif
+        listener = new StreamSocketListener();
+        //forse non serve più: Windows.Networking.HostName serverHost = new Windows.Networking.HostName(anyIp);
+        listener.ConnectionReceived += OnConnection;
+        listener.Control.KeepAlive = false;
 
-
-#if !UNITY_EDITOR
-    public async void OnConnection(StreamSocketListener sender,
-            StreamSocketListenerConnectionReceivedEventArgs args)
+        try
         {
-            DataReader reader = new DataReader(args.Socket.InputStream);
-            while (true)
-            {
-                uint stringLength = reader.ReadUInt32();
-                uint actualStringLength = await reader.LoadAsync(stringLength);
-                text.text = reader.ReadString(actualStringLength);
-
-            }
-        }
-#endif
-
-#if !UNITY_EDITOR
-    public void UWPServerTask ()
-    {
-        
-        while(true)
-         {   
-            Debug.Log("Im receiving messages");
-            string received = reader.ReadToEnd();
-            text.text = received;
-            Debug.Log(received);
-            SamEvents samEvents = new SamEvents();
-            samEvents = JsonUtility.FromJson<SamEvents>(received);
-            eventStack.Push(samEvents);
-        }
+            await listener.BindServiceNameAsync(thisPort.ToString());
+        } catch(Exception e) { text.text = e.Message; }
     }
 #endif
 
+
+#if !UNITY_EDITOR
+    private async void OnConnection(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            text.text = "OnConnection() chiamata!";
+
+            /*
+            DataReader reader = new DataReader(args.Socket.InputStream);
+            try 
+            {   
+                while (true)
+                {
+                    uint stringLength = reader.ReadUInt32();
+                    uint actualStringLength = await reader.LoadAsync(stringLength);
+                    text.text = "RECEIVED: " + reader.ReadString(actualStringLength);
+
+                }
+            } catch(Exception e) { text.text = e.Message; }
+
+            */
+
+            //reader.ReadToEnd();  per leggere 
+        }
+#endif
+
+    //call methods of InputHandler according to the message received from the dolphin
     private void HandleDolphinEvent(SamEvents samEvent)
     {
         if (samEvent.events[0].typ == "touch" && samEvent.events[0].act == true)
@@ -149,5 +145,12 @@ public class DolphinManager : MonoBehaviour
             }
         }
     }
+
+    void SetDebugText()
+    {
+        text = GameObject.Find("DEBUG_TEXT").GetComponent<Text>();
+    }
+
+        
 }
 
