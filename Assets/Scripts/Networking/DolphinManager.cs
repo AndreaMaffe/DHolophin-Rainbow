@@ -20,8 +20,8 @@ public class DolphinManager : MonoBehaviour
 {
     private Text text;
     private static string anyIp = IPAddress.Any.ToString();
-    private static string dolphinIpAddr = "192.168.0.125";
-    private static string thisIpAddr = "192.168.0.147";
+    private static string dolphinIpAddr = "192.168.0.177"; //177 per Phil
+    private static string thisIpAddr = "192.168.0.147";   //147 per HoloLens, 173 per pc
     private static int thisPort = 22112;
     private Stack<SamEvents> eventStack;
 
@@ -42,9 +42,11 @@ public class DolphinManager : MonoBehaviour
 
 
 #if UNITY_EDITOR
-        Invoke("InitializeUnityServer", 2.5f);
+        Invoke("InitializeUnityServer", 4f);
+        text.text = "Im starting the Unity server!";
 #else
-        InitializeUWPServer();
+        text.text = "Im starting the HoloLens server!";
+        Invoke("InitializeUWPServer", 4f);
 #endif
     }
 
@@ -58,7 +60,6 @@ public class DolphinManager : MonoBehaviour
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
-        text.text = "Im starting the server";
         StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
 
         _listener = new HttpListener();
