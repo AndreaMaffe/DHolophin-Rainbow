@@ -14,15 +14,19 @@ using UnityEngine.UI;
     using Windows.Networking;
     using Windows.Networking.Sockets;
     using Windows.Storage.Streams;
+    using Windows.Networking.Connectivity;
+    using Windows.Foundation.Diagnostics;
 #endif
 
 public class DolphinManager : MonoBehaviour
 {
     private Text text;
     private static string anyIp = IPAddress.Any.ToString();
-    private static string dolphinIpAddr = "192.168.0.177"; //177 per Phil
-    private static string thisIpAddr = "192.168.0.147";   //147 per HoloLens, 173 per pc
-    private static int thisPort = 22112;
+    private static string dolphinIpAddr = "192.168.0.125"; //177 per Phil 125 per il cartone
+    private static string holoLensIpAddr = "192.168.0.147";  
+    private static string unityIpAddr = "192.168.0.173";
+    private static int unityPort = 60000;
+    private static int holoLensPort = 9000;
     private Stack<SamEvents> eventStack;
 
 #if UNITY_EDITOR
@@ -30,9 +34,10 @@ public class DolphinManager : MonoBehaviour
 #endif
 
 #if !UNITY_EDITOR
+    private DatagramSocket socket;
     private StreamReader reader;
     private StreamSocketListener listener;
-    private Task exchangeTask;
+    //private Task exchangeTask;
 #endif
 
     void Start()
@@ -43,9 +48,8 @@ public class DolphinManager : MonoBehaviour
 
 #if UNITY_EDITOR
         Invoke("InitializeUnityServer", 4f);
-        text.text = "Im starting the Unity server!";
+
 #else
-        text.text = "Im starting the HoloLens server!";
         Invoke("InitializeUWPServer", 4f);
 #endif
     }
@@ -60,13 +64,20 @@ public class DolphinManager : MonoBehaviour
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
-        StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
+        text.text = "Im starting the Unity server!";
 
+        Invoke("connect", 4f);
+        StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.yellow, dolphinIpAddr));
+
+        /*
         _listener = new HttpListener();
-        _listener.Prefixes.Add("http://+:" + thisPort.ToString() + "/");
+        _listener.Prefixes.Add("http://+:" + unityPort.ToString() + "/");
 
         _listener.Start();
+        
         _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
+        */
+        
     }
 
     private void ListenerCallback(IAsyncResult result)
@@ -88,26 +99,60 @@ public class DolphinManager : MonoBehaviour
 #if !UNITY_EDITOR
     private async void InitializeUWPServer()
     {
-        StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
-        StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
+            text.text = "Im starting the HoloLens server!";
+            
+            /*
+            try 
+            {
+                Invoke("connect", 4f);
+                StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.yellow, dolphinIpAddr));
 
-        listener = new StreamSocketListener();
-        //forse non serve più: Windows.Networking.HostName serverHost = new Windows.Networking.HostName(anyIp);
-        listener.ConnectionReceived += OnConnection;
-        listener.Control.KeepAlive = false;
+                socket = new DatagramSocket();
+                socket.MessageReceived += Socket_MessageReceived;
 
-        try
-        {
-            await listener.BindServiceNameAsync(thisPort.ToString());
-        } catch(Exception e) { text.text = e.Message; }
+                listener.Control.KeepAlive = true;
+                await socket.BindEndpointAsync(new HostName(holoLensIpAddr.ToString()), holoLensPort.ToString());
+                text.text = "bindato";
+
+                await SendMessage("ciao");
+            }
+
+            catch (Exception e) {  text.text = e.Message;  }
+            */
+
+    
+            /*
+            try
+            {
+                Invoke("connect", 4f);
+                StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.green, dolphinIpAddr));
+
+                listener = new StreamSocketListener();
+                listener.ConnectionReceived += Listener_ConnectionReceived;
+                await listener.BindServiceNameAsync(holoLensPort.ToString());
+
+            } catch(Exception e) { text.text = e.Message; }
+            */
+            /*
+            StartCoroutine(HttpMessage.SendHttpChange(holoLensIpAddr, holoLensPort, dolphinIpAddr));
+            listener = new StreamSocketListener();
+            HostName serverHost = new HostName(holoLensIpAddr);
+            listener.ConnectionReceived += Listener_ConnectionReceived;
+            try{
+                await listener.BindEndpointAsync(serverHost, holoLensPort.ToString());
+            }catch(Exception e){
+                text.text = e.Message;
+            }
+            */
+            
     }
 #endif
 
 
 #if !UNITY_EDITOR
-    private async void OnConnection(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+    private async void Listener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
-            text.text = "OnConnection() chiamata!";
+            text.text = "messaggio ricevuto";
 
             /*
             DataReader reader = new DataReader(args.Socket.InputStream);
@@ -121,12 +166,30 @@ public class DolphinManager : MonoBehaviour
 
                 }
             } catch(Exception e) { text.text = e.Message; }
-
             */
 
             //reader.ReadToEnd();  per leggere 
+            
         }
+
+
+    private async System.Threading.Tasks.Task SendMessage(string message)
+    {
+        using (var stream = await socket.GetOutputStreamAsync(new Windows.Networking.HostName(unityIpAddr), unityPort.ToString()))
+        {
+            using (var writer = new Windows.Storage.Streams.DataWriter(stream))
+            {
+                var data = Encoding.UTF8.GetBytes(message);
+
+                writer.WriteBytes(data);
+                await writer.StoreAsync();
+               text.text = "Sent: " + message;
+            }
+        }
+    }
 #endif
+
+
 
     //call methods of InputHandler according to the message received from the dolphin
     private void HandleDolphinEvent(SamEvents samEvent)
@@ -152,6 +215,21 @@ public class DolphinManager : MonoBehaviour
         text = GameObject.Find("DEBUG_TEXT").GetComponent<Text>();
     }
 
-        
+    private void connect()
+    {
+        StartCoroutine(HttpMessage.SendHttpChange(unityIpAddr, unityPort, dolphinIpAddr));
+    }
+
+
+
+#if !UNITY_EDITOR
+    private void Socket_MessageReceived(Windows.Networking.Sockets.DatagramSocket sender,
+        Windows.Networking.Sockets.DatagramSocketMessageReceivedEventArgs args)
+    {
+        text.text = "Messaggio ricevuto!";
+    }
+
+
+#endif
 }
 
