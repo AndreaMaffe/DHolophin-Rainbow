@@ -584,15 +584,15 @@ PlayerSettings:
       EnterpriseAuthentication: False
       HumanInterfaceDevice: False
       InputInjectionBrokered: False
-      InternetClient: True
-      InternetClientServer: True
+      InternetClient: False
+      InternetClientServer: False
       Location: False
       Microphone: True
       MusicLibrary: False
       Objects3D: False
       PhoneCall: False
       PicturesLibrary: False
-      PrivateNetworkClientServer: True
+      PrivateNetworkClientServer: False
       Proximity: False
       RemovableStorage: False
       SharedUserCertificates: False

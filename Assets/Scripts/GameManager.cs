@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     //actual combination
     public static Color[] ColorCombination { get; private set; }
 
+    private static Fireworks f;
+
     // Use this for initialization
     void Start ()
     {
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour
         if (guessIsCorrect)
         {
             AudioManager.PlayCorrectAnswerSound();
+            ShootFireworks();
             return true;
         }
 
@@ -89,5 +92,10 @@ public class GameManager : MonoBehaviour
             AudioManager.PlayWrongAnswerSound();
             return false;
         }
+    }
+
+    public static void ShootFireworks()
+    {
+        f.Fire();
     }
 }
