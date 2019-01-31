@@ -5,9 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class Loader : MonoBehaviour {
 
+    private GameObject GameManager;
+
 	// Use this for initialization
 	void Start ()
     {
+        GameManager = Resources.Load<GameObject>("Prefabs/GameManager");
+        Instantiate(GameManager);
         SceneManager.LoadScene(1);
 	}
 	

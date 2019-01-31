@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// I messaggi "send" devono essere chiamati all'interno di una StartCoroutine.
+//    N.B: "Send" messages must be called inside a Coroutine!
 //     Example: StartCoroutine(HttpMessage.sendSingleColorAllLed(Color.red,"http://192.168.1.2:60000"));
 //
 

@@ -11,7 +11,7 @@ public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
 
     void Start()
     {
-        DolphinManager.OnColorSubmitted += OnColorSubmitted;
+        InputHandler.OnColorSubmitted += OnColorSubmitted;
         circlePanel = transform.parent.GetComponent<CirclePanel>();
     }
 
@@ -20,8 +20,8 @@ public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
         if (active && focused)
         {
             AudioManager.PlayPop1();
-            SetColor(DolphinManager.CurrentDoplhinColor);
-            circlePanel.OnCircleColored(this, DolphinManager.CurrentDoplhinColor);
+            SetColor(InputHandler.CurrentColor);
+            circlePanel.OnCircleColored(this, InputHandler.CurrentColor);
         }
     }
 
@@ -51,8 +51,8 @@ public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
         if (active && focused)
         {
             AudioManager.PlayPop1();
-            SetColor(DolphinManager.CurrentDoplhinColor);
-            circlePanel.OnCircleColored(this, DolphinManager.CurrentDoplhinColor);
+            SetColor(InputHandler.CurrentColor);
+            circlePanel.OnCircleColored(this, InputHandler.CurrentColor);
         }
     }
 }

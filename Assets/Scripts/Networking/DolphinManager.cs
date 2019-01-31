@@ -8,136 +8,86 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using System.Text;
+using UnityEngine.UI;
 
 #if !UNITY_EDITOR
-using System.Threading.Tasks;
+    using Windows.Networking;
+    using Windows.Networking.Sockets;
+    using Windows.Storage.Streams;
+    using Windows.Networking.Connectivity;
+    using Windows.Foundation.Diagnostics;
 #endif
 
 public class DolphinManager : MonoBehaviour
 {
-    private static string dolphinIpAddr = "192.168.0.177";
-    private static string thisIpAddr = "192.168.0.104";
-    private static int thisPort = 7007;
-
-    public delegate void ColorSubmittedEvent();
-    public static event ColorSubmittedEvent OnColorSubmitted;
-
-    public static Color CurrentDoplhinColor { get; private set; }
-
+    private Text text;
+    private static string anyIp = IPAddress.Any.ToString();
+    private static string dolphinIpAddr = "192.168.0.125"; //177 per Phil 125 per il cartone
+    private static string holoLensIpAddr = "192.168.0.147";  
+    private static string unityIpAddr = "192.168.0.173";
+    private static int unityPort = 60000;
+    private static int holoLensPort = 9000;
     private Stack<SamEvents> eventStack;
-    private StreamReader reader;
 
 #if UNITY_EDITOR
     private HttpListener _listener;
 #endif
 
 #if !UNITY_EDITOR
-    private Windows.Networking.Sockets.StreamSocket socket;
-    private Task exchangeTask;
+    private DatagramSocket socket;
+    private StreamReader reader;
+    private StreamSocketListener listener;
+    //private Task exchangeTask;
 #endif
 
     void Start()
     {
-        CurrentDoplhinColor = GameManager.PossibleColors[0];
         eventStack = new Stack<SamEvents>();
+        Invoke("SetDebugText", 2f);
+
+
 #if UNITY_EDITOR
-        InitializeUnityServer();
+        Invoke("InitializeUnityServer", 4f);
+
 #else
-        InitializeUWPServer();
+        Invoke("InitializeUWPServer", 4f);
 #endif
     }
 
     void Update()
     {
-        //temporary, they will substituted by dolphin inputs
-        if (Input.GetKeyDown("r"))
-            CurrentDoplhinColor = Color.red;
-
-        if (Input.GetKeyDown("g"))
-            CurrentDoplhinColor = Color.green;
-
-        if (Input.GetKeyDown("b"))
-            CurrentDoplhinColor = Color.blue;
-
-        if (Input.GetKeyDown("w"))
-            CurrentDoplhinColor = Color.white;
-
-        if (Input.GetKeyDown("c"))
-            CurrentDoplhinColor = Color.cyan;
-
-        if (Input.GetKeyDown("y"))
-            CurrentDoplhinColor = Color.yellow;
-
-        if (Input.GetKeyDown("l") && GameManager.Mode == GameMode.MANUAL)
-            OnNextColor();
-
-        if (Input.GetKeyDown("k") && GameManager.Mode == GameMode.MANUAL)
-            OnPreviousColor();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            OnColorSubmitted();
-
         if (eventStack.Count != 0)
             HandleDolphinEvent(eventStack.Pop());
-    }
+    }        
 
-    //da chiamare quando il giocatore preme la pinna di destra
-    void OnNextColor()
-    {
-        try
-        {
-            CurrentDoplhinColor = GameManager.PossibleColors[Array.IndexOf(GameManager.PossibleColors, CurrentDoplhinColor) + 1];
-        }  catch (IndexOutOfRangeException e) { CurrentDoplhinColor = GameManager.PossibleColors[0]; }
-
-        Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
-
-        SwitchDolphinOn();
-    }
-
-    //da chiamare quando il giocatore preme la pinna di sinistra
-    void OnPreviousColor()
-    {
-        try
-        {
-            CurrentDoplhinColor = GameManager.PossibleColors[Array.IndexOf(GameManager.PossibleColors, CurrentDoplhinColor) - 1];
-        }   catch (IndexOutOfRangeException e) { CurrentDoplhinColor = GameManager.PossibleColors[GameManager.PossibleColors.Length-1]; }
-
-        Debug.Log("New color selected: " + CurrentDoplhinColor.ToString());
-
-        SwitchDolphinOn();
-    }
-
-    void SwitchDolphinOn()
-    {
-        StartCoroutine(HttpMessage.SendSingleColorAllLeds(CurrentDoplhinColor, dolphinIpAddr));
-    }
-
-    void SwitchDolphinOff()
-    {
-        //spegni i led
-    }
 
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
-        Debug.Log("Im starting the server");
-        StartCoroutine(HttpMessage.SendHttpChange(thisIpAddr, thisPort, dolphinIpAddr));
+        text.text = "Im starting the Unity server!";
 
+        Invoke("connect", 4f);
+        StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.yellow, dolphinIpAddr));
+
+        /*
         _listener = new HttpListener();
-        _listener.Prefixes.Add("http://+:" + thisPort.ToString() + "/");
+        _listener.Prefixes.Add("http://+:" + unityPort.ToString() + "/");
 
         _listener.Start();
+        
         _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
+        */
+        
     }
 
     private void ListenerCallback(IAsyncResult result)
     {
-        Debug.Log("I'm listening");
         HttpListener listener = (HttpListener)result.AsyncState;
         HttpListenerContext context = listener.EndGetContext(result);
+
         HttpListenerRequest request = context.Request;
-        // Obtain a response object.
         HttpListenerResponse response = context.Response;
+
         string contRead = new StreamReader(request.InputStream).ReadToEnd();
         _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
         SamEvents samEvents = new SamEvents();
@@ -149,44 +99,137 @@ public class DolphinManager : MonoBehaviour
 #if !UNITY_EDITOR
     private async void InitializeUWPServer()
     {
-        Debug.Log("Im starting the server");
-        socket = new Windows.Networking.Sockets.StreamSocket();
-        Windows.Networking.HostName serverHost = new Windows.Networking.HostName(thisIpAddr);
-        await socket.ConnectAsync(serverHost, thisPort.ToString());
-        Stream streamIn = socket.InputStream.AsStreamForRead();
-        reader = new StreamReader(streamIn);
-        exchangeTask = Task.Run(() => UWPServerTask());
+            text.text = "Im starting the HoloLens server!";
+            
+            /*
+            try 
+            {
+                Invoke("connect", 4f);
+                StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.yellow, dolphinIpAddr));
+
+                socket = new DatagramSocket();
+                socket.MessageReceived += Socket_MessageReceived;
+
+                listener.Control.KeepAlive = true;
+                await socket.BindEndpointAsync(new HostName(holoLensIpAddr.ToString()), holoLensPort.ToString());
+                text.text = "bindato";
+
+                await SendMessage("ciao");
+            }
+
+            catch (Exception e) {  text.text = e.Message;  }
+            */
+
+    
+            /*
+            try
+            {
+                Invoke("connect", 4f);
+                StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.green, dolphinIpAddr));
+
+                listener = new StreamSocketListener();
+                listener.ConnectionReceived += Listener_ConnectionReceived;
+                await listener.BindServiceNameAsync(holoLensPort.ToString());
+
+            } catch(Exception e) { text.text = e.Message; }
+            */
+            /*
+            StartCoroutine(HttpMessage.SendHttpChange(holoLensIpAddr, holoLensPort, dolphinIpAddr));
+            listener = new StreamSocketListener();
+            HostName serverHost = new HostName(holoLensIpAddr);
+            listener.ConnectionReceived += Listener_ConnectionReceived;
+            try{
+                await listener.BindEndpointAsync(serverHost, holoLensPort.ToString());
+            }catch(Exception e){
+                text.text = e.Message;
+            }
+            */
+            
     }
 #endif
 
+
 #if !UNITY_EDITOR
-    public void UWPServerTask (){
-        while(true){
-            Debug.Log("Im receiving messages");
-            string received = reader.ReadToEnd();
-            Debug.Log(received);
-            SamEvents samEvents = new SamEvents();
-            samEvents = JsonUtility.FromJson<SamEvents>(received);
-            eventStack.Push(samEvents);
+    private async void Listener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            text.text = "messaggio ricevuto";
+
+            /*
+            DataReader reader = new DataReader(args.Socket.InputStream);
+            try 
+            {   
+                while (true)
+                {
+                    uint stringLength = reader.ReadUInt32();
+                    uint actualStringLength = await reader.LoadAsync(stringLength);
+                    text.text = "RECEIVED: " + reader.ReadString(actualStringLength);
+
+                }
+            } catch(Exception e) { text.text = e.Message; }
+            */
+
+            //reader.ReadToEnd();  per leggere 
+            
+        }
+
+
+    private async System.Threading.Tasks.Task SendMessage(string message)
+    {
+        using (var stream = await socket.GetOutputStreamAsync(new Windows.Networking.HostName(unityIpAddr), unityPort.ToString()))
+        {
+            using (var writer = new Windows.Storage.Streams.DataWriter(stream))
+            {
+                var data = Encoding.UTF8.GetBytes(message);
+
+                writer.WriteBytes(data);
+                await writer.StoreAsync();
+               text.text = "Sent: " + message;
+            }
         }
     }
 #endif
 
+
+
+    //call methods of InputHandler according to the message received from the dolphin
     private void HandleDolphinEvent(SamEvents samEvent)
     {
-        //da chiamare quando il giocatore preme la pinna centrale
         if (samEvent.events[0].typ == "touch" && samEvent.events[0].act == true)
         {
             switch (samEvent.events[0].val)
             {
-                case "1": OnNextColor();
+                case "1": InputHandler.OnNextColor();
+                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
                     break;
-                case "2": OnPreviousColor();
+                case "2": InputHandler.OnPreviousColor();
+                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
                     break;
-                case "5": OnColorSubmitted();
+                case "5": InputHandler.SubmitColor();
                     break;
             }
         }
     }
+
+    void SetDebugText()
+    {
+        text = GameObject.Find("DEBUG_TEXT").GetComponent<Text>();
+    }
+
+    private void connect()
+    {
+        StartCoroutine(HttpMessage.SendHttpChange(unityIpAddr, unityPort, dolphinIpAddr));
+    }
+
+
+
+#if !UNITY_EDITOR
+    private void Socket_MessageReceived(Windows.Networking.Sockets.DatagramSocket sender,
+        Windows.Networking.Sockets.DatagramSocketMessageReceivedEventArgs args)
+    {
+        text.text = "Messaggio ricevuto!";
+    }
+
+
+#endif
 }
 

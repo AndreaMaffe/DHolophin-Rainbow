@@ -26,6 +26,7 @@ public class PanelNumberButton : FocusableButton, HoloToolkit.Unity.InputModule.
         text.text = Number.ToString();
     }
 
+    //called when player clicks on the button
     public void OnInputClicked(InputClickedEventData eventData)
     {
         AudioManager.PlayPop1();
