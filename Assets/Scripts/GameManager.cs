@@ -25,14 +25,11 @@ public class GameManager : MonoBehaviour
     //actual combination
     public static Color[] ColorCombination { get; private set; }
 
-    private static GameObject fireworks;
-
     // Use this for initialization
     void Start ()
     {
         DontDestroyOnLoad(this);
         AudioManager.PlayBackgroundMusic();
-        fireworks.SetActive(false);
     }
 
     public static void StartNewGame()
@@ -99,8 +96,7 @@ public class GameManager : MonoBehaviour
 
     public static void ShootFireworks()
     {
-        fireworks = Instantiate(Resources.Load<GameObject>("Prefabs/Fireworks"));
-        fireworks.SetActive(true);
+        Instantiate(Resources.Load<GameObject>("Prefabs/Fireworks"));
         AudioManager.PlayFireworksSound();
     }
 }

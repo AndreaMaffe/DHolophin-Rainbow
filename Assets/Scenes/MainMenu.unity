@@ -488,7 +488,7 @@ Prefab:
     - target: {fileID: 114322910522533274, guid: bea9e7302680b4346b0c4fa165a5ad1c,
         type: 2}
       propertyPath: MoveSpeed
-      value: 0.9
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4720199676312524, guid: bea9e7302680b4346b0c4fa165a5ad1c, type: 2}
       propertyPath: m_LocalPosition.x
