@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
     public static void ShootFireworks()
     {
         fireworks = Instantiate(Resources.Load<GameObject>("Prefabs/Fireworks"));
-        //fireworks.Fire();
         fireworks.SetActive(true);
+        AudioManager.PlayFireworksSound();
     }
 }

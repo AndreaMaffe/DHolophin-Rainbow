@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     private static AudioClip wrongAnswerSound;
     private static AudioClip pop1;
     private static AudioClip pop2;
+    private static AudioClip fireworks;
 
     private static AudioSource audioSource;
 
@@ -21,6 +22,7 @@ public class AudioManager : MonoBehaviour
         wrongAnswerSound = Resources.Load<AudioClip>("Sounds/WrongAnswer");
         pop1 = Resources.Load<AudioClip>("Sounds/Pop1");
         pop2 = Resources.Load<AudioClip>("Sounds/Pop2");
+        fireworks = Resources.Load<AudioClip>("Sounds/FireworksSound");
 
         audioSource.clip = backgroundMusic;
         audioSource.volume = 0.4f;
@@ -54,8 +56,9 @@ public class AudioManager : MonoBehaviour
         audioSource.PlayOneShot(pop2, 1f);
     }
 
-
-
-
+    public static void PlayFireworksSound()
+    {
+        audioSource.PlayOneShot(fireworks, 5f);
+    }
 
 }
