@@ -36,6 +36,10 @@ public class UWPSocketClient : MonoBehaviour {
 
     void Update()
     {
+
+        text.text = GameManager.stringa;
+
+
 #if !UNITY_EDITOR
 
         /*
@@ -74,8 +78,6 @@ public class UWPSocketClient : MonoBehaviour {
             Stream streamIn = socket.InputStream.AsStreamForRead();
             reader = new StreamReader(streamIn);          
             text.text = "Connesso al server!";
-            //exchangeTask = Task.Run(() => ExchangePackets());
-
             RestartExchange();
         }
         catch (Exception e)
@@ -89,6 +91,7 @@ public class UWPSocketClient : MonoBehaviour {
     {
 #if !UNITY_EDITOR
         text.text = "In attesa di messaggi...";
+        GameManager.stringa = "working";
 
         try
         { 
@@ -120,7 +123,6 @@ public class UWPSocketClient : MonoBehaviour {
             if (exchangeTask != null) 
                 StopExchange();
             exchangeStopRequested = false;
-            text.text = "quasi...";
             exchangeTask = Task.Run(() => ExchangePackets());
         }
         catch (Exception e)

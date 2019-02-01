@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public static GameMode Mode { get; private set; }
 
+    public static string stringa = "not working!";
+
     public static int NumberOfCircles { get; private set; }
     public static int NumberOfColors { get; private set; }
     public static float TimeOn { get; private set; }
