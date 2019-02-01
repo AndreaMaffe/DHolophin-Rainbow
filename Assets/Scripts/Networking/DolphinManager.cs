@@ -23,8 +23,9 @@ public class DolphinManager : MonoBehaviour
     private Text text;
     private static string anyIp = IPAddress.Any.ToString();
     private static string dolphinIpAddr = "192.168.0.125"; //177 per Phil 125 per il cartone
-    private static string holoLensIpAddr = "192.168.0.147";  
+    private static string holoLensIpAddr = "192.168.0.147";
     private static string unityIpAddr = "192.168.0.173";
+    private static Uri uri;
     private static int unityPort = 60000;
     private static int holoLensPort = 9000;
     private Stack<SamEvents> eventStack;
@@ -38,10 +39,12 @@ public class DolphinManager : MonoBehaviour
     private StreamReader reader;
     private StreamSocketListener listener;
     //private Task exchangeTask;
+    private MessageWebSocket messageWebSocket;
 #endif
 
     void Start()
     {
+        uri = new Uri("wss://192.168.0.173");
         eventStack = new Stack<SamEvents>();
         Invoke("SetDebugText", 2f);
 
@@ -50,7 +53,7 @@ public class DolphinManager : MonoBehaviour
         Invoke("InitializeUnityServer", 4f);
 
 #else
-        Invoke("InitializeUWPServer", 4f);
+        //Invoke("InitializeUWPServer", 4f);
 #endif
     }
 
@@ -67,7 +70,7 @@ public class DolphinManager : MonoBehaviour
         text.text = "Im starting the Unity server!";
 
         Invoke("connect", 4f);
-        StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.yellow, dolphinIpAddr));
+        //StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.yellow, dolphinIpAddr));
 
         /*
         _listener = new HttpListener();
@@ -133,18 +136,21 @@ public class DolphinManager : MonoBehaviour
 
             } catch(Exception e) { text.text = e.Message; }
             */
+
             /*
-            StartCoroutine(HttpMessage.SendHttpChange(holoLensIpAddr, holoLensPort, dolphinIpAddr));
-            listener = new StreamSocketListener();
-            HostName serverHost = new HostName(holoLensIpAddr);
-            listener.ConnectionReceived += Listener_ConnectionReceived;
-            try{
-                await listener.BindEndpointAsync(serverHost, holoLensPort.ToString());
-            }catch(Exception e){
+            try
+            {
+                messageWebSocket = new MessageWebSocket();
+                messageWebSocket.Control.MessageType = SocketMessageType.Utf8;
+                messageWebSocket.MessageReceived += MessageReceived;
+                await messageWebSocket.ConnectAsync(uri);
+                text.text = "CONNESSO!";
+            }
+            catch (Exception e) // For debugging
+            {
                 text.text = e.Message;
             }
             */
-            
     }
 #endif
 
@@ -228,6 +234,11 @@ public class DolphinManager : MonoBehaviour
     {
         text.text = "Messaggio ricevuto!";
     }
+
+     private void MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
+        {
+           text.text = "messaggio ricevuto";
+        }
 
 
 #endif

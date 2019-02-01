@@ -12,20 +12,20 @@ using UnityEngine.UI;
     using System.Threading.Tasks;
 #endif
 
-
 public class UWPSocketClient : MonoBehaviour {
 
     private Text text;
 
 #if !UNITY_EDITOR
         private StreamSocket socket;
-        private String ip = "192.168.0.173";
+        private String ip = "192.168.0.140";
         private String port = "60000";
-        private String message = "ciao";
-        private StreamWriter writer = null;
+        private Task exchangeTask;
         private StreamReader reader = null;
 
-        private bool connected;
+        private bool exchanging = false;
+        private bool exchangeStopRequested = false;
+        private string lastPacket = null;
 #endif
 
     void Start ()
@@ -34,76 +34,125 @@ public class UWPSocketClient : MonoBehaviour {
         Invoke("Connect", 7f);		
 	}
 
-    public void Connect()
+    void Update()
     {
 #if !UNITY_EDITOR
-        Task.Run(async () => {
-            try
-            {
-                socket = new StreamSocket();
-                await socket.ConnectAsync(new HostName(ip), port);
-                writer = new StreamWriter(socket.OutputStream.AsStreamForWrite());
-                reader = new StreamReader(socket.InputStream.AsStreamForRead());
-                connected = true;
-                text.text = "connesso!";
-                //await Send("ciao");
-                await Receive();
-                
-            }
-            catch(Exception e)
-            {
-                text.text = e.Message;
-            }
-        });
-#endif
-    }
 
-#if !UNITY_EDITOR
-        public async Task Send(string message)
+        /*
+        if (reader != null)
         {
             try
             {
-                await writer.WriteAsync(message);
-                await writer.FlushAsync();
-                text.text = "Sent message: " + message;
+                string messageReceived;
+                messageReceived = reader.ReadLine();
+                text.text = messageReceived;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-               text.text = e.Message;
+                text.text = e.ToString();
             }
         }
+        */
 #endif
+    }
 
+    void Connect()
+    {
+#if !UNITY_EDITOR
+        ConnectUWP();
+#endif
+    }
 
 #if !UNITY_EDITOR
-    private async Task Receive()
+    private async void ConnectUWP() 
     {
-            int i=0;
+        try
+        {        
+            socket = new StreamSocket();
+            HostName serverHost = new HostName(ip);
+            await socket.ConnectAsync(serverHost, port);        
+            Stream streamIn = socket.InputStream.AsStreamForRead();
+            reader = new StreamReader(streamIn);          
+            text.text = "Connesso al server!";
+            //exchangeTask = Task.Run(() => ExchangePackets());
 
-            while (true)
-            {
-                text.text = "tentativo " + i;
-                try
-                {
-                    char[] buffer = new char[250];
-                    int bytes = await reader.ReadAsync(buffer, 0, buffer.Length);
-
-                    if (bytes > 0)
-                    {
-                        string result = new string(buffer, 0, bytes);
-                        message = result;
-
-                        text.text = "Received: " + message;
-                    }
-                }
-                catch (Exception e)
-                {
-                    text.text = e.Message;
-                }
-
-                i++;
-            }
+            RestartExchange();
+        }
+        catch (Exception e)
+        {
+            text.text = e.ToString();
+        }
     }
 #endif
+
+    public void ExchangePackets()
+    {
+#if !UNITY_EDITOR
+        text.text = "In attesa di messaggi...";
+
+        try
+        { 
+            while (!exchangeStopRequested)
+            {
+                if (reader == null) continue;
+                exchanging = true;
+
+                string received = null;
+                received = reader.ReadLine();
+                text.text = received;
+
+                exchanging = false;
+            }
+        }
+        catch (Exception e)
+        {
+            text.text = e.ToString();
+        }
+
+#endif
+    }
+
+    public void RestartExchange()
+    {
+#if !UNITY_EDITOR
+        try
+        { 
+            if (exchangeTask != null) 
+                StopExchange();
+            exchangeStopRequested = false;
+            text.text = "quasi...";
+            exchangeTask = Task.Run(() => ExchangePackets());
+        }
+        catch (Exception e)
+        {
+            text.text = e.ToString();
+        }
+#endif
+    }
+
+
+    public void StopExchange()
+    {
+#if !UNITY_EDITOR
+        try
+        { 
+            exchangeStopRequested = true;
+      
+            if (exchangeTask != null) 
+            {
+                exchangeTask.Wait();
+                socket.Dispose();
+                reader.Dispose();
+                socket = null;
+                exchangeTask = null;
+                reader = null;
+            }
+        }
+        catch (Exception e)
+        {
+            text.text = e.ToString();
+        }
+#endif
+    }
 
 }
