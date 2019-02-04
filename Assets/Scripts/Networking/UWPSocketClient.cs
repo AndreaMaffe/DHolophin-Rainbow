@@ -14,11 +14,10 @@ using UnityEngine.UI;
 
 public class UWPSocketClient : MonoBehaviour {
 
-    private Text text;
 
 #if !UNITY_EDITOR
         private StreamSocket socket;
-        private String ip = "192.168.0.140";
+        private String ip = "192.168.0.173";
         private String port = "60000";
         private Task exchangeTask;
         private StreamReader reader = null;
@@ -30,14 +29,12 @@ public class UWPSocketClient : MonoBehaviour {
 
     void Start ()
     {
-        text = GameObject.Find("DEBUG_TEXT").GetComponent<Text>();
-        Invoke("Connect", 7f);		
-	}
+        Invoke("Connect", 7f);
+        Debug.Log("Tentativo di connessione avviato!");
+    }
 
     void Update()
     {
-
-        text.text = GameManager.stringa;
 
 
 #if !UNITY_EDITOR
@@ -74,15 +71,15 @@ public class UWPSocketClient : MonoBehaviour {
         {        
             socket = new StreamSocket();
             HostName serverHost = new HostName(ip);
-            await socket.ConnectAsync(serverHost, port);        
+            await socket.ConnectAsync(serverHost, port);              
             Stream streamIn = socket.InputStream.AsStreamForRead();
             reader = new StreamReader(streamIn);          
-            text.text = "Connesso al server!";
+            Debug.Log("Connesso al server!");
             RestartExchange();
         }
         catch (Exception e)
         {
-            text.text = e.ToString();
+            Debug.Log(e.Message);
         }
     }
 #endif
@@ -90,9 +87,8 @@ public class UWPSocketClient : MonoBehaviour {
     public void ExchangePackets()
     {
 #if !UNITY_EDITOR
-        text.text = "In attesa di messaggi...";
         GameManager.stringa = "working";
-
+        Debug.Log("Entro nel loop");
         try
         { 
             while (!exchangeStopRequested)
@@ -102,14 +98,13 @@ public class UWPSocketClient : MonoBehaviour {
 
                 string received = null;
                 received = reader.ReadLine();
-                text.text = received;
-
+                Debug.Log(received);
                 exchanging = false;
             }
         }
         catch (Exception e)
         {
-            text.text = e.ToString();
+            Debug.Log(e.Message);
         }
 
 #endif
@@ -127,7 +122,7 @@ public class UWPSocketClient : MonoBehaviour {
         }
         catch (Exception e)
         {
-            text.text = e.ToString();
+            Debug.Log(e.Message);
         }
 #endif
     }
@@ -152,7 +147,7 @@ public class UWPSocketClient : MonoBehaviour {
         }
         catch (Exception e)
         {
-            text.text = e.ToString();
+            Debug.Log(e.Message);
         }
 #endif
     }

@@ -67,7 +67,6 @@ public class DolphinManager : MonoBehaviour
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
-        text.text = "Im starting the Unity server!";
 
         Invoke("connect", 4f);
         //StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.yellow, dolphinIpAddr));
@@ -144,11 +143,10 @@ public class DolphinManager : MonoBehaviour
                 messageWebSocket.Control.MessageType = SocketMessageType.Utf8;
                 messageWebSocket.MessageReceived += MessageReceived;
                 await messageWebSocket.ConnectAsync(uri);
-                text.text = "CONNESSO!";
             }
             catch (Exception e) // For debugging
             {
-                text.text = e.Message;
+                Debug.Log(e.Message);
             }
             */
     }
@@ -171,7 +169,7 @@ public class DolphinManager : MonoBehaviour
                     text.text = "RECEIVED: " + reader.ReadString(actualStringLength);
 
                 }
-            } catch(Exception e) { text.text = e.Message; }
+            } catch(Exception e) { Debug.Log(e.Message); }
             */
 
             //reader.ReadToEnd();  per leggere 
@@ -189,7 +187,7 @@ public class DolphinManager : MonoBehaviour
 
                 writer.WriteBytes(data);
                 await writer.StoreAsync();
-               text.text = "Sent: " + message;
+                Debug.Log("SENT: " + message);
             }
         }
     }
@@ -216,11 +214,6 @@ public class DolphinManager : MonoBehaviour
         }
     }
 
-    void SetDebugText()
-    {
-        text = GameObject.Find("DEBUG_TEXT").GetComponent<Text>();
-    }
-
     private void connect()
     {
         StartCoroutine(HttpMessage.SendHttpChange(unityIpAddr, unityPort, dolphinIpAddr));
@@ -232,12 +225,12 @@ public class DolphinManager : MonoBehaviour
     private void Socket_MessageReceived(Windows.Networking.Sockets.DatagramSocket sender,
         Windows.Networking.Sockets.DatagramSocketMessageReceivedEventArgs args)
     {
-        text.text = "Messaggio ricevuto!";
+ 
     }
 
      private void MessageReceived(MessageWebSocket sender, MessageWebSocketMessageReceivedEventArgs args)
         {
-           text.text = "messaggio ricevuto";
+            Debug.Log("Messaggio ricevuto");   
         }
 
 
