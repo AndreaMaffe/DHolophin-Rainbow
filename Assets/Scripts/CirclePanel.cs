@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HoloToolkit.Unity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class CirclePanel : MonoBehaviour {
         numberOfCircles = GameManager.instance.NumberOfCircles;
         GameManager.instance.circlePanel = this;
         CreateCircles(numberOfCircles);
+        GetComponent<SphereBasedTagalong> ().SphereRadius = GetComponent<SphereBasedTagalong>().SphereRadius * GameManager.instance.NumberOfCircles / 3;
 	}
 
     private void CreateCircles(int numberOfCircles)
