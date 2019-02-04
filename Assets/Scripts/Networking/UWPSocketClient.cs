@@ -17,10 +17,10 @@ public class UWPSocketClient : MonoBehaviour {
 
 #if !UNITY_EDITOR
         private StreamSocket socket;
-        private String ip = "192.168.0.173";
+        private String ip = "192.168.0.140";
         private String port = "60000";
         private Task exchangeTask;
-        private StreamReader reader = null;
+        private BinaryReader reader = null;
 
         private bool exchanging = false;
         private bool exchangeStopRequested = false;
@@ -29,33 +29,11 @@ public class UWPSocketClient : MonoBehaviour {
 
     void Start ()
     {
-        Invoke("Connect", 7f);
-        Debug.Log("Tentativo di connessione avviato!");
+        //Invoke("Connect", 7f);
+        //Debug.Log("Tentativo di connessione avviato!");
     }
 
-    void Update()
-    {
-
-
-#if !UNITY_EDITOR
-
-        /*
-        if (reader != null)
-        {
-            try
-            {
-                string messageReceived;
-                messageReceived = reader.ReadLine();
-                text.text = messageReceived;
-            }
-            catch (Exception e)
-            {
-                text.text = e.ToString();
-            }
-        }
-        */
-#endif
-    }
+  
 
     void Connect()
     {
@@ -73,7 +51,7 @@ public class UWPSocketClient : MonoBehaviour {
             HostName serverHost = new HostName(ip);
             await socket.ConnectAsync(serverHost, port);              
             Stream streamIn = socket.InputStream.AsStreamForRead();
-            reader = new StreamReader(streamIn);          
+            reader = new BinaryReader(streamIn);          
             Debug.Log("Connesso al server!");
             RestartExchange();
         }
@@ -96,9 +74,9 @@ public class UWPSocketClient : MonoBehaviour {
                 if (reader == null) continue;
                 exchanging = true;
 
-                string received = null;
-                received = reader.ReadLine();
-                Debug.Log(received);
+                byte[] received = reader.ReadBytes(100);
+                String message = System.Text.Encoding.UTF8.GetString(received);
+                Debug.Log("RECEIVED: " + message);
                 exchanging = false;
             }
         }

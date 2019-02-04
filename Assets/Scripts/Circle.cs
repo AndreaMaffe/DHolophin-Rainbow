@@ -46,13 +46,9 @@ public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
         active = value;
     }
 
+    //called when user clicks on the circle
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        if (active && focused)
-        {
-            AudioManager.PlayPop1();
-            SetColor(InputHandler.CurrentColor);
-            circlePanel.OnCircleColored(this, InputHandler.CurrentColor);
-        }
+        OnColorSubmitted();
     }
 }
