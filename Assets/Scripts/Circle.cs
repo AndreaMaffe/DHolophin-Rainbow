@@ -21,7 +21,7 @@ public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
         {
             AudioManager.instance.PlayPop1();
             SetColor(InputHandler.instance.CurrentColor);
-            circlePanel.OnCircleColored(this, InputHandler.instance.CurrentColor);
+            GameManager.instance.OnCircleColored(this, InputHandler.instance.CurrentColor);
         }
     }
 

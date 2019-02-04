@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour
     public Color[] PossibleColors { get; private set; }
     //actual combination
     public Color[] ColorCombination { get; private set; }
+    //player combination
+    private Color[] playerGuess;  
+
+    public Dolphin dolphin;
+    public CirclePanel circlePanel;
 
     void Awake()
     {
@@ -50,17 +55,62 @@ public class GameManager : MonoBehaviour
         LoadScene(2);
 
         //initialize game data
+        playerGuess = new Color[NumberOfCircles];
         PossibleColors = new Color[NumberOfColors];
         for (int i = 0; i < NumberOfColors; i++)
             PossibleColors[i] = allColors[i];
+
         GenerateNewColorsCombination();
     }
 
-    public void LoadScene (int sceneNumber)
+    public void PlayAGame()
+    {
+        //set player guess to default gray
+        for (int i = 0; i < NumberOfCircles; i++)
+            playerGuess[i] = Color.gray;
+
+        Invoke("ShowCombination", 2f);
+        Invoke("SwitchCirclesOff", 2 + GameManager.instance.TimeOn);
+        circlePanel.SetCirclesActive(true);
+    }
+
+    //called when player submits one color to a circle
+    public void OnCircleColored(Circle circle, Color circleColor)
+    {
+        //insert player choice in the combination
+        int index = Array.IndexOf(circlePanel.Circles, circle);
+        playerGuess[index] = circleColor;
+
+        //check if all the circles are colored
+        bool allCirclesAreColored = true;
+
+        for (int i = 0; i < NumberOfCircles; i++)
+            if (playerGuess[i] == Color.gray)
+                allCirclesAreColored = false;
+
+        //if so, check if the combination is correct
+        if (allCirclesAreColored)
+        {
+            CheckPlayerGuess(playerGuess);
+            circlePanel.SetCirclesActive(false);
+        }
+    }
+
+        public void LoadScene (int sceneNumber)
     {
         SceneManager.LoadScene(sceneNumber);
         GameObject.Find("MixedRealityCameraParent").transform.Find("MixedRealityCamera").rotation = Quaternion.identity;
         GameObject.Find("MixedRealityCameraParent").transform.Find("MixedRealityCamera").position = Vector3.zero;
+    }
+
+    public void ShowCombination()
+    {
+        circlePanel.SwitchCirclesOn(ColorCombination);
+    }
+
+    public void SwitchCirclesOff()
+    {
+        circlePanel.SwitchCirclesOff();
     }
 
     public void GenerateNewColorsCombination()
@@ -73,7 +123,7 @@ public class GameManager : MonoBehaviour
     }
 
     //return true if the guess corresponds to the combination, false otherwise
-    public bool CheckPlayerGuess(Color[] playerGuess)
+    public void CheckPlayerGuess(Color[] playerGuess)
     {
         bool guessIsCorrect = true;
 
@@ -84,20 +134,26 @@ public class GameManager : MonoBehaviour
         if (guessIsCorrect)
         {
             AudioManager.instance.PlayCorrectAnswerSound();
+            GenerateNewColorsCombination();
+            dolphin.SetHappySprite();
             ShootFireworks();
-            return true;
+            Invoke("SwitchCirclesOff", 5f);
+            Invoke("PlayAGame", 4f);
         }
 
         else
         {
             AudioManager.instance.PlayWrongAnswerSound();
-            return false;
+            dolphin.SetAngrySprite();
+            Invoke("SwitchCirclesOff", 1f);
+            Invoke("PlayAGame", 0.5f);
         }
+
     }
 
     public void ShootFireworks()
     {
-        Instantiate(Resources.Load<GameObject>("Prefabs/Fireworks"));
+        Instantiate(Resources.Load<GameObject>("Prefabs/Fireworks"), new Vector3(circlePanel.transform.position.x, circlePanel.transform.position.y +1, circlePanel.transform.position.z +2), Quaternion.identity);
         AudioManager.instance.PlayFireworksSound();
     }
 }

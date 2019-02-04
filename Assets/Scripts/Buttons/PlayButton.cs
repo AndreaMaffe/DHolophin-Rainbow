@@ -23,7 +23,7 @@ public class PlayButton : FocusableButton, IInputClickHandler
 
         if (text.text == "PLAY!")
         {
-            circlePanel.PlayGame();
+            GameManager.instance.PlayAGame();
             text.text = "STOP";
         }
 

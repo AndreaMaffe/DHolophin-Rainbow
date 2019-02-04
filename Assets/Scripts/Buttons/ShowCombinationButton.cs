@@ -22,7 +22,7 @@ public class ShowCombinationButton : FocusableButton, HoloToolkit.Unity.InputMod
         if (text.text == "Show combination")
         {
             circlePanel.SetCirclesActive(false);
-            circlePanel.ShowCombination();
+            GameManager.instance.ShowCombination();
             text.text = "Hide combination";
         }
 

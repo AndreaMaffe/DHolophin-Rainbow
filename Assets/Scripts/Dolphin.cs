@@ -14,18 +14,21 @@ public class Dolphin : MonoBehaviour
         happySprite = Resources.Load<Sprite>("Sprites/DolphinHappy");
         angrySprite = Resources.Load<Sprite>("Sprites/DolphinAngry");
         defaultSprite = Resources.Load<Sprite>("Sprites/DolphinDefault");
+
+        GameManager.instance.dolphin = this;
     }
 
     public void SetHappySprite()
     {
         spriteRenderer.sprite = happySprite;
-        Invoke("SetDefaultSprite", 1f);
+        Invoke("SetDefaultSprite", 5f);
+
     }
 
     public void SetAngrySprite()
     {
         spriteRenderer.sprite = angrySprite;
-        Invoke("SetAngrySprite", 1f);
+        Invoke("SetDefaultSprite", 1.5f);
     }
 
     public void SetDefaultSprite()

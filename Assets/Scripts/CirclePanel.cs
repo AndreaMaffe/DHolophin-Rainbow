@@ -7,23 +7,21 @@ public class CirclePanel : MonoBehaviour {
 
     private RectTransform rectTransform;
     private int numberOfCircles;
-    private Color[] colorCombination; //combination to guess
-    private Color[] playerGuess;  //player combination
-    private Circle[] circles;
-    private GameObject dolphin;
+    public Circle[] Circles { get; private set; }
+    public GameObject dolphin;
 
 	// Use this for initialization
 	void Start ()
     {
         rectTransform = transform.Find("Panel").GetComponent<RectTransform>();
         numberOfCircles = GameManager.instance.NumberOfCircles;
-        playerGuess = new Color[numberOfCircles];
+        GameManager.instance.circlePanel = this;
         CreateCircles(numberOfCircles);
 	}
 
     private void CreateCircles(int numberOfCircles)
     {
-        circles = new Circle[numberOfCircles];
+        Circles = new Circle[numberOfCircles];
 
         //scale the panel according to the number of circles
         float unit = rectTransform.localScale.x;
@@ -37,7 +35,7 @@ public class CirclePanel : MonoBehaviour {
             //generate circle and add it to the list
             GameObject circle = Instantiate(Resources.Load<GameObject>("Prefabs/Circle"), newCirclePosition, Quaternion.identity);
             circle.transform.parent = this.transform;
-            circles[i] = circle.GetComponent<Circle>();
+            Circles[i] = circle.GetComponent<Circle>();
         }
 
         //create the dolphin, scale it and add it as child
@@ -50,72 +48,25 @@ public class CirclePanel : MonoBehaviour {
     }
 
     //color circles with the actual combination
-    public void ShowCombination()
+    public void SwitchCirclesOn(Color[] colorCombination)
     {
         for (int i = 0; i < numberOfCircles; i++) 
-            circles[i].SetColor(colorCombination[i]);
+            Circles[i].SetColor(colorCombination[i]);
     }
 
     //set circles to default grey color
     public void SwitchCirclesOff()
     {
         for (int i = 0; i < numberOfCircles; i++)
-            circles[i].SetColor(Color.grey);
+            Circles[i].SetColor(Color.grey);
     }
 
     //mark the circles as active
     public void SetCirclesActive(bool value)
     {
         for (int i = 0; i < numberOfCircles; i++)
-            circles[i].SetActive(value);
+            Circles[i].SetActive(value);
     }
-
-    //set up the game
-    public void PlayGame()
-    {
-        //get actual combination from GameManager
-        colorCombination = GameManager.instance.ColorCombination;
-
-        //set player guess to default gray
-        for (int i = 0; i < numberOfCircles; i++)
-            playerGuess[i] = Color.gray;
-
-        Invoke("ShowCombination", 2f);
-        Invoke("SwitchCirclesOff", 2 + GameManager.instance.TimeOn);
-        SetCirclesActive(true);        
-    }
-
-    //called when player submits one color to a circle
-    public void OnCircleColored(Circle circle, Color circleColor)
-    {
-        //insert player choice in the combination
-        int index = Array.IndexOf(circles, circle);
-        playerGuess[index] = circleColor;
-
-        //check if all the circles are colored
-        bool allCirclesAreColored = true;
-
-        for (int i = 0; i < numberOfCircles; i++)
-            if (playerGuess[i] == Color.gray)
-                allCirclesAreColored = false;
-
-        //if so, check if the combination is correct
-        if (allCirclesAreColored)
-        {
-            SetCirclesActive(false);
-            Invoke("SwitchCirclesOff", 1f);
-            if (GameManager.instance.CheckPlayerGuess(playerGuess))
-            {
-                GameManager.instance.GenerateNewColorsCombination();
-                dolphin.GetComponent<Dolphin>().SetHappySprite();
-            }
-            else
-                dolphin.GetComponent<Dolphin>().SetAngrySprite();
-
-            PlayGame();
-        }
-    }
-
 
 
 }
