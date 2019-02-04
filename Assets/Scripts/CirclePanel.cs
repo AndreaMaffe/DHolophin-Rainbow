@@ -16,7 +16,7 @@ public class CirclePanel : MonoBehaviour {
 	void Start ()
     {
         rectTransform = transform.Find("Panel").GetComponent<RectTransform>();
-        numberOfCircles = GameManager.NumberOfCircles;
+        numberOfCircles = GameManager.instance.NumberOfCircles;
         playerGuess = new Color[numberOfCircles];
         CreateCircles(numberOfCircles);
 	}
@@ -81,7 +81,7 @@ public class CirclePanel : MonoBehaviour {
             playerGuess[i] = Color.gray;
 
         Invoke("ShowCombination", 2f);
-        Invoke("SwitchCirclesOff", 2 + GameManager.TimeOn);
+        Invoke("SwitchCirclesOff", 2 + GameManager.instance.TimeOn);
         SetCirclesActive(true);        
     }
 
@@ -104,9 +104,9 @@ public class CirclePanel : MonoBehaviour {
         {
             SetCirclesActive(false);
             Invoke("SwitchCirclesOff", 1f);
-            if (GameManager.CheckPlayerGuess(playerGuess))
+            if (GameManager.instance.CheckPlayerGuess(playerGuess))
             {
-                GameManager.GenerateNewColorsCombination();
+                GameManager.instance.GenerateNewColorsCombination();
                 dolphin.GetComponent<Dolphin>().SetHappySprite();
             }
             else

@@ -29,7 +29,7 @@ public class PanelNumberButton : FocusableButton, HoloToolkit.Unity.InputModule.
     //called when player clicks on the button
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        AudioManager.PlayPop1();
+        AudioManager.instance.PlayPop1();
 
         Number++;
         if (Number > maxNumber)

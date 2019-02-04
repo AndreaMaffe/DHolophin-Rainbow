@@ -7,32 +7,38 @@ public enum GameMode { MANUAL, AUTOMATIC }
 
 public class GameManager : MonoBehaviour
 {
-    private static GameObject dolphinManager;
-    private static GameObject inputHandler;
+    public static GameManager instance = null;
 
-    public static GameMode Mode { get; private set; }
+    public GameMode Mode { get; private set; }
 
-    public static string stringa = "not working!";
-
-    public static int NumberOfCircles { get; private set; }
-    public static int NumberOfColors { get; private set; }
-    public static float TimeOn { get; private set; }
+    public int NumberOfCircles { get; private set; } 
+    public int NumberOfColors { get; private set; }
+    public float TimeOn { get; private set; } //time given to the player to memorize the combination
 
     //all possible colors for all games
-    private static Color[] allColors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow, Color.cyan, Color.white };
+    public Color[] allColors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow, Color.cyan, Color.white };
     //all possible color for this game
-    public static Color[] PossibleColors { get; private set; }
+    public Color[] PossibleColors { get; private set; }
     //actual combination
-    public static Color[] ColorCombination { get; private set; }
+    public Color[] ColorCombination { get; private set; }
 
-    // Use this for initialization
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(this.gameObject);
+
+        DontDestroyOnLoad(this);
+    }
+
     void Start ()
     {
         DontDestroyOnLoad(this);
-        AudioManager.PlayBackgroundMusic();
+        AudioManager.instance.PlayBackgroundMusic();
     }
 
-    public static void StartNewGame()
+    public void StartNewGame()
     {
         Mode = GameMode.MANUAL;
         //get game parameters from the panel
@@ -48,21 +54,16 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < NumberOfColors; i++)
             PossibleColors[i] = allColors[i];
         GenerateNewColorsCombination();
-
-        if (dolphinManager == null)
-            dolphinManager = Instantiate(Resources.Load<GameObject>("Prefabs/DolphinManager"));
-        if (inputHandler == null)
-            inputHandler = Instantiate(Resources.Load<GameObject>("Prefabs/InputHandler"));
     }
 
-    public static void LoadScene (int sceneNumber)
+    public void LoadScene (int sceneNumber)
     {
         SceneManager.LoadScene(sceneNumber);
         GameObject.Find("MixedRealityCameraParent").transform.Find("MixedRealityCamera").rotation = Quaternion.identity;
         GameObject.Find("MixedRealityCameraParent").transform.Find("MixedRealityCamera").position = Vector3.zero;
     }
 
-    public static void GenerateNewColorsCombination()
+    public void GenerateNewColorsCombination()
     {
         ColorCombination = new Color[NumberOfCircles];
 
@@ -72,7 +73,7 @@ public class GameManager : MonoBehaviour
     }
 
     //return true if the guess corresponds to the combination, false otherwise
-    public static bool CheckPlayerGuess(Color[] playerGuess)
+    public bool CheckPlayerGuess(Color[] playerGuess)
     {
         bool guessIsCorrect = true;
 
@@ -82,21 +83,21 @@ public class GameManager : MonoBehaviour
 
         if (guessIsCorrect)
         {
-            AudioManager.PlayCorrectAnswerSound();
+            AudioManager.instance.PlayCorrectAnswerSound();
             ShootFireworks();
             return true;
         }
 
         else
         {
-            AudioManager.PlayWrongAnswerSound();
+            AudioManager.instance.PlayWrongAnswerSound();
             return false;
         }
     }
 
-    public static void ShootFireworks()
+    public void ShootFireworks()
     {
         Instantiate(Resources.Load<GameObject>("Prefabs/Fireworks"));
-        AudioManager.PlayFireworksSound();
+        AudioManager.instance.PlayFireworksSound();
     }
 }

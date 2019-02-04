@@ -19,19 +19,22 @@ using UnityEngine.UI;
 
 public class DolphinManager : MonoBehaviour
 {
-    private Text text;
-    private static string dolphinIpAddr = "192.168.0.125"; //177 per Phil 125 per il cartone
-    private static string holoLensIpAddr = "192.168.0.147";
-    private static int holoLensPort = 9000;
-    private static string unityIpAddr = "192.168.0.173";
-    private static int unityPort = 60000;
+    private static DolphinManager instance = null;
+
+    private string dolphinIpAddr = "192.168.0.125"; //177 per Phil 125 per il cartone
     private Stack<SamEvents> eventStack;
 
 #if UNITY_EDITOR
     private HttpListener _listener;
+    private string unityIpAddr = "192.168.0.173";
+    private int unityPort = 60000;
 #endif
 
 #if !UNITY_EDITOR
+
+        private string holoLensIpAddr = "192.168.0.147";
+        private int holoLensPort = 9000;
+
         private StreamSocket socket;
         private static String serverIp = "192.168.0.140";
         private static int serverPort = 60000;
@@ -43,8 +46,20 @@ public class DolphinManager : MonoBehaviour
         private string lastPacket = null;
 #endif
 
+
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(this.gameObject);
+
+        DontDestroyOnLoad(this);
+    }
+
     void Start()
     {
+        StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.instance.CurrentColor, dolphinIpAddr));
         eventStack = new Stack<SamEvents>();
         Debug.Log("Tentativo di connessione avviato!");
 
@@ -62,23 +77,14 @@ public class DolphinManager : MonoBehaviour
             HandleDolphinEvent(eventStack.Pop());
     }        
 
-
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
-
         Invoke("connect", 4f);
-        StartCoroutine(HttpMessage.SendSingleColorAllLeds(Color.yellow, dolphinIpAddr));
-
-        
         _listener = new HttpListener();
         _listener.Prefixes.Add("http://+:" + unityPort.ToString() + "/");
-
-        _listener.Start();
-        
-        _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);
-        
-        
+        _listener.Start();        
+        _listener.BeginGetContext(new AsyncCallback(ListenerCallback), _listener);      
     }
 
     private void ListenerCallback(IAsyncResult result)
@@ -220,13 +226,16 @@ public class DolphinManager : MonoBehaviour
         {
             switch (samEvent.events[0].val)
             {
-                case "1": InputHandler.OnNextColor();
-                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
+                case "1": InputHandler.instance.OnNextColor();
+                          Debug.Log("Next Color!");
+                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.instance.CurrentColor, dolphinIpAddr));
                     break;
-                case "2": InputHandler.OnPreviousColor();
-                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.CurrentColor, dolphinIpAddr));
+                case "2": InputHandler.instance.OnPreviousColor();
+                          Debug.Log("Previous Color!");
+                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.instance.CurrentColor, dolphinIpAddr));
                     break;
-                case "5": InputHandler.SubmitColor();
+                case "5": InputHandler.instance.SubmitColor();
+                          Debug.Log("Submit Color!");
                     break;
             }
         }

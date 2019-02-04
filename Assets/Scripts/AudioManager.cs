@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    private static AudioClip backgroundMusic;
-    private static AudioClip correctAnswerSound;
-    private static AudioClip wrongAnswerSound;
-    private static AudioClip pop1;
-    private static AudioClip pop2;
-    private static AudioClip fireworks;
+    public static AudioManager instance = null;
 
-    private static AudioSource audioSource;
+    private AudioClip backgroundMusic;
+    private AudioClip correctAnswerSound;
+    private AudioClip wrongAnswerSound;
+    private AudioClip pop1;
+    private AudioClip pop2;
+    private AudioClip fireworks;
+
+    private AudioSource audioSource;
+
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(this.gameObject);
+
+        DontDestroyOnLoad(this);
+    }
 
     private void Start()
     {
@@ -27,36 +39,34 @@ public class AudioManager : MonoBehaviour
         audioSource.clip = backgroundMusic;
         audioSource.volume = 0.4f;
         audioSource.loop = true;
-
-        DontDestroyOnLoad(this.gameObject);
     }
 
-    public static void PlayBackgroundMusic()
+    public void PlayBackgroundMusic()
     {
         audioSource.Play();
     }
 
-    public static void PlayCorrectAnswerSound()
+    public void PlayCorrectAnswerSound()
     {
         audioSource.PlayOneShot(correctAnswerSound, 1f);
     }
 
-    public static void PlayWrongAnswerSound()
+    public void PlayWrongAnswerSound()
     {
         audioSource.PlayOneShot(wrongAnswerSound, 1f);
     }
 
-    public static void PlayPop1()
+    public void PlayPop1()
     {
         audioSource.PlayOneShot(pop1, 1f);
     }
 
-    public static void PlayPop2()
+    public void PlayPop2()
     {
         audioSource.PlayOneShot(pop2, 1f);
     }
 
-    public static void PlayFireworksSound()
+    public void PlayFireworksSound()
     {
         audioSource.PlayOneShot(fireworks, 5f);
     }

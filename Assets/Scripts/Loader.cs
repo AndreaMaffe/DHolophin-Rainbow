@@ -5,19 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class Loader : MonoBehaviour {
 
-    private GameObject GameManager;
+    public GameObject GameManager;
+    public GameObject AudioManager;
+    public GameObject InputHandler;
 
 	// Use this for initialization
 	void Start ()
     {
-        GameManager = Resources.Load<GameObject>("Prefabs/GameManager");
         Instantiate(GameManager);
+        Instantiate(AudioManager);
+        Instantiate(InputHandler);
+
         SceneManager.LoadScene(1);
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
 	}
 }

@@ -5,61 +5,67 @@ using UnityEngine;
 
 public class InputHandler : MonoBehaviour {
 
+    public static InputHandler instance = null;
+
     public delegate void ColorSubmittedEvent();
-    public static event ColorSubmittedEvent OnColorSubmitted;
-    public static Color CurrentColor { get; private set; }
+    public event ColorSubmittedEvent OnColorSubmitted;
+    public Color CurrentColor { get; private set; }
 
     private float timer;
 
-    // Use this for initialization
-    void Start ()
+    void Awake ()
     {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(this.gameObject);
+
         DontDestroyOnLoad(this);
-        CurrentColor = GameManager.PossibleColors[0];
-        timer = GameManager.TimeOn;
+        CurrentColor = GameManager.instance.allColors[0];
+        timer = GameManager.instance.TimeOn;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown("r") && GameManager.Mode == GameMode.MANUAL)
+        if (Input.GetKeyDown("r") && GameManager.instance.Mode == GameMode.MANUAL)
             CurrentColor = Color.red;
 
-        if (Input.GetKeyDown("g") && GameManager.Mode == GameMode.MANUAL)
+        if (Input.GetKeyDown("g") && GameManager.instance.Mode == GameMode.MANUAL)
             CurrentColor = Color.green;
 
-        if (Input.GetKeyDown("b") && GameManager.Mode == GameMode.MANUAL)
+        if (Input.GetKeyDown("b") && GameManager.instance.Mode == GameMode.MANUAL)
             CurrentColor = Color.blue;
 
-        if (Input.GetKeyDown("w") && GameManager.Mode == GameMode.MANUAL)
+        if (Input.GetKeyDown("w") && GameManager.instance.Mode == GameMode.MANUAL)
             CurrentColor = Color.white;
 
-        if (Input.GetKeyDown("c") && GameManager.Mode == GameMode.MANUAL)
+        if (Input.GetKeyDown("c") && GameManager.instance.Mode == GameMode.MANUAL)
             CurrentColor = Color.cyan;
 
-        if (Input.GetKeyDown("y") && GameManager.Mode == GameMode.MANUAL)
+        if (Input.GetKeyDown("y") && GameManager.instance.Mode == GameMode.MANUAL)
             CurrentColor = Color.yellow;
 
-        if (Input.GetKeyDown("l") && GameManager.Mode == GameMode.MANUAL)
+        if (Input.GetKeyDown("l") && GameManager.instance.Mode == GameMode.MANUAL)
             OnNextColor();
 
-        if (Input.GetKeyDown("k") && GameManager.Mode == GameMode.MANUAL)
+        if (Input.GetKeyDown("k") && GameManager.instance.Mode == GameMode.MANUAL)
             OnPreviousColor();
 
         if (Input.GetKeyDown(KeyCode.Space))
             OnColorSubmitted();
 
-        if (GameManager.Mode == GameMode.AUTOMATIC)
+        if (GameManager.instance.Mode == GameMode.AUTOMATIC)
         {
             timer -= Time.deltaTime;
             if (timer < 0)
             {
                 OnNextColor();
-                timer = GameManager.TimeOn;
+                timer = GameManager.instance.TimeOn;
             }
         }
     }
 
-    public static void OnNextColor()
+    public void OnNextColor()
     {
         try
         {
@@ -69,7 +75,7 @@ public class InputHandler : MonoBehaviour {
         Debug.Log("New color selected: " + CurrentColor.ToString());
     }
 
-    public static void OnPreviousColor()
+    public void OnPreviousColor()
     {
         try
         {
@@ -79,7 +85,7 @@ public class InputHandler : MonoBehaviour {
         Debug.Log("New color selected: " + CurrentColor.ToString());
     }
 
-    public static void SubmitColor()
+    public void SubmitColor()
     {
         OnColorSubmitted();
     }

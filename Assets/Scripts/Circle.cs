@@ -11,7 +11,7 @@ public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
 
     void Start()
     {
-        InputHandler.OnColorSubmitted += OnColorSubmitted;
+        InputHandler.instance.OnColorSubmitted += OnColorSubmitted;
         circlePanel = transform.parent.GetComponent<CirclePanel>();
     }
 
@@ -19,9 +19,9 @@ public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
     {
         if (active && focused)
         {
-            AudioManager.PlayPop1();
-            SetColor(InputHandler.CurrentColor);
-            circlePanel.OnCircleColored(this, InputHandler.CurrentColor);
+            AudioManager.instance.PlayPop1();
+            SetColor(InputHandler.instance.CurrentColor);
+            circlePanel.OnCircleColored(this, InputHandler.instance.CurrentColor);
         }
     }
 

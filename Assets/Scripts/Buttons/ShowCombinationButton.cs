@@ -17,7 +17,7 @@ public class ShowCombinationButton : FocusableButton, HoloToolkit.Unity.InputMod
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        AudioManager.PlayPop2();
+        AudioManager.instance.PlayPop2();
 
         if (text.text == "Show combination")
         {

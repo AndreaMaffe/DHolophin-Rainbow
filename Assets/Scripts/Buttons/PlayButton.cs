@@ -19,7 +19,7 @@ public class PlayButton : FocusableButton, IInputClickHandler
     //called when plaer click on the button
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        AudioManager.PlayPop2();
+        AudioManager.instance.PlayPop2();
 
         if (text.text == "PLAY!")
         {
