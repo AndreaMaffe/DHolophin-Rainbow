@@ -43,8 +43,6 @@ public class DolphinManager : MonoBehaviour
         private string lastPacket = null;
 #endif
 
-
-
     void Start()
     {
         eventStack = new Stack<SamEvents>();
@@ -157,11 +155,9 @@ public class DolphinManager : MonoBehaviour
                 byte[] received = reader.ReadBytes(100);
                 String message = System.Text.Encoding.UTF8.GetString(received);
 
-
                 SamEvents samEvents = new SamEvents();
                 samEvents = JsonUtility.FromJson<SamEvents>(message);
                 eventStack.Push(samEvents);
-
 
                 Debug.Log("RECEIVED: " + message);
                 exchanging = false;

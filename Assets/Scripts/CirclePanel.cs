@@ -88,8 +88,6 @@ public class CirclePanel : MonoBehaviour {
     //called when player submits one color to a circle
     public void OnCircleColored(Circle circle, Color circleColor)
     {
-        dolphin.GetComponent<Dolphin>().SetHappySprite();
-
         //insert player choice in the combination
         int index = Array.IndexOf(circles, circle);
         playerGuess[index] = circleColor;
@@ -107,7 +105,13 @@ public class CirclePanel : MonoBehaviour {
             SetCirclesActive(false);
             Invoke("SwitchCirclesOff", 1f);
             if (GameManager.CheckPlayerGuess(playerGuess))
+            {
                 GameManager.GenerateNewColorsCombination();
+                dolphin.GetComponent<Dolphin>().SetHappySprite();
+            }
+            else
+                dolphin.GetComponent<Dolphin>().SetAngrySprite();
+
             PlayGame();
         }
     }
