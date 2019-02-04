@@ -200,9 +200,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9ac244826c6f64e9518d6ded4b8ffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameManager: {fileID: 1682214805213188, guid: 6758b2e605f6a1547a2b1d9639d74014,
+  GameManager: {fileID: 1572139309486958, guid: 96bc701bbda410646b4ad1a060711d06,
     type: 2}
-  AudioManager: {fileID: 1572139309486958, guid: 96bc701bbda410646b4ad1a060711d06,
+  AudioManager: {fileID: 1682214805213188, guid: 6758b2e605f6a1547a2b1d9639d74014,
     type: 2}
   InputHandler: {fileID: 1881021717531698, guid: 856f660723d4a5a4d81b62570e083f71,
     type: 2}

@@ -10,7 +10,7 @@ public class Loader : MonoBehaviour {
     public GameObject InputHandler;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         Instantiate(GameManager);
         Instantiate(AudioManager);

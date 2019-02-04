@@ -74,7 +74,7 @@ public class CirclePanel : MonoBehaviour {
     public void PlayGame()
     {
         //get actual combination from GameManager
-        colorCombination = GameManager.ColorCombination;
+        colorCombination = GameManager.instance.ColorCombination;
 
         //set player guess to default gray
         for (int i = 0; i < numberOfCircles; i++)

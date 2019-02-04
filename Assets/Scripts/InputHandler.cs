@@ -69,8 +69,8 @@ public class InputHandler : MonoBehaviour {
     {
         try
         {
-            CurrentColor = GameManager.PossibleColors[Array.IndexOf(GameManager.PossibleColors, CurrentColor) + 1];
-        } catch (IndexOutOfRangeException e) { CurrentColor = GameManager.PossibleColors[0]; }
+            CurrentColor = GameManager.instance.PossibleColors[Array.IndexOf(GameManager.instance.PossibleColors, CurrentColor) + 1];
+        } catch (IndexOutOfRangeException e) { CurrentColor = GameManager.instance.PossibleColors[0]; }
 
         Debug.Log("New color selected: " + CurrentColor.ToString());
     }
@@ -79,8 +79,8 @@ public class InputHandler : MonoBehaviour {
     {
         try
         {
-            CurrentColor = GameManager.PossibleColors[Array.IndexOf(GameManager.PossibleColors, CurrentColor) - 1];
-        } catch (IndexOutOfRangeException e) { CurrentColor = GameManager.PossibleColors[GameManager.PossibleColors.Length - 1]; }
+            CurrentColor = GameManager.instance.PossibleColors[Array.IndexOf(GameManager.instance.PossibleColors, CurrentColor) - 1];
+        } catch (IndexOutOfRangeException e) { CurrentColor = GameManager.instance.PossibleColors[GameManager.instance.PossibleColors.Length - 1]; }
 
         Debug.Log("New color selected: " + CurrentColor.ToString());
     }
