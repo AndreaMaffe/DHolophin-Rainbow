@@ -8,29 +8,31 @@ public class ShowCombinationButton : FocusableButton, HoloToolkit.Unity.InputMod
 {
     private CirclePanel circlePanel;
     private Text text;
+    private bool clickable;
 
     void Start()
     {
         circlePanel = transform.root.GetComponent<CirclePanel>();
         text = transform.Find("Button_Visual").Find("Description").GetComponent<Text>();
+        clickable = true;
     }
 
     public void OnInputClicked(InputClickedEventData eventData)
-    {
-        AudioManager.instance.PlayPop2();
+    {        
 
-        if (text.text == "Show combination")
+        if (clickable == true)
         {
-            circlePanel.SetCirclesActive(false);
+            AudioManager.instance.PlayPop2();
+            clickable = false;
             GameManager.instance.ShowCombination();
-            text.text = "Hide combination";
-        }
+            Invoke("HideCombination", 2f);
+        }         
+        
+    }
 
-        else
-        {
-            circlePanel.SwitchCirclesOff();
-            circlePanel.SetCirclesActive(true);
-            text.text = "Show combination";
-        }
+    void HideCombination()
+    {
+        GameManager.instance.circlePanel.SwitchCirclesOn(GameManager.instance.playerGuess);
+        clickable = true;
     }
 }

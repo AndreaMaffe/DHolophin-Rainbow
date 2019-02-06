@@ -20,8 +20,8 @@ public class Circle : MonoBehaviour, IFocusable, IInputClickHandler
         if (active && focused)
         {
             AudioManager.instance.PlayPop1();
-            SetColor(InputHandler.instance.CurrentColor);
-            GameManager.instance.OnCircleColored(this, InputHandler.instance.CurrentColor);
+            SetColor(GameManager.instance.CurrentColor);
+            GameManager.instance.OnCircleColored(this, GameManager.instance.CurrentColor);
         }
     }
 

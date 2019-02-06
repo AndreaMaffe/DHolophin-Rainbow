@@ -31,7 +31,6 @@ public class DolphinManager : MonoBehaviour
 #endif
 
 #if !UNITY_EDITOR
-
         private string holoLensIpAddr = "192.168.0.147";
         private int holoLensPort = 9000;
 
@@ -43,7 +42,6 @@ public class DolphinManager : MonoBehaviour
 
         private bool exchanging = false;
         private bool exchangeStopRequested = false;
-        private string lastPacket = null;
 #endif
 
 
@@ -59,7 +57,7 @@ public class DolphinManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.instance.CurrentColor, dolphinIpAddr));
+        StartCoroutine(HttpMessage.SendSingleColorAllLeds(GameManager.instance.CurrentColor, dolphinIpAddr));
         eventStack = new Stack<SamEvents>();
         Debug.Log("Tentativo di connessione avviato!");
 
@@ -106,7 +104,7 @@ public class DolphinManager : MonoBehaviour
 #if !UNITY_EDITOR
     private async void InitializeUWPServer()
     {
-        StartCoroutine(HttpMessage.SendHttpChange(serverIp, serverPort, dolphinIpAddr));
+        StartCoroutine(HttpMessage.SendHttpChange(serverIp, 60001, dolphinIpAddr));
         Debug.Log("Delfino connesso!");
 
         try
@@ -126,30 +124,9 @@ public class DolphinManager : MonoBehaviour
     }
 #endif
 
-#if !UNITY_EDITOR
-    private async void ConnectUWP() 
-    {
-        try
-        {        
-            socket = new StreamSocket();
-            HostName serverHost = new HostName(serverIp);
-            await socket.ConnectAsync(serverHost, serverPort.ToString());              
-            Stream streamIn = socket.InputStream.AsStreamForRead();
-            reader = new BinaryReader(streamIn);          
-            Debug.Log("Connesso al server!");
-            RestartExchange();
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-        }
-    }
-#endif
-
     public void ExchangePackets()
     {
 #if !UNITY_EDITOR
-        GameManager.stringa = "working";
         Debug.Log("Entro nel loop");
         try
         { 
@@ -158,14 +135,14 @@ public class DolphinManager : MonoBehaviour
                 if (reader == null) continue;
                 exchanging = true;
 
-                byte[] received = reader.ReadBytes(100);
+                byte[] received = reader.ReadBytes(65);
                 String message = System.Text.Encoding.UTF8.GetString(received);
+                Debug.Log("RECEIVED: " + message);
 
                 SamEvents samEvents = new SamEvents();
                 samEvents = JsonUtility.FromJson<SamEvents>(message);
                 eventStack.Push(samEvents);
 
-                Debug.Log("RECEIVED: " + message);
                 exchanging = false;
             }
         }
@@ -222,17 +199,17 @@ public class DolphinManager : MonoBehaviour
     //call methods of InputHandler according to the message received from the dolphin
     private void HandleDolphinEvent(SamEvents samEvent)
     {
-        if (samEvent.events[0].typ == "touch" && samEvent.events[0].act == true)
+        if (samEvent.events[0].typ == "touch" && samEvent.events[0].act == false)
         {
             switch (samEvent.events[0].val)
             {
                 case "1": InputHandler.instance.OnNextColor();
+                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(GameManager.instance.CurrentColor, dolphinIpAddr));
                           Debug.Log("Next Color!");
-                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.instance.CurrentColor, dolphinIpAddr));
                     break;
                 case "2": InputHandler.instance.OnPreviousColor();
+                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(GameManager.instance.CurrentColor, dolphinIpAddr));
                           Debug.Log("Previous Color!");
-                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(InputHandler.instance.CurrentColor, dolphinIpAddr));
                     break;
                 case "5": InputHandler.instance.SubmitColor();
                           Debug.Log("Submit Color!");

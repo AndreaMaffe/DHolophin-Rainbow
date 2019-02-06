@@ -213,10 +213,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 0}
-  CursorOffset: {x: 0, y: 0, z: 0}
+  CursorOffset: {x: 0, y: 0, z: 0.03}
   CursorNormal: {x: 0, y: 0, z: -1}
   CursorScaleOffset: {x: 1, y: 1, z: 1}
-  SnapCursor: 0
+  SnapCursor: 1
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
   CursorParameters: []
@@ -1028,12 +1028,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 0}
-  CursorOffset: {x: 0, y: 0, z: 0}
+  CursorOffset: {x: 0, y: 0, z: 0.03}
   CursorNormal: {x: 0, y: 0, z: -1}
   CursorScaleOffset: {x: 2, y: 2, z: 1}
-  SnapCursor: 0
+  SnapCursor: 1
   UseGazeBasedNormal: 0
-  HideCursorOnFocus: 1
+  HideCursorOnFocus: 0
   CursorParameters: []
 --- !u!65 &1478361198
 BoxCollider:
@@ -1330,10 +1330,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 0}
-  CursorOffset: {x: 0, y: 0, z: 0}
+  CursorOffset: {x: 0, y: 0, z: 0.03}
   CursorNormal: {x: 0, y: 0, z: -1}
   CursorScaleOffset: {x: 1, y: 1, z: 1}
-  SnapCursor: 0
+  SnapCursor: 1
   UseGazeBasedNormal: 0
   HideCursorOnFocus: 0
   CursorParameters: []

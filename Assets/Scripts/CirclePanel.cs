@@ -46,6 +46,11 @@ public class CirclePanel : MonoBehaviour {
         dolphin.transform.localScale *= 0.6f;
         dolphin.transform.parent = this.transform;
 
+        //create the bulb lamp, rotate it and add it as a child
+        Vector3 bulbLampPosition = new Vector3(rectTransform.position.x - unit * (numberOfCircles+1) / 2 + 0.01f, rectTransform.position.y + rectTransform.localScale.y / 2, rectTransform.position.z - 0.02f);
+        Quaternion bulbLampRotation = new Quaternion(0, 0, -0.1498772f, 0.9887046f);
+        Instantiate(Resources.Load<GameObject>("Prefabs/bulbLamp"), bulbLampPosition, bulbLampRotation, this.transform);
+        
         SwitchCirclesOff();
     }
 

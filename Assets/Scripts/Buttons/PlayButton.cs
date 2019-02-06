@@ -13,7 +13,6 @@ public class PlayButton : FocusableButton, IInputClickHandler
     {
         text = transform.Find("Button_Visual").Find("Description").GetComponent<Text>();
         circlePanel = transform.root.GetComponent<CirclePanel>();
-
     }
 
     //called when plaer click on the button
@@ -24,11 +23,13 @@ public class PlayButton : FocusableButton, IInputClickHandler
         if (text.text == "PLAY!")
         {
             GameManager.instance.PlayAGame();
+            GameManager.instance.GameStarted = true;
             text.text = "STOP";
         }
 
         else
         {
+            GameManager.instance.GameStarted = false;
             circlePanel.SwitchCirclesOff();
             text.text = "PLAY!";
         }    

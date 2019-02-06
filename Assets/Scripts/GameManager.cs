@@ -9,11 +9,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    public GameMode Mode { get; private set; }
+    public GameMode Mode { get; set; }  //AUTOMATIC or MANUAL
+    public bool GameStarted { get; set; } 
+    public float TimeOn { get; private set; } //time given to the player to memorize the combination
 
     public int NumberOfCircles { get; private set; } 
     public int NumberOfColors { get; private set; }
-    public float TimeOn { get; private set; } //time given to the player to memorize the combination
 
     //all possible colors for all games
     public Color[] allColors = new Color[] { Color.red, Color.blue, Color.green, Color.yellow, Color.cyan, Color.white };
@@ -22,7 +23,9 @@ public class GameManager : MonoBehaviour
     //actual combination
     public Color[] ColorCombination { get; private set; }
     //player combination
-    private Color[] playerGuess;  
+    public Color[] playerGuess;
+
+    public Color CurrentColor { get; set; }
 
     public Dolphin dolphin;
     public CirclePanel circlePanel;
@@ -39,13 +42,15 @@ public class GameManager : MonoBehaviour
 
     void Start ()
     {
+        Mode = GameMode.MANUAL;
+        GameStarted = false;
         DontDestroyOnLoad(this);
+        CurrentColor = allColors[0];
         AudioManager.instance.PlayBackgroundMusic();
     }
 
     public void StartNewGame()
     {
-        Mode = GameMode.MANUAL;
         //get game parameters from the panel
         NumberOfCircles = GameObject.Find("CircleNumberButton").GetComponent<PanelNumberButton>().Number;
         NumberOfColors = GameObject.Find("ColorNumberButton").GetComponent<PanelNumberButton>().Number;
@@ -91,7 +96,7 @@ public class GameManager : MonoBehaviour
         //if so, check if the combination is correct
         if (allCirclesAreColored)
         {
-            CheckPlayerGuess(playerGuess);
+            CheckPlayerGuess();
             circlePanel.SetCirclesActive(false);
         }
     }
@@ -123,7 +128,7 @@ public class GameManager : MonoBehaviour
     }
 
     //return true if the guess corresponds to the combination, false otherwise
-    public void CheckPlayerGuess(Color[] playerGuess)
+    public void CheckPlayerGuess()
     {
         bool guessIsCorrect = true;
 
