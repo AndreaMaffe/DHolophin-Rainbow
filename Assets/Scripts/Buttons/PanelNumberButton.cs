@@ -12,7 +12,6 @@ public class PanelNumberButton : FocusableButton, HoloToolkit.Unity.InputModule.
     public int minNumber;
     public int maxNumber;
 
-
     private Text text;
 
     void Start()
@@ -29,12 +28,18 @@ public class PanelNumberButton : FocusableButton, HoloToolkit.Unity.InputModule.
     //called when player clicks on the button
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        AudioManager.instance.PlayPop1();
+        OnClick();
+    }
 
-        Number++;
-        if (Number > maxNumber)
-            Number = minNumber;
+    protected override void OnClick()
+    {
+        if (focused)
+        {
+            AudioManager.instance.PlayPop1();
 
-        eventData.Use(); // Mark the event as used, so it doesn't fall through to other handlers.
+            Number++;
+            if (Number > maxNumber)
+                Number = minNumber;
+        }
     }
 }

@@ -15,28 +15,33 @@ public class PlayButton : FocusableButton, IInputClickHandler
         circlePanel = transform.root.GetComponent<CirclePanel>();
     }
 
-    //called when plaer click on the button
+    //called when player click on the button
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        AudioManager.instance.PlayPop2();
-
-        if (text.text == "PLAY!")
-        {
-            GameManager.instance.PlayAGame();
-            GameManager.instance.GameStarted = true;
-            text.text = "STOP";
-        }
-
-        else
-        {
-            GameManager.instance.GameStarted = false;
-            circlePanel.SwitchCirclesOff();
-            text.text = "PLAY!";
-        }    
+        OnClick();
     }
 
+    protected override void OnClick()
+    {
+       if (focused)
+        {
+            AudioManager.instance.PlayPop2();
 
-    
+            if (text.text == "PLAY!")
+            {
+                GameManager.instance.PlayAGame();
+                GameManager.instance.GameStarted = true;
+                text.text = "STOP";
+            }
+
+            else
+            {
+                GameManager.instance.GameStarted = false;
+                circlePanel.SwitchCirclesOff();
+                text.text = "PLAY!";
+            }
+        }
+    }
 }
 
 

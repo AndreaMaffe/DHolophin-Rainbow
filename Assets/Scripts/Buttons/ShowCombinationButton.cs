@@ -18,21 +18,27 @@ public class ShowCombinationButton : FocusableButton, HoloToolkit.Unity.InputMod
     }
 
     public void OnInputClicked(InputClickedEventData eventData)
-    {        
-
-        if (clickable == true)
-        {
-            AudioManager.instance.PlayPop2();
-            clickable = false;
-            GameManager.instance.ShowCombination();
-            Invoke("HideCombination", 2f);
-        }         
-        
+    {
+        OnClick();
     }
 
     void HideCombination()
     {
         GameManager.instance.circlePanel.SwitchCirclesOn(GameManager.instance.playerGuess);
         clickable = true;
+    }
+
+        protected override void OnClick()
+    {
+        if (focused)
+        {
+            if (clickable == true)
+            {
+                AudioManager.instance.PlayPop2();
+                clickable = false;
+                GameManager.instance.ShowCombination();
+                Invoke("HideCombination", 2f);
+            }
+        }
     }
 }

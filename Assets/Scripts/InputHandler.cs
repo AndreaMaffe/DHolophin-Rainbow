@@ -28,13 +28,13 @@ public class InputHandler : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.D))
             OnNextColor();
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.A))
             OnNextColor();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.S))
             OnColorSubmitted();
 
         if (GameManager.instance.Mode == GameMode.AUTOMATIC && GameManager.instance.GameStarted)

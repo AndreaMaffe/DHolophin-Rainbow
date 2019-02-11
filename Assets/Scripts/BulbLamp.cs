@@ -18,4 +18,9 @@ public class BulbLamp : MonoBehaviour
     {
         spriteRenderer.color = GameManager.instance.CurrentColor;
     }
+
+    private void OnDestroy()
+    {
+        InputHandler.instance.OnColorChanged -= ChangeSpriteColor;
+    }
 }

@@ -8,7 +8,16 @@ public class BackToMainMenuButton : FocusableButton, HoloToolkit.Unity.InputModu
 {
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        AudioManager.instance.PlayPop2();
-        GameManager.instance.LoadScene(1);
+        OnClick();  
+    }
+
+    protected override void OnClick()
+    {
+        if (focused)
+        {
+            GameManager.instance.GameStarted = false;
+            AudioManager.instance.PlayPop2();
+            GameManager.instance.LoadScene(1);
+        }
     }
 }

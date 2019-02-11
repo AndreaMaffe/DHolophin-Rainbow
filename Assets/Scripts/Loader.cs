@@ -8,6 +8,7 @@ public class Loader : MonoBehaviour {
     public GameObject GameManager;
     public GameObject AudioManager;
     public GameObject InputHandler;
+    public GameObject DolphinManager;
 
 	// Use this for initialization
 	void Awake ()
@@ -15,6 +16,7 @@ public class Loader : MonoBehaviour {
         Instantiate(GameManager);
         Instantiate(AudioManager);
         Instantiate(InputHandler);
+        Instantiate(DolphinManager);
 
         SceneManager.LoadScene(1);
 	}

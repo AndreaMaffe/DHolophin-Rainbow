@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class GameModeButton : FocusableButton, HoloToolkit.Unity.InputModule.IInputClickHandler
 {
-
     public Text text;
 
     private void Start()
@@ -17,19 +16,27 @@ public class GameModeButton : FocusableButton, HoloToolkit.Unity.InputModule.IIn
 
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        if (text.text == "MANUAL")
-        {
-            text.fontSize = 60;
-            text.text = "AUTO";
-            GameManager.instance.Mode = GameMode.AUTOMATIC;
-        }
+        OnClick();
+    }
 
-        else
+    protected override void OnClick()
+    {
+        if (focused)
         {
-            text.fontSize = 50;
-            text.text = "MANUAL";
-            GameManager.instance.Mode = GameMode.MANUAL;
+            if (text.text == "MANUAL")
+            {
+                text.fontSize = 60;
+                text.text = "AUTO";
+                GameManager.instance.Mode = GameMode.AUTOMATIC;
+            }
 
+            else
+            {
+                text.fontSize = 50;
+                text.text = "MANUAL";
+                GameManager.instance.Mode = GameMode.MANUAL;
+
+            }
         }
     }
 }

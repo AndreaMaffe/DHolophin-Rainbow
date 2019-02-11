@@ -7,7 +7,16 @@ public class StartButton : FocusableButton, HoloToolkit.Unity.InputModule.IInput
 {
     public void OnInputClicked(InputClickedEventData eventData)
     {
-        AudioManager.instance.PlayPop2();
-        GameManager.instance.StartNewGame();
+        OnClick();
+    }
+
+    protected override void OnClick()
+    {
+        if (focused)
+        {
+            AudioManager.instance.PlayPop2();
+            GameManager.instance.StartNewGame();
+            DolphinManager.instance.Connect();
+        }
     }
 }

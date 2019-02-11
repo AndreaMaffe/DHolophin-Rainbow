@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
         if (guessIsCorrect)
         {
             AudioManager.instance.PlayCorrectAnswerSound();
+            DolphinManager.instance.MakeDolphinHappy();
             GenerateNewColorsCombination();
             dolphin.SetHappySprite();
             ShootFireworks();
@@ -149,6 +150,7 @@ public class GameManager : MonoBehaviour
         else
         {
             AudioManager.instance.PlayWrongAnswerSound();
+            DolphinManager.instance.MakeDolphinSad();
             dolphin.SetAngrySprite();
             Invoke("SwitchCirclesOff", 1f);
             Invoke("PlayAGame", 0.5f);

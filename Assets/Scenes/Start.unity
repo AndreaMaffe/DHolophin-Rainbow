@@ -206,6 +206,8 @@ MonoBehaviour:
     type: 2}
   InputHandler: {fileID: 1881021717531698, guid: 856f660723d4a5a4d81b62570e083f71,
     type: 2}
+  DolphinManager: {fileID: 1240652866969882, guid: 976cb232d1a0e6e4c95e2f19b359e058,
+    type: 2}
 --- !u!1001 &504035233
 Prefab:
   m_ObjectHideFlags: 0

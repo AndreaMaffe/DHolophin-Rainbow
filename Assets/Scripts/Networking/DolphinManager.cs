@@ -19,7 +19,7 @@ using UnityEngine.UI;
 
 public class DolphinManager : MonoBehaviour
 {
-    private static DolphinManager instance = null;
+    public static DolphinManager instance = null;
 
     private string dolphinIpAddr = "192.168.0.125"; //177 per Phil 125 per il cartone
     private Stack<SamEvents> eventStack;
@@ -53,9 +53,10 @@ public class DolphinManager : MonoBehaviour
             Destroy(this.gameObject);
 
         DontDestroyOnLoad(this);
+        InputHandler.instance.OnColorChanged += ChangeDolphinColor;
     }
 
-    void Start()
+    public void Connect()
     {
         StartCoroutine(HttpMessage.SendSingleColorAllLeds(GameManager.instance.CurrentColor, dolphinIpAddr));
         eventStack = new Stack<SamEvents>();
@@ -71,7 +72,7 @@ public class DolphinManager : MonoBehaviour
 
     void Update()
     {
-        if (eventStack.Count != 0)
+        if (eventStack != null && eventStack.Count != 0)
             HandleDolphinEvent(eventStack.Pop());
     }        
 
@@ -204,11 +205,9 @@ public class DolphinManager : MonoBehaviour
             switch (samEvent.events[0].val)
             {
                 case "1": InputHandler.instance.OnNextColor();
-                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(GameManager.instance.CurrentColor, dolphinIpAddr));
                           Debug.Log("Next Color!");
                     break;
                 case "2": InputHandler.instance.OnPreviousColor();
-                          StartCoroutine(HttpMessage.SendSingleColorAllLeds(GameManager.instance.CurrentColor, dolphinIpAddr));
                           Debug.Log("Previous Color!");
                     break;
                 case "5": InputHandler.instance.SubmitColor();
@@ -216,6 +215,23 @@ public class DolphinManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void ChangeDolphinColor()
+    {
+        StartCoroutine(HttpMessage.SendSingleColorAllLeds(GameManager.instance.CurrentColor, dolphinIpAddr));
+    }
+
+    public void MakeDolphinHappy()
+    {
+        StartCoroutine(HttpMessage.SendMusicMessage("12", dolphinIpAddr));
+        StartCoroutine(HttpMessage.SendMoveMessage(HttpMessage.DolphinMoves.moveMouth, dolphinIpAddr));
+    }
+
+    public void MakeDolphinSad()
+    {
+        StartCoroutine(HttpMessage.SendMusicMessage("8", dolphinIpAddr));
+        StartCoroutine(HttpMessage.SendMoveMessage(HttpMessage.DolphinMoves.moveMouth, dolphinIpAddr));
     }
 
 }
