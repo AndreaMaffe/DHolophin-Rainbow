@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
             playerGuess[i] = Color.gray;
 
         Invoke("ShowCombination", 2f);
-        Invoke("SwitchCirclesOff", 2 + GameManager.instance.TimeOn);
+        Invoke("SwitchCirclesOff", 2 + TimeOn);
         circlePanel.SetCirclesActive(true);
     }
 
@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
             DolphinManager.instance.MakeDolphinHappy();
             GenerateNewColorsCombination();
             dolphin.SetHappySprite();
-            ShootFireworks();
+            //ShootFireworks();
             Invoke("SwitchCirclesOff", 5f);
             Invoke("PlayAGame", 4f);
         }

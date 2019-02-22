@@ -35,9 +35,9 @@ public class ShowCombinationButton : FocusableButton, HoloToolkit.Unity.InputMod
             if (clickable == true)
             {
                 AudioManager.instance.PlayPop2();
-                clickable = false;
                 GameManager.instance.ShowCombination();
                 Invoke("HideCombination", 2f);
+                clickable = false;
             }
         }
     }

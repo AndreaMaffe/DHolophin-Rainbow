@@ -16,6 +16,7 @@ public class BackToMainMenuButton : FocusableButton, HoloToolkit.Unity.InputModu
         if (focused)
         {
             GameManager.instance.GameStarted = false;
+            GameManager.instance.Mode = GameMode.MANUAL;
             AudioManager.instance.PlayPop2();
             GameManager.instance.LoadScene(1);
         }

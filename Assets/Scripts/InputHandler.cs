@@ -23,7 +23,7 @@ public class InputHandler : MonoBehaviour {
             Destroy(this.gameObject);
 
         DontDestroyOnLoad(this);
-        timer = GameManager.instance.TimeOn;
+        timer = 6;
     }
 
     private void Update()
@@ -49,7 +49,7 @@ public class InputHandler : MonoBehaviour {
                 catch (IndexOutOfRangeException e) { GameManager.instance.CurrentColor = GameManager.instance.PossibleColors[0]; }
 
                 OnColorChanged();
-                timer = GameManager.instance.TimeOn;
+                timer = 6;
             }
         }
     }
@@ -85,8 +85,7 @@ public class InputHandler : MonoBehaviour {
 
     public void SubmitColor()
     {
-        if (GameManager.instance.GameStarted)
-            OnColorSubmitted();
+        OnColorSubmitted();
     }
 
 

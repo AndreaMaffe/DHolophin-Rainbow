@@ -21,7 +21,7 @@ public class DolphinManager : MonoBehaviour
 {
     public static DolphinManager instance = null;
 
-    private string dolphinIpAddr = "192.168.0.125"; //177 per Phil 125 per il cartone
+    private string dolphinIpAddr = "192.168.0.177"; //177 per Phil
     private Stack<SamEvents> eventStack;
 
 #if UNITY_EDITOR
@@ -39,11 +39,11 @@ public class DolphinManager : MonoBehaviour
         private static int serverPort = 60000;
         private Task exchangeTask;
         private BinaryReader reader = null;
-
+        
+        private bool connected;
         private bool exchanging = false;
         private bool exchangeStopRequested = false;
 #endif
-
 
     void Awake()
     {
@@ -57,16 +57,16 @@ public class DolphinManager : MonoBehaviour
     }
 
     public void Connect()
-    {
+    {   
         StartCoroutine(HttpMessage.SendSingleColorAllLeds(GameManager.instance.CurrentColor, dolphinIpAddr));
         eventStack = new Stack<SamEvents>();
-        Debug.Log("Tentativo di connessione avviato!");
 
 #if UNITY_EDITOR
         //Invoke("InitializeUnityServer", 4f);
 
 #else
-        Invoke("InitializeUWPServer", 4f);
+        if (!connected)
+            Invoke("InitializeUWPServer", 4f);
 #endif
     }
 
@@ -79,7 +79,6 @@ public class DolphinManager : MonoBehaviour
 #if UNITY_EDITOR
     void InitializeUnityServer()
     {
-        Invoke("connect", 4f);
         _listener = new HttpListener();
         _listener.Prefixes.Add("http://+:" + unityPort.ToString() + "/");
         _listener.Start();        
@@ -110,18 +109,20 @@ public class DolphinManager : MonoBehaviour
 
         try
             {        
+                Debug.Log("Tentativo di connessione con il server avviato!");                
                 socket = new StreamSocket();
                 HostName serverHost = new HostName(serverIp);
                 await socket.ConnectAsync(serverHost, serverPort.ToString());              
                 Stream streamIn = socket.InputStream.AsStreamForRead();
                 reader = new BinaryReader(streamIn);          
                 Debug.Log("Connesso al server!");
+                connected = true;
                 RestartExchange();
             }
             catch (Exception e)
             {
                 Debug.Log(e.Message);
-            }            
+            }                
     }
 #endif
 
@@ -129,27 +130,38 @@ public class DolphinManager : MonoBehaviour
     {
 #if !UNITY_EDITOR
         Debug.Log("Entro nel loop");
-        try
-        { 
-            while (!exchangeStopRequested)
+
+        while (!exchangeStopRequested)
+        {
+            if (reader == null) continue;
+            exchanging = true;
+
+            byte[] received = reader.ReadBytes(65);
+            String message = System.Text.Encoding.UTF8.GetString(received);
+
+            Debug.Log("RECEIVED: " + message);
+
+            if (message.ToCharArray()[64] == '}' )
             {
-                if (reader == null) continue;
-                exchanging = true;
-
-                byte[] received = reader.ReadBytes(65);
-                String message = System.Text.Encoding.UTF8.GetString(received);
-                Debug.Log("RECEIVED: " + message);
-
                 SamEvents samEvents = new SamEvents();
                 samEvents = JsonUtility.FromJson<SamEvents>(message);
                 eventStack.Push(samEvents);
-
-                exchanging = false;
             }
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
+                
+            else 
+            {
+                Debug.Log("Ricevuto messaggio doppio!");
+                try 
+                {
+                    while(true)
+                        reader.ReadByte();
+                } 
+                catch (Exception e) { Debug.Log(e.Message); }
+            }
+
+            exchanging = false;    
+            Debug.Log("Messaggio correttamente smaltito");
+
         }
 
 #endif
@@ -224,13 +236,13 @@ public class DolphinManager : MonoBehaviour
 
     public void MakeDolphinHappy()
     {
-        StartCoroutine(HttpMessage.SendMusicMessage("12", dolphinIpAddr));
+        StartCoroutine(HttpMessage.SendMusicMessage("4", dolphinIpAddr));
         StartCoroutine(HttpMessage.SendMoveMessage(HttpMessage.DolphinMoves.moveMouth, dolphinIpAddr));
     }
 
     public void MakeDolphinSad()
     {
-        StartCoroutine(HttpMessage.SendMusicMessage("8", dolphinIpAddr));
+        StartCoroutine(HttpMessage.SendMusicMessage("9", dolphinIpAddr));
         StartCoroutine(HttpMessage.SendMoveMessage(HttpMessage.DolphinMoves.moveMouth, dolphinIpAddr));
     }
 
